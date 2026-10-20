@@ -1,0 +1,11 @@
+
+.home-hero{padding-top:148px;padding-bottom:64px}.home-hero .display{max-width:1000px}.home-hero .lead{max-width:760px}.product{margin-bottom:96px}.product-switch{display:flex;border-bottom:var(--ace-pixel);gap:8px;margin-bottom:24px}.product-switch button{border:var(--ace-pixel);border-bottom:0;padding:12px 28px;background:var(--ace-paper);font:inherit}.product-switch button[aria-selected=true]{background:var(--ace-navy);color:white}.product figure{border:var(--ace-pixel);box-shadow:var(--ace-shadow);margin-bottom:24px}.product img{display:block;width:100%;height:auto}.product figcaption{padding:18px 24px;border-top:var(--ace-pixel);font-size:24px}.product p{max-width:750px;color:var(--ace-graphite)}.product h2{font-size:32px;margin:24px 0 16px}.home-features{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;margin-top:48px}.home-features h3{font-size:24px;margin-bottom:16px}.home-features p{color:var(--ace-graphite)}.model-service{background:var(--ace-wash)}.model-service .section-lead{margin-top:28px;max-width:750px}.home-footer{padding:32px 0;border-top:var(--ace-pixel)}.home-footer>.shell{display:flex;align-items:center;gap:24px;flex-wrap:wrap}.home-footer .brand{margin-right:auto}::selection{background:var(--ace-navy);color:white}
+@media(max-width:760px){.home-hero{padding-top:146px;padding-bottom:40px}.home-features{grid-template-columns:1fr;gap:32px}.product{margin-bottom:56px}.product figcaption{font-size:20px;padding:16px}.home-footer>.shell{gap:16px}.home-hero .display{font-size:48px}.actions{flex-wrap:wrap}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+.home-hero .display,.section-heading{text-wrap:balance}
+@media(max-width:760px){.section-heading{font-size:32px}}
+
+/* GitHub mark uses the existing @lobehub/icons-static-svg asset. */
+.site-nav .nav-github{display:inline-flex;align-items:center;justify-content:center;flex:none;width:44px;height:44px;padding:10px;margin-left:10px}.nav-github svg{display:block;flex:none}
+@media(max-width:760px){.site-header .site-nav .nav-github{width:40px;height:40px;padding:8px;margin-left:4px}}

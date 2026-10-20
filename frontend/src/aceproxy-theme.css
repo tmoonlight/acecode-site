@@ -1,0 +1,69 @@
+/* AceModel-inspired editorial treatment for the default palette only.
+   Custom color themes, glass backgrounds and user-provided logos remain intact. */
+@layer base {
+  :root.theme-default {
+    --color-background: #f7f8f9;
+    --color-foreground: #111315;
+    --color-card: #ffffff;
+    --color-card-foreground: #111315;
+    --color-popover: #ffffff;
+    --color-popover-foreground: #111315;
+    --color-primary: #102a43;
+    --color-primary-foreground: #ffffff;
+    --color-secondary: #edf0f2;
+    --color-secondary-foreground: #102a43;
+    --color-muted: #f0f2f3;
+    --color-muted-foreground: #555e66;
+    --color-accent: #e8edf1;
+    --color-accent-foreground: #102a43;
+    --color-border: #d9dde1;
+    --color-input: #cbd1d6;
+    --color-ring: #102a43;
+    --sidebar-background: 0 0% 100%;
+  }
+
+  :root.dark.theme-default {
+    --color-background: #111a23;
+    --color-foreground: #edf2f5;
+    --color-card: #1a2530;
+    --color-card-foreground: #edf2f5;
+    --color-popover: #1a2530;
+    --color-popover-foreground: #edf2f5;
+    --color-primary: #a8c9e2;
+    --color-primary-foreground: #102a43;
+    --color-secondary: #23313e;
+    --color-secondary-foreground: #edf2f5;
+    --color-muted: #23313e;
+    --color-muted-foreground: #abb9c5;
+    --color-accent: #2a3b4b;
+    --color-accent-foreground: #edf2f5;
+    --color-border: #374857;
+    --color-input: #46596a;
+    --color-ring: #a8c9e2;
+    --sidebar-background: 209 33% 12%;
+  }
+}
+
+/* Apply the restrained geometry to the admin shell, not to other UI skins. */
+.theme-default [data-slot="admin-sidebar"] {
+  border-color: var(--color-border);
+}
+.theme-default [data-slot="admin-sidebar"] nav a {
+  border-radius: 3px;
+}
+.theme-default [data-slot="admin-sidebar"] h1 {
+  font-weight: 650;
+  letter-spacing: -0.055em;
+}
+.theme-default [data-slot="admin-sidebar"] nav > span {
+  font-family: var(--font-mono);
+  letter-spacing: 0.12em;
+}
+.theme-default [data-slot="admin-mobile-topbar"],
+.theme-default [data-slot="admin-mobile-nav"] > div {
+  border-radius: 4px;
+  box-shadow: none;
+}
+.theme-default [data-slot="admin-mobile-nav"] a {
+  border-radius: 3px;
+}

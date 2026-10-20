@@ -1,0 +1,176 @@
+<!doctype html>
+<!--
+  ACECode 下载页。版本与文件信息运行时读取自 aceupdate.json,不需要构建步骤。
+  data-manifest / data-file-base 相对本页地址解析;若把页面挪到 aupdate 根目录,
+  改成 data-manifest="aceupdate.json" data-file-base="./" 即可。
+  页面只加载同源的 CSS / JS / 字体,不使用内联脚本与内联样式,可在
+  script-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self' 的 CSP 下运行。
+-->
+<html lang="zh-CN" data-manifest="../aceupdate.json" data-file-base="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>下载 ACECode</title>
+  <meta name="description" content="下载 ACECode 最新正式版与历史版本，提供 Windows、macOS、Linux 安装包与 SHA-256 校验值。">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/chill-16-base.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/chill-16-cjk-1.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/fonts.css">
+  <link rel="stylesheet" href="assets/shared/site.css">
+  <link rel="stylesheet" href="assets/release.css?v=20261020-cdn">
+  <link rel="stylesheet" href="assets/shared/navigation.css">
+  <link rel="stylesheet" href="assets/promo.css?v=20261020-cdn">
+  <script src="assets/release.js?v=20261020-cdn" defer></script>
+  <script src="assets/promo.js?v=20261020-cdn" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <header class="site-header"><div class="shell header-inner"><a class="brand" href="https://acecodedownload.b-cdn.net/acemodel/" aria-label="ACECode 官网"><span class="brand-mark" aria-hidden="true">AC</span><span>ACECode</span></a><nav class="site-nav" aria-label="网站导航"><a href="https://acecodedownload.b-cdn.net/acemodel/">产品</a><a href="https://acecodedownload.b-cdn.net/key-usage/pricing/">模型价格</a><a href="https://acecodedownload.b-cdn.net/download/">下载</a><a href="https://acecodedownload.b-cdn.net/key-usage/guide/">帮助</a><a href="https://acecode.cc/customerv2" class="nav-cta">用户中心</a></nav></div></header>
+
+  <main id="main">
+    <section class="hero shell" id="top">
+      <div class="hero-copy">
+        <p class="eyebrow">Releases · 下载</p>
+        <h1 class="display">Download<strong>ACECode.</strong></h1>
+        <p class="lead">面向真实工程工作的智能开发环境。下载最新正式版，或在下方找回任意历史版本。</p>
+        <div class="actions">
+          <a class="button button-primary button-download" id="hero-download" href="#latest">
+            <span class="button-label" id="hero-download-label">查看全部下载</span>
+            <span class="button-meta" id="hero-download-meta">正在读取版本清单…</span>
+          </a>
+          <a class="button" href="#history">历史版本</a>
+        </div>
+        <p class="hero-alt" id="hero-alt" hidden></p>
+        <p class="hero-note" id="hero-note" aria-live="polite">版本信息同步自 GitHub Releases。</p>
+      </div>
+
+      <a class="promo-preview" id="promo-open" href="assets/media/acecode-promo-terminal-v2.mp4" aria-label="播放 ACECode 宣传片" aria-haspopup="dialog" aria-controls="promo-player">
+        <img src="assets/media/acecode-promo-terminal-v2-poster-44s.jpg" width="1920" height="1080" alt="ACECode 宣传片封面" fetchpriority="high">
+        <span class="promo-caption"><span class="promo-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8 4v16l12-8z"/></svg></span><span>观看宣传片</span><span class="promo-duration">00:45</span></span>
+      </a>
+    </section>
+
+    <section class="section" id="latest" aria-labelledby="latest-title">
+      <div class="shell">
+        <p class="eyebrow">Latest release</p>
+        <div class="release-title">
+          <h2 class="section-heading" id="latest-title">最新正式版</h2>
+          <span class="tag tag-stable" id="latest-tag" hidden>正式版</span>
+        </div>
+        <p class="release-meta" id="latest-meta"></p>
+        <div id="latest-body" class="latest-body">
+          <div class="loading-block">
+            <span class="pixel-loader" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            <span>正在读取 aceupdate.json…</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-preview" id="preview" aria-labelledby="preview-title" hidden>
+      <div class="shell">
+        <p class="eyebrow">Preview build</p>
+        <div class="release-title">
+          <h2 class="section-heading" id="preview-title">预览版</h2>
+          <span class="tag tag-pre">预览版</span>
+        </div>
+        <p class="release-meta" id="preview-meta"></p>
+        <div id="preview-body"></div>
+      </div>
+    </section>
+
+    <section class="section" id="history" aria-labelledby="history-title">
+      <div class="shell">
+        <p class="eyebrow">All releases</p>
+        <h2 class="section-heading" id="history-title">历史版本</h2>
+        <p class="section-lead">每个版本都保留了当时的更新说明与下载文件。展开版本即可查看全部安装包；需要回退时，下载对应版本覆盖安装即可。</p>
+        <div class="history-tools" id="history-tools" hidden>
+          <div class="segmented" role="group" aria-label="版本渠道">
+            <button type="button" data-channel="stable" aria-pressed="true">正式版<span class="count" id="count-stable"></span></button>
+            <button type="button" data-channel="all" aria-pressed="false">全部<span class="count" id="count-all"></span></button>
+          </div>
+          <label class="search">
+            <span class="visually-hidden">搜索版本号或更新内容</span>
+            <input type="search" id="history-search" placeholder="搜索版本号或更新内容（按 / 聚焦）" autocomplete="off" spellcheck="false">
+          </label>
+        </div>
+        <div class="history-list" id="history-list" aria-live="polite"></div>
+        <div class="history-more">
+          <button type="button" class="button" id="history-more" hidden>显示更多</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="verify" aria-labelledby="verify-title">
+      <div class="shell">
+        <p class="eyebrow">Verify download</p>
+        <h2 class="section-heading" id="verify-title">校验下载的文件</h2>
+        <p class="section-lead">下载完成后，在文件所在目录运行对应命令。命令里已经带上本页列出的 SHA-256，输出 <code>True</code> 或 <code>OK</code> 即说明文件完整、未被改动。</p>
+        <div class="verify-grid">
+          <article class="code-card" data-platform="windows">
+            <div class="code-card-head">
+              <h3>Windows · PowerShell</h3>
+              <button type="button" class="mini-button" data-copy-target="verify-windows" data-copy-label="已复制 PowerShell 命令">复制</button>
+            </div>
+            <pre id="verify-windows">Get-FileHash .\acecode-&lt;版本&gt;-windows-x64.zip -Algorithm SHA256</pre>
+            <p class="code-card-note" id="verify-windows-note">输出的哈希值应与本页列出的 SHA-256 一致（不区分大小写）。</p>
+          </article>
+          <article class="code-card" data-platform="macos">
+            <div class="code-card-head">
+              <h3>macOS · 终端</h3>
+              <button type="button" class="mini-button" data-copy-target="verify-macos" data-copy-label="已复制 macOS 命令">复制</button>
+            </div>
+            <pre id="verify-macos">shasum -a 256 ACECode-&lt;版本&gt;-macos-arm64.pkg</pre>
+            <p class="code-card-note" id="verify-macos-note">输出的哈希值应与本页列出的 SHA-256 一致。</p>
+          </article>
+          <article class="code-card" data-platform="linux">
+            <div class="code-card-head">
+              <h3>Linux · Shell</h3>
+              <button type="button" class="mini-button" data-copy-target="verify-linux" data-copy-label="已复制 Linux 命令">复制</button>
+            </div>
+            <pre id="verify-linux">sha256sum acecode-&lt;版本&gt;-linux-x64.tar.gz</pre>
+            <p class="code-card-note" id="verify-linux-note">输出的哈希值应与本页列出的 SHA-256 一致。</p>
+          </article>
+        </div>
+        <p class="verify-foot" id="verify-foot">每个版本的完整校验清单也可以在 <code>SHA256SUMS-&lt;版本&gt;.txt</code> 中查看。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <div class="footer-brand">
+        <span class="wordmark">ACECODE</span>
+        <span>Agent software with ACEModel built in.</span>
+      </div>
+      <nav class="footer-links" aria-label="相关链接">
+        <a href="https://acecodedownload.b-cdn.net/acemodel/" target="_blank" rel="noopener noreferrer">官网</a>
+        <a href="../help/index.html">帮助文档</a>
+        <a href="https://github.com/tmoonlight/acecode/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a>
+        <a href="../aceupdate.json" id="manifest-link">aceupdate.json</a>
+        <a href="assets/fonts/LICENSE-ChillBitmap.txt">字体：寒蝉点阵体（OFL）</a>
+      </nav>
+    </div>
+  </footer>
+
+  <noscript>
+    <div class="noscript shell">本页需要启用 JavaScript 才能读取版本清单。你也可以直接查看 <a href="../aceupdate.json">aceupdate.json</a>，或前往 <a href="https://github.com/tmoonlight/acecode/releases">GitHub Releases</a> 下载。</div>
+  </noscript>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <dialog class="promo-player" id="promo-player" aria-labelledby="promo-title" closedby="closerequest">
+    <div class="promo-player-bar">
+      <h2 id="promo-title">ACECode 宣传片</h2>
+      <button class="promo-close" id="promo-close" type="button" aria-label="关闭播放器" autofocus><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+    </div>
+    <video id="promo-video" controls playsinline preload="none" poster="assets/media/acecode-promo-terminal-v2-poster-44s.jpg" aria-label="ACECode 宣传片视频"></video>
+    <div class="promo-error" id="promo-error" role="status" hidden>
+      <span id="promo-error-message">视频暂时无法播放。</span>
+      <button class="mini-button" id="promo-retry" type="button">重试</button>
+      <a href="assets/media/acecode-promo-terminal-v2.mp4" target="_blank" rel="noopener">直接打开视频</a>
+    </div>
+  </dialog>
+</body>
+</html>

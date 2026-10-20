@@ -1,0 +1,9 @@
+/* Only the download page retains the custom pixel font. */
+:root {
+  --ace-font: serif;
+  --font-sans: serif;
+  --font-mono: monospace;
+  --font-geist-mono: monospace;
+}
+html { font-family: initial; }
+body { font-family: inherit; }

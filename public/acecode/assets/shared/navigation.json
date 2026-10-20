@@ -1,0 +1,24 @@
+{
+  "links": [
+    {
+      "label": "产品",
+      "href": "https://acecodedownload.b-cdn.net/acemodel/"
+    },
+    {
+      "label": "模型价格",
+      "href": "https://acecodedownload.b-cdn.net/key-usage/pricing/"
+    },
+    {
+      "label": "下载",
+      "href": "https://acecodedownload.b-cdn.net/download/"
+    },
+    {
+      "label": "帮助",
+      "href": "https://acecodedownload.b-cdn.net/key-usage/guide/"
+    },
+    {
+      "label": "用户中心",
+      "href": "https://acecode.cc/customerv2"
+    }
+  ]
+}

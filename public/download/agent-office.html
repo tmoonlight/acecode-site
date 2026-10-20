@@ -1,0 +1,994 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI Agent 团队 - 像素办公室</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#d6e1f2; --ink:#1b2742; --muted:#5a6a8c; --panel:#fbfdff; --panel2:#e9f0fb;
+  --frame:#2c4c93; --frame2:#9db4e0; --head:#2a4585; --chip:#e4edff;
+  --bar:#cad7ee; --b1:#3a8cf0; --b2:#45b36a; --hl:#ffd23f;
+  --font:"Pixelify Sans","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1628; --ink:#e6ecfa; --muted:#98a8cb; --panel:#17213b; --panel2:#1e2a4a;
+    --frame:#5578cc; --frame2:#2c3d68; --head:#1b2c5a; --chip:#22305a; --bar:#2a3a63;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1628; --ink:#e6ecfa; --muted:#98a8cb; --panel:#17213b; --panel2:#1e2a4a;
+  --frame:#5578cc; --frame2:#2c3d68; --head:#1b2c5a; --chip:#22305a; --bar:#2a3a63;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--font);-webkit-font-smoothing:antialiased}
+.app{max-width:1180px;margin:0 auto;padding:14px 14px 28px;display:grid;gap:14px}
+
+/* 顶栏：仿模拟经营游戏 HUD */
+.top{display:grid;grid-template-columns:1fr auto auto;background:var(--head);border:3px solid var(--frame);box-shadow:4px 4px 0 var(--frame2)}
+.top h1{margin:0;color:#fff;font-size:clamp(17px,2.4vw,22px);font-weight:700;padding:8px 14px;letter-spacing:.02em}
+.clock,.money{display:flex;align-items:center;gap:8px;padding:8px 16px;font-weight:700;white-space:nowrap;border-left:3px solid var(--frame);font-size:clamp(15px,2vw,19px)}
+.clock{background:#dce8fb;color:#1b2c56}
+.money{background:#fff;color:#1b2742}
+.money small{font-size:12px;color:#5a6a8c;font-weight:600}
+
+.main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px;align-items:start}
+.left,.side{display:grid;gap:14px;min-width:0}
+.px{background:var(--panel);border:3px solid var(--frame);box-shadow:inset 0 0 0 2px var(--panel2),4px 4px 0 var(--frame2)}
+
+/* 场景 */
+.stage{background:#78bf58;border:3px solid var(--frame);box-shadow:4px 4px 0 var(--frame2);overflow-x:auto;overflow-y:hidden;line-height:0;-webkit-overflow-scrolling:touch}
+.scene{position:relative;width:fit-content;margin:0 auto}
+.scene canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges;cursor:pointer;touch-action:manipulation;width:100%;height:auto}
+.ov{position:absolute;inset:0;pointer-events:none;line-height:1.4}
+.bub{position:absolute;transform:translate(-50%,calc(-100% - 7px));background:#fff;color:#1b2540;border:2px solid #27324f;border-radius:6px;padding:1px 7px 2px;font-size:12px;font-weight:700;white-space:nowrap;box-shadow:2px 2px 0 rgba(20,24,40,.28)}
+.bub::after{content:"";position:absolute;left:50%;bottom:-6px;width:8px;height:8px;margin-left:-4px;background:inherit;border-right:2px solid #27324f;border-bottom:2px solid #27324f;transform:rotate(45deg)}
+.bub.bot{background:#e6f4ff}
+.tag{position:absolute;transform:translate(-50%,calc(-100% - 8px));background:#ffe27a;color:#3a2a00;border:2px solid #27324f;font-size:10px;font-weight:700;padding:0 4px;white-space:nowrap}
+
+/* 任务面板 */
+.task{padding:10px 14px 14px}
+.task-head{display:flex;justify-content:space-between;gap:6px 14px;flex-wrap:wrap;align-items:baseline;padding-bottom:6px;border-bottom:2px solid var(--frame2)}
+.task-head b{font-size:19px}
+.eta{color:var(--frame);font-weight:700;white-space:nowrap}
+.eta em{font-style:normal;font-size:21px;margin:0 4px;color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);margin:10px 0;background:var(--panel2);border:2px solid var(--frame2)}
+.stat{display:grid;grid-template-columns:auto 1fr;column-gap:10px;align-items:center;padding:6px 12px;border-left:2px solid var(--frame2)}
+.stat:first-child{border-left:0}
+.stat canvas{grid-row:1/3;width:30px;height:auto;image-rendering:pixelated}
+.stat span{font-size:13px;color:var(--frame);font-weight:700}
+.stat b{font-size:23px;line-height:1.1}
+.bars{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.bar{display:grid;grid-template-columns:auto auto 1fr;gap:8px;align-items:center;font-weight:700;color:var(--frame)}
+.bar b{color:var(--ink);min-width:2.2em;text-align:right;font-size:19px}
+.bar i{display:block;height:16px;background:var(--bar);border:2px solid var(--frame)}
+.bar em{display:block;height:100%;width:0;background:var(--b1);transition:width .4s steps(6)}
+.bar.q em{background:var(--b2)}
+
+/* 侧栏 */
+.side h2{margin:0;font-size:14px;padding:5px 10px;background:var(--head);color:#fff;display:flex;justify-content:space-between;align-items:center}
+.side h2 small{font-weight:600;opacity:.8}
+.roster{display:grid;gap:2px;padding:6px}
+.mate{display:grid;grid-template-columns:30px 1fr auto;column-gap:8px;align-items:center;text-align:left;font:inherit;color:inherit;background:transparent;border:2px solid transparent;padding:3px 6px;cursor:pointer}
+.mate:hover{background:var(--panel2)}
+.mate[aria-pressed="true"]{border-color:var(--frame);background:var(--chip)}
+.mate canvas{grid-row:1/3;width:28px;height:26px;image-rendering:pixelated}
+.mate .nm{font-weight:700;font-size:14px;line-height:1.2}
+.mate .rl{font-size:11px;color:var(--muted);line-height:1.2}
+.mate .stt{grid-column:3;grid-row:1/3;font-size:11px;font-weight:700;padding:0 6px;border:2px solid currentColor}
+.stt.work{color:#2f9a58}.stt.idle{color:var(--muted)}.stt.think{color:#c28a00}.stt.error{color:#d9443b}.stt.done{color:#2a73d9}
+.log ol{list-style:none;margin:0;padding:8px 10px 10px;font-size:13px;display:grid;gap:4px;min-height:10em;align-content:start}
+.log time{color:var(--muted);font-size:11px;margin-right:6px}
+
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{font:inherit;font-weight:700;font-size:14px;color:var(--ink);background:var(--panel);border:3px solid var(--frame);padding:6px 14px;box-shadow:0 4px 0 var(--frame);cursor:pointer;position:relative;top:0}
+.btn:active{top:4px;box-shadow:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.primary{background:var(--hl);color:#2a2000}
+:focus-visible{outline:3px solid var(--hl);outline-offset:2px}
+.meta{font-size:12px;color:var(--muted);margin-left:auto}
+.help summary{cursor:pointer;font-weight:700;padding:8px 12px}
+.help pre{margin:0;padding:10px 14px 14px;overflow-x:auto;font:12px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--panel2)}
+
+@media (max-width:880px){
+  .main{grid-template-columns:1fr}
+  .top{grid-template-columns:1fr 1fr}
+  .top h1{grid-column:1/-1}
+  .clock,.money{border-top:3px solid var(--frame)}
+  .clock{border-left:0}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(3){border-left:0}
+  .stat:nth-child(n+3){border-top:2px solid var(--frame2)}
+  .bars{grid-template-columns:1fr;gap:8px}
+  .bub{font-size:10px;padding:0 5px}
+  .tag{font-size:9px}
+  .meta{margin-left:0;width:100%}
+}
+@media (prefers-reduced-motion:reduce){.bar em{transition:none}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <h1>AI Agent 团队 - 办公室</h1>
+    <div class="clock" id="clock">第 1 天 09:00</div>
+    <div class="money"><small>Token</small><span id="tokens">5,000万</span></div>
+  </header>
+
+  <div class="main">
+    <div class="left">
+      <div class="stage" id="stage">
+        <div class="scene" id="scene">
+          <canvas id="cv" width="344" height="220" aria-label="像素风 AI 办公室，Agent 们在工位上工作，点击小人查看状态"></canvas>
+          <div class="ov" id="ov"></div>
+        </div>
+      </div>
+
+      <section class="task px" aria-live="polite">
+        <div class="task-head">
+          <b id="taskTitle">团队集合中…</b>
+          <span class="eta">预计交付 还有<em id="eta">–</em>小时</span>
+        </div>
+        <div class="stats">
+          <div class="stat"><canvas data-icon="plan"></canvas><span>规划</span><b id="st-plan">0</b></div>
+          <div class="stat"><canvas data-icon="code"></canvas><span>代码</span><b id="st-code">0</b></div>
+          <div class="stat"><canvas data-icon="review"></canvas><span>审查</span><b id="st-review">0</b></div>
+          <div class="stat"><canvas data-icon="test"></canvas><span>测试</span><b id="st-test">0</b></div>
+        </div>
+        <div class="bars">
+          <div class="bar"><span>完成度</span><b id="pv">0</b><i><em id="pb"></em></i></div>
+          <div class="bar q"><span>质量</span><b id="qv">0</b><i><em id="qb"></em></i></div>
+        </div>
+      </section>
+
+      <div class="controls">
+        <button class="btn" id="bPause">暂停</button>
+        <button class="btn" id="bSpeed">速度 1x</button>
+        <button class="btn primary" id="bHire">招募 Agent</button>
+        <button class="btn" id="bDemo">演示：开</button>
+        <span class="meta" id="meta"></span>
+      </div>
+    </div>
+
+    <aside class="side">
+      <section class="px"><h2>团队成员 <small id="teamCount"></small></h2><div class="roster" id="roster"></div></section>
+      <section class="px log"><h2>事件 <small id="shipped">已交付 0</small></h2><ol id="log"></ol></section>
+    </aside>
+  </div>
+
+  <details class="px help">
+    <summary>接入你自己的 Agent 编排器</summary>
+<pre>// 关掉演示，改由你的编排器驱动
+AgentOffice.demo(false);
+
+AgentOffice.setState('coderA', 'work', '写单元测试…');  // idle | work | think | done | error
+AgentOffice.send('conductor', 'reviewer', 'PR #42');     // 信封从一个 agent 飞到另一个
+AgentOffice.say('tester', '全部通过!');
+AgentOffice.board(3, 2, 5);                              // 墙上看板：待办 / 进行 / 完成
+AgentOffice.addAgent({ id:'ops1', name:'Nova', role:'ops' }); // 自动找空工位 + 随机换色
+
+// 或者直接把事件流喂进来（在你自己的环境里）
+// ws.onmessage = e => AgentOffice.apply(JSON.parse(e.data));
+// 事件格式：{type:'state', id, state, text} | {type:'send', from, to, label} | {type:'say', id, text}</pre>
+  </details>
+</div>
+
+<script>
+(() => {
+'use strict';
+/* =====================================================================
+   像素 AI 办公室 —— 资源复用思路
+   1. 一个图元 box()：所有家具、墙、机器人都是等距长方体拼出来的
+   2. 一个基色 → 三个面：mat(c) 自动算顶面/左面/右面明暗，换色只改一个值
+   3. 一个像素模板渲染器 pix() + 调色板：小人、图标、数字、信封全靠它
+   4. 小人 = 身体模板 × 调色板换色 × 水平翻转 × 动作补丁 × 配饰补丁
+   5. 一个描边后处理 outline()：所有精灵共用同一套像素描边
+   6. 一个精灵缓存 sprite(key)：同样外观只画一次，场景里无限实例化
+   7. 预制体：工位 = 椅子 + 人 + 桌 + 显示器；双人工位 = 工位 ×2（镜像）+ 隔板
+   ===================================================================== */
+
+/* ---------- 0. 工具 ---------- */
+const T = 8, RW = 88, RD = 72, WALL_H = 40;          // 1 格 = 8 单位，房间 11×9 格
+const VIEW = { w: 344, h: 220, ox: 156, oy: 54 };
+const INK = '#2b2737';                                // 统一描边色
+
+const mk = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+const rng = s => () => { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const R = rng(20260927);
+const pick = a => a[(R() * a.length) | 0];
+const hash = n => { n = Math.imul(n ^ (n >>> 16), 0x45d9f3b); n = Math.imul(n ^ (n >>> 16), 0x45d9f3b); return ((n ^ (n >>> 16)) >>> 0) / 4294967296; };
+
+const toRGB = h => { const n = parseInt(h.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+const toHex = a => '#' + a.map(v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0')).join('');
+const mix = (a, b, t) => { const A = toRGB(a), B = toRGB(b); return toHex(A.map((v, i) => v + (B[i] - v) * t)); };
+const lite = (c, t) => mix(c, '#ffffff', t), dark = (c, t) => mix(c, '#000000', t);
+const mat = c => typeof c === 'object' ? c : { top: lite(c, .2), left: c, right: dark(c, .17) };
+
+/* ---------- 1. 等距光栅化：一个图元走天下 ---------- */
+const P = (o, x, y, z = 0) => [o.ox + 2 * (x - y), o.oy + x + y - z];
+
+function fillPoly(g, pts, color) {            // 自己扫描线填充，保证 2:1 像素阶梯清晰不糊
+  let y0 = Infinity, y1 = -Infinity;
+  for (const p of pts) { if (p[1] < y0) y0 = p[1]; if (p[1] > y1) y1 = p[1]; }
+  g.fillStyle = color;
+  for (let y = Math.floor(y0); y < Math.ceil(y1); y++) {
+    const cy = y + .5, xs = [];
+    for (let i = 0; i < pts.length; i++) {
+      const [ax, ay] = pts[i], [bx, by] = pts[(i + 1) % pts.length];
+      if ((ay <= cy && by > cy) || (by <= cy && ay > cy)) xs.push(ax + (cy - ay) * (bx - ax) / (by - ay));
+    }
+    xs.sort((a, b) => a - b);
+    for (let k = 0; k + 1 < xs.length; k += 2) {
+      const a = Math.round(xs[k]), b = Math.round(xs[k + 1]);
+      if (b > a) g.fillRect(a, y, b - a, 1);
+    }
+  }
+}
+function box(g, o, x, y, z, w, d, h, c) {
+  const m = mat(c);
+  if (h > 0) {
+    fillPoly(g, [P(o, x, y + d, z + h), P(o, x + w, y + d, z + h), P(o, x + w, y + d, z), P(o, x, y + d, z)], m.left);
+    fillPoly(g, [P(o, x + w, y, z + h), P(o, x + w, y + d, z + h), P(o, x + w, y + d, z), P(o, x + w, y, z)], m.right);
+  }
+  fillPoly(g, [P(o, x, y, z + h), P(o, x + w, y, z + h), P(o, x + w, y + d, z + h), P(o, x, y + d, z + h)], m.top);
+}
+const faceX = (g, o, x, y0, y1, z0, z1, c) => fillPoly(g, [P(o, x, y0, z1), P(o, x, y1, z1), P(o, x, y1, z0), P(o, x, y0, z0)], c);
+const faceY = (g, o, y, x0, x1, z0, z1, c) => fillPoly(g, [P(o, x0, y, z1), P(o, x1, y, z1), P(o, x1, y, z0), P(o, x0, y, z0)], c);
+const faceZ = (g, o, z, x0, y0, x1, y1, c) => fillPoly(g, [P(o, x0, y0, z), P(o, x1, y0, z), P(o, x1, y1, z), P(o, x0, y1, z)], c);
+function lineX(g, o, x, y0, y1, z, c) { g.fillStyle = c; for (let y = y0; y < y1; y++) { const [sx, sy] = P(o, x, y, z); g.fillRect(sx - 2, sy, 2, 1); } }
+function lineY(g, o, y, x0, x1, z, c) { g.fillStyle = c; for (let x = x0; x < x1; x++) { const [sx, sy] = P(o, x, y, z); g.fillRect(sx, sy, 2, 1); } }
+
+/* ---------- 2. 描边 + 像素模板 + 精灵缓存 ---------- */
+function outline(cv, col = INK) {
+  const g = cv.getContext('2d'), W = cv.width, H = cv.height;
+  const im = g.getImageData(0, 0, W, H), d = im.data, a = new Uint8Array(W * H);
+  for (let i = 0; i < W * H; i++) a[i] = d[i * 4 + 3] > 0 ? 1 : 0;
+  const [r, gg, b] = toRGB(col);
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    const i = y * W + x; if (a[i]) continue;
+    if ((x > 0 && a[i - 1]) || (x < W - 1 && a[i + 1]) || (y > 0 && a[i - W]) || (y < H - 1 && a[i + W])) {
+      const k = i * 4; d[k] = r; d[k + 1] = gg; d[k + 2] = b; d[k + 3] = 255;
+    }
+  }
+  g.putImageData(im, 0, 0);
+}
+function pix(rows, pal, flip = false, ol = true) {
+  const h = rows.length, w = rows[0].length, m = ol ? 1 : 0;
+  const cv = mk(w + 2 * m, h + 2 * m), g = cv.getContext('2d');
+  rows.forEach((row, y) => { for (let x = 0; x < w; x++) { const c = pal[row[x]]; if (!c) continue; g.fillStyle = c; g.fillRect((flip ? w - 1 - x : x) + m, y + m, 1, 1); } });
+  if (ol) outline(cv, pal.ink || INK);
+  return cv;
+}
+const patch = (rows, ps) => {
+  if (!ps) return rows; rows = rows.slice();
+  for (const [i, s] of ps) rows[i] = [...rows[i]].map((ch, k) => (s[k] && s[k] !== '_') ? s[k] : ch).join('');
+  return rows;
+};
+const SPR = new Map(); let blits = 0;
+const sprite = (key, build) => { let s = SPR.get(key); if (!s) { s = build(); SPR.set(key, s); } return s; };
+function isoSprite(key, [x0, y0, x1, y1, h], draw, ol = true) {
+  return sprite(key, () => {
+    const m = 2, sx0 = 2 * (x0 - y1), sx1 = 2 * (x1 - y0), sy0 = x0 + y0 - h, sy1 = x1 + y1;
+    const cv = mk(sx1 - sx0 + 2 * m, sy1 - sy0 + 2 * m), o = { ox: m - sx0, oy: m - sy0 };
+    draw(cv.getContext('2d'), o);
+    if (ol) outline(cv);
+    return { cv, ax: o.ox, ay: o.oy };
+  });
+}
+function blit(c, s, x, y, z = 0) {
+  const [sx, sy] = P(VIEW, x, y, z);
+  c.drawImage(s.cv, Math.round(sx - s.ax), Math.round(sy - s.ay)); blits++;
+}
+
+/* ---------- 3. 小人：1 套模板 × 调色板 × 翻转 × 补丁 ---------- */
+const BODY = {
+  front: [ // 面朝右下（看得见脸）
+    '....hhhhh...',
+    '..hhhhhhhhh.',
+    '.hhhhhhhllhh',
+    '.hhhhhhhhhhh',
+    '.hhhhhhshhsh',
+    '.hhhhsssssss',
+    '.Hhhssessses',
+    '.Hhhssessses',
+    '..Hhsbssssbs',
+    '...HSsssssS.',
+    '.....sss....',
+    '...cwwwwcc..',
+    '..ccccwwcccc',
+    '.ccccccccccc',
+    '.sCccccccccs',
+    '..CCCCCCCC..',
+    '..pppppppp..'],
+  back: [  // 背对镜头（面朝左上）
+    '...hhhhhh...',
+    '..hhhhhhhhh.',
+    '.hhhhllhhhhh',
+    '.hhhhhhhhhhh',
+    '.hhhhhhhhhhh',
+    '.hhhhhhhhhhh',
+    '.hhhhhhhhhhs',
+    '.HhhhhhhhhHs',
+    '..HHhhhhhHS.',
+    '...HHHHHH...',
+    '.....sss....',
+    '...cccccc...',
+    '..cccccccc..',
+    '.cccccccccc.',
+    '.sCccccccCs.',
+    '..CCCCCCCC..',
+    '..pppppppp..'],
+};
+const FRAMES = { // 动作 = 在同一模板上打几行补丁（_ 表示不变）
+  front: {
+    typeA: [[13, '_s__________'], [14, '_C__________']],
+    typeB: [[13, '___________s'], [14, '___________c']],
+    blink: [[6, '______s___s_']],
+  },
+  back: {
+    typeA: [[13, '_s__________'], [14, '_c__________']],
+    typeB: [[13, '__________s_'], [14, '__________C_']],
+  },
+};
+const ACC = { // 配饰 / 发型也是补丁
+  long:    { front: [[8, '.h__________'], [9, '.hh_________'], [10, '.hH_________'], [11, '.hH_________'], [12, '.H__________']],
+             back:  [[9, '.hhHHHHHHhh.'], [10, '..hhhhhhhh..'], [11, '..hHhhhhHh..']] },
+  tie:     { front: [[12, '______r_____'], [13, '______r_____']] },
+  glasses: { front: [[6, '_____g_ggg_g']], back: [[6, '__________g_']] },
+  headset: { front: [[1, '__aaaaaaaaa_'], [5, '__aA________'], [6, '__aA________'], [7, '__aA________'], [8, '____a_______'], [9, '____aa______']],
+             back:  [[1, '__aaaaaaaaa_'], [5, '_a_________a'], [6, '_a_________a']] },
+  cap:     { front: [[0, '....aaaaa...'], [1, '..aaaaaaaaa.'], [2, '.aaaaaaaaaaa'], [3, '________AAAA']],
+             back:  [[0, '...aaaaaa...'], [1, '..aaaaaaaaa.'], [2, '.aaaaaaaaaaa'], [3, '.aaaaaaaaaaa']] },
+};
+function lookPal(L) {
+  return {
+    h: L.hair, H: dark(L.hair, .28), l: lite(L.hair, .35),
+    s: L.skin, S: dark(L.skin, .13), b: mix(L.skin, '#ff6f6f', .35), e: '#2a2230',
+    c: L.shirt, C: dark(L.shirt, .22), w: '#ffffff', p: L.pants || '#3a3f52',
+    a: L.accColor || '#454b5e', A: L.accColor ? dark(L.accColor, .25) : '#ff8a5c',
+    r: '#d8423a', g: '#9aa3b8',
+  };
+}
+function charSprite(L, pose, frame, flip) {
+  return sprite(`ch|${L.key}|${pose}|${frame}|${+flip}`, () => {
+    let rows = patch(BODY[pose], FRAMES[pose][frame]);
+    for (const k of L.acc) rows = patch(rows, ACC[k] && ACC[k][pose]);
+    const cv = pix(rows, lookPal(L), flip);
+    return { cv, ax: cv.width >> 1, ay: cv.height - 2 };
+  });
+}
+
+/* ---------- 4. 其他像素模板（图标 / 数字 / 信封 / 植物） ---------- */
+const MINI = {
+  q: ['.yyy.', 'y...y', '...y.', '..y..', '.....', '..y..'],
+  ex: ['y', 'y', 'y', 'y', '.', 'y'],
+  star: ['..y..', '.yyy.', 'yyyyy', '.yyy.', 'y...y'],
+  z: ['yyyy', '..y.', '.y..', 'yyyy'],
+  arrow: ['yyyyy', '.yyy.', '..y..'],
+};
+const miniSpr = (n, c) => sprite(`mi|${n}|${c}`, () => ({ cv: pix(MINI[n], { y: c }) }));
+const DIGITS = {
+  0: ['###', '#.#', '#.#', '#.#', '###'], 1: ['.#.', '##.', '.#.', '.#.', '###'], 2: ['###', '..#', '###', '#..', '###'],
+  3: ['###', '..#', '.##', '..#', '###'], 4: ['#.#', '#.#', '###', '..#', '..#'], 5: ['###', '#..', '###', '..#', '###'],
+  6: ['###', '#..', '###', '#.#', '###'], 7: ['###', '..#', '..#', '.#.', '.#.'], 8: ['###', '#.#', '###', '#.#', '###'],
+  9: ['###', '#.#', '###', '..#', '###'], '+': ['...', '.#.', '###', '.#.', '...'],
+};
+const digitSpr = (ch, c) => sprite(`dg|${ch}|${c}`, () => ({ cv: pix(DIGITS[ch], { '#': c }) }));
+const ENV = ['wwwwwwwww', 'wWwwwwwWw', 'wwWwwwWww', 'wwwWrWwww', 'wwwwwwwww', 'wwwwwwwww'];
+const envSpr = () => sprite('env', () => ({ cv: pix(ENV, { w: '#fffdf4', W: '#cfc6b2', r: '#e5534b' }) }));
+const LEAF = [
+  '......l......', '..l...lG..l..', '..Gl.lGG.lG..', '...GllGGlG...', '.lGGgGGGgGGl.', 'lG..gGgGg..Gl',
+  '...lgGgGgl...', '..lG.gGg.Gl..', '.lG..gGg..Gl.', '.....gGg.....', '......g......'];
+const ICON8 = {
+  plan:   { rows: ['..yyyy..', '.yywyyy.', '.ywyyyy.', '.yyyyyy.', '..yyyy..', '...gg...', '..gggg..', '...gg...'], pal: { y: '#ffd54a', w: '#fff7cf', g: '#9aa3b5' } },
+  code:   { rows: ['dddddddd', 'dkkkkkkd', 'dkgkkkkd', 'dkkgkkkd', 'dkgkwwkd', 'dkkkkkkd', 'dddddddd'], pal: { d: '#8ea3cf', k: '#1e2638', g: '#66e08f', w: '#ffffff' } },
+  review: { rows: ['.bbbb...', 'bwllwb..', 'blwwlb..', 'bwwwwb..', '.bbbb...', '....hh..', '.....hh.', '......hh'], pal: { b: '#5a6f9e', w: '#dff1ff', l: '#9fd4ff', h: '#b8773f' } },
+  test:   { rows: ['.......g', '......gg', '.....gg.', 'g...gg..', 'gg.gg...', '.ggg....', '..g.....'], pal: { g: '#45c46e' } },
+};
+
+/* ---------- 5. 家具预制体（全部由 box() 拼成） ---------- */
+const DESK_W = '#eceff4', DESK_WOOD = '#b8773f', MON = '#2f3341';
+const CH = { blue: '#3b6fe0', gray: '#5e6475', red: '#d9505e', green: '#4fb35a', orange: '#ef8a3a' };
+
+// 工位局部坐标：u = 朝向轴（人朝 +u 或 -u），v = 横向；axis 决定映射到世界 x 还是 y
+const sBox = (g, o, ax, u, v, z, du, dv, h, c) => ax === 'x' ? box(g, o, u, v, z, du, dv, h, c) : box(g, o, v, u, z, dv, du, h, c);
+const sLineU = (g, o, ax, v, u0, u1, z, c) => ax === 'x' ? lineY(g, o, v, u0, u1, z, c) : lineX(g, o, v, u0, u1, z, c);
+const sLineV = (g, o, ax, u, v0, v1, z, c) => ax === 'x' ? lineX(g, o, u, v0, v1, z, c) : lineY(g, o, u, v0, v1, z, c);
+const sFaceU = (g, o, ax, u, v0, v1, z0, z1, c) => ax === 'x' ? faceX(g, o, u, v0, v1, z0, z1, c) : faceY(g, o, u, v0, v1, z0, z1, c);
+
+function stationSprite(S, part) {  // 同款工位（朝向+配色相同）只渲染一次
+  const { axis: ax, s, desk, chair, mon } = S;
+  return isoSprite(`st|${ax}|${s}|${desk}|${chair}|${mon}|${part}`, [-11, -11, 11, 11, 18], (g, o) => {
+    const d0 = s > 0 ? 3 : -10, mu = s > 0 ? 7 : -8, ku = s > 0 ? 3 : -5;
+    const B = (...a) => sBox(g, o, ax, ...a);
+    const chairBack = () => B(s > 0 ? -3 : 2, -2, 4, 1, 4, 7, chair);
+    const chairBase = () => { B(-2, -2, 0, 4, 4, 1, '#4a4e60'); B(-1, -1, 1, 2, 2, 2, '#5d6275'); B(-2, -2, 3, 4, 4, 1, chair); };
+    const deskAll = () => {
+      B(d0, -6, 0, 7, 1, 6, dark(desk, .1));                 // 挡板
+      B(d0, 2, 0, 7, 4, 6, desk);                             // 抽屉柜
+      const dl = dark(desk, .3);
+      sLineU(g, o, ax, 6, d0 + 1, d0 + 6, 4, dl); sLineU(g, o, ax, 6, d0 + 1, d0 + 6, 2, dl);
+      B(d0, -6, 6, 7, 12, 2, desk);                           // 桌面
+    };
+    const keyboard = () => B(ku, -3, 8, 2, 4, 1, '#d3d8e2');
+    const monitor = () => { B(mu - 1, -3, 8, 3, 3, 1, mon); B(mu, -2, 9, 1, 1, 2, mon); B(mu, -5, 10, 1, 6, 6, mon); };
+    const mug = () => B(d0 + (s > 0 ? 1 : 5), 4, 8, 1, 1, 2, '#f5f5f5');
+    if (s > 0) { if (part === 'back') { chairBack(); chairBase(); } else { deskAll(); keyboard(); monitor(); mug(); } }
+    else { if (part === 'back') { deskAll(); monitor(); keyboard(); mug(); chairBase(); } else chairBack(); }
+  });
+}
+const dividerSpr = (ax, col) => isoSprite(`dv|${ax}|${col}`, [-7, -7, 7, 7, 15], (g, o) => sBox(g, o, ax, 0, -6, 0, 1, 12, 13, col));
+
+const SP = {
+  plant: () => isoSprite('plant', [-3, -3, 3, 3, 20], (g, o) => {
+    box(g, o, -2, -2, 0, 4, 4, 5, '#eee9df'); faceZ(g, o, 5, -1, -1, 1, 1, '#6b4a2e');
+    const lv = pix(LEAF, { l: '#8fd46a', G: '#4fa846', g: '#2f7d3a' }, false, false);
+    const [sx, sy] = P(o, 0, 0, 5); g.drawImage(lv, sx - (lv.width >> 1), sy - lv.height + 2);
+  }),
+  cooler: () => isoSprite('cooler', [-3, -3, 3, 3, 18], (g, o) => {
+    box(g, o, -2, -2, 0, 4, 4, 9, '#eef1f6');
+    const [sx, sy] = P(o, 2, 0, 7); g.fillStyle = '#e5534b'; g.fillRect(sx - 3, sy, 1, 1); g.fillStyle = '#3a8cf0'; g.fillRect(sx - 1, sy - 1, 1, 1);
+    box(g, o, -1, -1, 9, 2, 2, 6, '#86c8f5'); box(g, o, -1, -1, 15, 2, 2, 1, '#4a90d0');
+  }),
+  cabinet: () => isoSprite('cab', [0, 0, 5, 8, 15], (g, o) => {
+    box(g, o, 0, 0, 0, 5, 8, 14, '#d7dbe3');
+    const [sx, sy] = P(o, 5, 4, 14); g.fillStyle = '#9aa1b0'; g.fillRect(sx - 1, sy + 1, 1, 12);
+    g.fillStyle = '#6d7486'; g.fillRect(sx - 3, sy + 6, 1, 2); g.fillRect(sx + 1, sy + 6, 1, 2);
+  }),
+  shelf: () => isoSprite('shelf', [0, 0, 10, 5, 24], (g, o) => {
+    box(g, o, 0, 0, 0, 10, 5, 23, '#c98f55');
+    const BOOK = ['#e5534b', '#3a8cf0', '#f2c14e', '#45b36a', '#8e6bd8', '#f08a3c', '#2fb5b0'];
+    for (const z0 of [2, 9, 16]) {
+      faceY(g, o, 5, 1, 9, z0, z0 + 6, '#7a4f2c');
+      for (let x = 1; x < 9; x++) { const hh = 3 + ((hash(x * 31 + z0) * 3) | 0); faceY(g, o, 5, x, x + 1, z0, z0 + hh, BOOK[(x * 3 + z0) % BOOK.length]); }
+    }
+  }),
+  rack: () => isoSprite('rack', [0, 0, 6, 7, 29], (g, o) => {
+    box(g, o, 0, 0, 0, 6, 7, 28, '#3a4052');
+    faceY(g, o, 7, 1, 5, 2, 26, '#232838');
+    for (let z = 4; z < 26; z += 4) lineY(g, o, 7, 1, 5, z, '#4b5268');
+    for (let z = 6; z < 24; z += 3) lineX(g, o, 6, 2, 6, z, '#2c3140');
+  }),
+  counter: () => isoSprite('counter', [0, 0, 20, 5, 18], (g, o) => {
+    box(g, o, 0, 0, 0, 20, 5, 8, '#eef0f4');
+    for (let x = 5; x < 20; x += 5) { const [sx, sy] = P(o, x, 5, 7); g.fillStyle = '#b9c0cc'; g.fillRect(sx, sy + 1, 1, 6); }
+    box(g, o, 0, 0, 8, 20, 5, 1, DESK_WOOD);
+    box(g, o, 3, 1, 9, 4, 3, 6, '#3b3f4c'); faceY(g, o, 4, 4, 6, 11, 14, '#1f232e');
+    box(g, o, 9, 2, 9, 1, 1, 2, '#ffffff'); box(g, o, 11, 2, 9, 1, 1, 2, '#ffe0a3');
+  }),
+  table: () => isoSprite('table', [0, 0, 20, 6, 9], (g, o) => {
+    for (const [x, y] of [[0, 0], [19, 0], [0, 5], [19, 5]]) box(g, o, x, y, 0, 1, 1, 6, '#6d4a2c');
+    box(g, o, 0, 0, 6, 20, 6, 2, '#c0824a');
+    faceZ(g, o, 8, 3, 1, 6, 4, '#ffffff'); faceZ(g, o, 8, 12, 2, 15, 5, '#fff3c4');
+  }),
+  stool: () => isoSprite('stool', [-2, -2, 2, 2, 6], (g, o) => { box(g, o, -1, -1, 0, 2, 2, 4, '#6d4a2c'); box(g, o, -2, -2, 4, 4, 4, 1, '#e9774f'); }),
+  robot: dir => isoSprite(`bot|${dir}`, [-3, -3, 3, 3, 14], (g, o) => {
+    box(g, o, -2, -2, 0, 4, 4, 1, '#3b3f4c'); box(g, o, -2, -2, 1, 4, 4, 5, '#eef3f9');
+    lineX(g, o, 2, -2, 2, 3, '#4aa3ff'); lineY(g, o, 2, -2, 2, 3, '#4aa3ff');
+    box(g, o, -2, -2, 6, 4, 4, 4, '#d6e2f1');
+    box(g, o, 0, 0, 10, 1, 1, 2, '#8a93a8'); box(g, o, 0, 0, 12, 1, 1, 1, '#ff5a5a');
+    g.fillStyle = '#7ff3ff';
+    if (dir === '+x') { faceX(g, o, 2, -1, 1, 7, 9, '#223049'); g.fillStyle = '#7ff3ff'; g.fillRect(o.ox + 3, o.oy - 6, 1, 1); g.fillRect(o.ox + 5, o.oy - 7, 1, 1); }
+    if (dir === '+y') { faceY(g, o, 2, -1, 1, 7, 9, '#223049'); g.fillStyle = '#7ff3ff'; g.fillRect(o.ox - 4, o.oy - 6, 1, 1); g.fillRect(o.ox - 6, o.oy - 7, 1, 1); }
+  }),
+};
+
+/* ---------- 6. 场景布局（纯数据） ---------- */
+const STN = {}, OBJ = [];
+function station(id, x, y, axis, s, o = {}) { return STN[id] = { id, x, y, axis, s, desk: o.desk || DESK_W, chair: o.chair || CH.blue, mon: MON, agent: null }; }
+const fp = (S, u0, u1) => S.axis === 'x'
+  ? { minX: S.x + u0, maxX: S.x + u1, minY: S.y - 6, maxY: S.y + 6 }
+  : { minX: S.x - 6, maxX: S.x + 6, minY: S.y + u0, maxY: S.y + u1 };
+function single(id, x, y, axis, s, o) {
+  const S = station(id, x, y, axis, s, o);
+  OBJ.push({ ...fp(S, s > 0 ? -3 : -10, s > 0 ? 10 : 3), h: 24, draw: c => drawStation(c, S) });
+}
+function pod(idA, idB, x, y, axis, oa, ob) {  // 双人对坐 = 工位 + 镜像工位 + 隔板
+  const A = station(idA, x, y, axis, 1, oa);
+  const B = station(idB, axis === 'x' ? x + 21 : x, axis === 'x' ? y : y + 21, axis, -1, ob);
+  const [dx, dy] = axis === 'x' ? [x + 10, y] : [x, y + 10];
+  OBJ.push({ ...fp(A, -3, 24), h: 24, draw: c => { drawStation(c, A); blit(c, dividerSpr(axis, '#86c46b'), dx, dy); drawStation(c, B); } });
+}
+function prop(get, x, y, w, d, h, extra) { OBJ.push({ minX: x, maxX: x + w, minY: y, maxY: y + d, h, draw: c => { blit(c, get(), x, y); extra && extra(c); } }); }
+function propC(get, x, y, h, z = 0) { OBJ.push({ minX: x - 2, maxX: x + 2, minY: y - 2, maxY: y + 2, h, draw: c => blit(c, get(), x, y, z) }); }
+
+single('s_conductor', 14, 24, 'x', 1, { desk: DESK_WOOD, chair: CH.red });
+pod('s_coderA', 's_coderB', 30, 22, 'x', { chair: CH.blue }, { chair: CH.blue });
+pod('s_review', 's_test', 30, 44, 'x', { chair: CH.gray }, { chair: CH.green });
+pod('s_planner', 's_research', 66, 14, 'y', { chair: CH.orange }, { chair: CH.blue });
+single('s_free1', 80, 50, 'x', -1, { chair: CH.gray });
+single('s_free2', 81, 20, 'y', 1, { chair: CH.green });
+
+prop(SP.shelf, 52, 0, 10, 5, 24);
+prop(SP.rack, 66, 0, 6, 7, 28, c => leds(c, 66));
+prop(SP.rack, 73, 0, 6, 7, 28, c => leds(c, 73));
+prop(SP.cabinet, 1, 30, 5, 8, 14);
+prop(SP.table, 28, 62, 20, 6, 8);
+prop(SP.counter, 64, 63, 20, 5, 9, c => blit(c, SP.plant(), 81, 65, 9));
+propC(SP.plant, 3, 3, 20); propC(SP.plant, 84, 3, 20); propC(SP.plant, 4, 68, 20);
+propC(SP.cooler, 4, 47, 16);
+propC(SP.stool, 32, 70, 5); propC(SP.stool, 38, 70, 5); propC(SP.stool, 44, 70, 5);
+
+const WINDOWS = [{ p: 'y', a: 14, b: 28 }, { p: 'y', a: 34, b: 48 }, { p: 'x', a: 38, b: 48 }];
+
+/* ---------- 7. 角色与状态 ---------- */
+const ROLES = {
+  conductor: { name: '调度', stat: null, screen: 'doc' },
+  planner: { name: '规划', stat: 'plan', screen: 'doc' },
+  researcher: { name: '调研', stat: 'plan', screen: 'web' },
+  coder: { name: '编码', stat: 'code', screen: 'code' },
+  reviewer: { name: '审查', stat: 'review', screen: 'diff' },
+  tester: { name: '测试', stat: 'test', screen: 'test' },
+  designer: { name: '设计', stat: 'plan', screen: 'web' },
+  ops: { name: '运维', stat: 'test', screen: 'term' },
+};
+const STATS = { plan: '#ffd54a', code: '#66e08f', review: '#7cc4ff', test: '#ff9fbf' };
+const SCREEN = {
+  code: { bg: '#1c2536', ink: ['#7ee2a0', '#7cc4ff', '#ffb86b'] },
+  diff: { bg: '#1c2536', ink: ['#ff7b7b', '#7ee2a0'] },
+  test: { bg: '#143020', ink: ['#7ee2a0', '#c8f7d4'] },
+  web:  { bg: '#eef3ff', ink: ['#7a8db3', '#e46b9a', '#5a6c93'] },
+  doc:  { bg: '#fdfcf6', ink: ['#8a93a8', '#5b6aa6'] },
+  term: { bg: '#101521', ink: ['#9df29d'] },
+};
+const STATE_TXT = { idle: '待命', work: '工作中', think: '思考中', done: '完成', error: '受阻' };
+
+let simNow = 0, paused = false, speed = 1, selected = null;
+let tokens = 50000000, shipped = 0;
+const AG = {}, envelopes = [], floats = [];
+const board = { todo: 0, doing: 0, done: 0 };
+let task = null;
+
+const $ = id => document.getElementById(id);
+const cv = $('cv'), ctx = cv.getContext('2d'), ov = $('ov');
+ctx.imageSmoothingEnabled = false;
+
+function mkEl(cls) { const e = document.createElement('div'); e.className = cls; e.hidden = true; ov.appendChild(e); return e; }
+
+function addAgent(o) {
+  const seatId = o.seat && STN[o.seat] && !STN[o.seat].agent ? o.seat : Object.keys(STN).find(k => !STN[k].agent);
+  if (!seatId || AG[o.id]) return null;
+  const lk = o.look || randomLook();
+  const L = { hair: lk.hair, skin: lk.skin, shirt: lk.shirt, pants: lk.pants || '#3a3f52', acc: lk.acc || [], accColor: lk.accColor || '' };
+  L.key = [L.hair, L.skin, L.shirt, L.pants, L.acc.join('+'), L.accColor].join('|');
+  const a = { id: o.id, name: o.name || o.id, role: ROLES[o.role] ? o.role : 'coder', look: L, seat: seatId, recruit: !!o.recruit,
+    state: 'idle', stateAt: simNow, text: '', textUntil: 0, pingUntil: 0, seed: (R() * 3000) | 0, hx: 0, hy: 0 };
+  STN[seatId].agent = a.id; AG[a.id] = a;
+  a.bub = mkEl('bub');
+  rosterAdd(a); updateHire();
+  return a;
+}
+function randomLook() {
+  const acc = [];
+  if (R() < .4) acc.push('long');
+  const extra = pick(['', '', 'headset', 'glasses', 'cap']); if (extra) acc.push(extra);
+  return {
+    hair: pick(['#231d1c', '#5b3b2b', '#b8683a', '#dcb24c', '#2c2a38', '#8b5a39', '#c94f7c', '#4a6fa5']),
+    skin: pick(['#f7d5b5', '#eec7a3', '#d9a77f', '#b9825a', '#f9dcc0']),
+    shirt: pick(['#3aa56b', '#e0574c', '#4a8fdc', '#f2a444', '#7a62d8', '#2fb5b0', '#e36aa6']),
+    acc, accColor: extra === 'cap' ? pick(['#e8544a', '#3a8cf0', '#45b36a']) : '',
+  };
+}
+function setState(id, state, text, ms) {
+  const a = AG[id]; if (!a) return;
+  if (a.state !== state) { a.state = state; a.stateAt = simNow; rosterUpd(a); }
+  if (text) say(id, text, ms);
+}
+function say(id, text, ms = 2600) { const a = AG[id]; if (!a) return; a.text = text; a.textUntil = simNow + ms; }
+function send(from, to, label = '') {
+  if (!AG[from] || !AG[to]) return;
+  const el = label ? mkEl('tag') : null; if (el) el.textContent = label;
+  envelopes.push({ a: AG[from], b: AG[to], t0: simNow, dur: 950, el });
+}
+function floatNum(a, n, col) { floats.push({ x: a.hx + 6, y: a.hy + 2, t0: simNow, s: '+' + n, col }); }
+
+/* ---------- 8. 绘制 ---------- */
+function drawStation(c, S) {
+  blit(c, stationSprite(S, 'back'), S.x, S.y);
+  if (S.s < 0) drawScreen(c, S);
+  drawAgent(c, S);
+  blit(c, stationSprite(S, 'front'), S.x, S.y);
+}
+function drawScreen(c, S) {           // 只有背对镜头的人，屏幕才朝向我们 → 动态画内容
+  const a = S.agent && AG[S.agent];
+  const o = { ox: VIEW.ox + 2 * (S.x - S.y), oy: VIEW.oy + S.x + S.y }, ax = S.axis, u = -7;
+  if (!a) { sFaceU(c, o, ax, u, -4, 0, 11, 15, '#232a3d'); return; }
+  const sc = SCREEN[ROLES[a.role].screen];
+  if (a.state !== 'work') {
+    sFaceU(c, o, ax, u, -4, 0, 11, 15, '#3f7ae0');
+    sLineV(c, o, ax, u, ax === 'x' ? -1 : -4, ax === 'x' ? 0 : -3, 14, '#9cc2ff');
+    return;
+  }
+  sFaceU(c, o, ax, u, -4, 0, 11, 15, sc.bg);
+  const tick = (simNow / 190) | 0;
+  [14, 12].forEach((z, i) => {
+    const len = 1 + ((hash(tick * 7 + i * 13 + S.x * 3) * 3.99) | 0);
+    const [v0, v1] = ax === 'x' ? [-len, 0] : [-4, -4 + len];
+    sLineV(c, o, ax, u, v0, v1, z, sc.ink[(tick + i) % sc.ink.length]);
+  });
+}
+function drawAgent(c, S) {
+  const a = S.agent && AG[S.agent]; if (!a) return;
+  const pose = S.s > 0 ? 'front' : 'back', flip = S.axis === 'y';
+  let frame = 'idle';
+  if (a.state === 'work') frame = ((simNow / 170) | 0) % 2 ? 'typeA' : 'typeB';
+  else if (pose === 'front' && (simNow + a.seed) % 3300 < 140) frame = 'blink';
+  const hop = a.state === 'done' && ((simNow / 140) | 0) % 4 < 2 ? 2 : 0;
+  const spr = charSprite(a.look, pose, frame, flip);
+  const [sx, sy] = P(VIEW, S.x, S.y, 4);
+  c.drawImage(spr.cv, sx - spr.ax, sy - spr.ay - hop); blits++;
+  a.hx = sx; a.hy = sy - spr.ay - hop;
+}
+function leds(c, rx) {
+  const t = (simNow / 260) | 0;
+  for (let r = 0; r < 6; r++) for (let k = 0; k < 2; k++) {
+    if (hash(rx * 97 + r * 13 + k * 7 + t * 31) < .35) continue;
+    const [sx, sy] = P(VIEW, rx + 1 + k * 2, 7, 25 - r * 4);
+    c.fillStyle = hash(r * 5 + k + rx) > .82 ? '#ffc857' : (k ? '#5ab8ff' : '#62f08e');
+    c.fillRect(sx, sy, 2, 1);
+  }
+}
+
+// 背景（草地/地板/墙/门）只画一次
+const BG = (() => {
+  const cv = mk(VIEW.w, VIEW.h), g = cv.getContext('2d'), o = VIEW;
+  g.fillStyle = '#78bf58'; g.fillRect(0, 0, VIEW.w, VIEW.h);
+  const r = rng(7);
+  for (let i = 0; i < 320; i++) { g.fillStyle = r() < .5 ? '#6ab04c' : '#88cc68'; g.fillRect((r() * VIEW.w) | 0, (r() * VIEW.h) | 0, 2, 1); }
+  box(g, o, -3, -3, -4, RW + 3, RD + 3, 4, { top: '#a9c6a3', left: '#a3adba', right: '#8791a1' });
+  for (let tx = 0; tx < RW / T; tx++) for (let ty = 0; ty < RD / T; ty++)
+    faceZ(g, o, 0, tx * T + 1, ty * T + 1, tx * T + T, ty * T + T, (tx + ty) % 2 ? '#cfe4c6' : '#c4ddbb');
+  faceZ(g, o, 0, 25, 59, 52, 72, '#c79a5e'); faceZ(g, o, 0, 26, 60, 51, 71, '#ead6a8');
+  const wc = { top: '#fffaf0', left: '#f3e9d4', right: '#e4d6bb' };
+  box(g, o, -3, -3, 0, 3, RD + 3, WALL_H, wc);
+  box(g, o, 0, -3, 0, RW, 3, WALL_H, wc);
+  const bb = '#b98a5c';
+  box(g, o, 0, 0, 0, 1, 54, 3, bb); box(g, o, 0, 64, 0, 1, RD - 64, 3, bb); box(g, o, 0, 0, 0, RW, 1, 3, bb);
+  faceX(g, o, 0, 54, 64, 0, 25, '#7c4f2c'); faceX(g, o, 0, 55, 63, 0, 24, '#b07342');
+  faceX(g, o, 0, 56, 62, 14, 22, '#c4884f'); faceX(g, o, 0, 56, 62, 3, 12, '#c4884f');
+  const [kx, ky] = P(o, 0, 57, 12); g.fillStyle = '#ffd24a'; g.fillRect(kx - 1, ky, 2, 1);
+  return cv;
+})();
+
+function hourNow() { const m = (simNow / 1000) * 5; return { day: 1 + Math.floor(m / 540), min: 540 + (m % 540) }; }
+function skyColor() { const h = hourNow().min / 60; return h < 14 ? '#8fd0ff' : h < 16 ? '#a6c9f2' : h < 17 ? '#ffcf8f' : '#f5a06b'; }
+const NOTE = ['#ffe36e', '#ff9fb6', '#9fd8ff', '#b8f09a'];
+function drawWalls(c) {
+  const o = VIEW, sky = skyColor();
+  for (const w of WINDOWS) {
+    const F = w.p === 'y' ? (a, b, z0, z1, col) => faceY(c, o, 0, a, b, z0, z1, col) : (a, b, z0, z1, col) => faceX(c, o, 0, a, b, z0, z1, col);
+    F(w.a - 1, w.b + 1, 11, 12, '#d9dde6');
+    F(w.a - 1, w.b + 1, 12, 31, '#fbfcff');
+    F(w.a, w.b, 13, 30, sky); F(w.a, w.b, 13, 19, lite(sky, .18));
+    F(w.a + 2, w.a + 3, 20, 28, lite(sky, .5)); F(w.a + 4, w.a + 5, 23, 29, lite(sky, .5));
+    const mid = (w.a + w.b) >> 1; F(mid, mid + 1, 13, 30, '#fbfcff');
+  }
+  // 看板墙：待办 / 进行 / 完成 —— 便签数量跟着任务走
+  faceX(c, o, 0, 7, 31, 11, 31, '#8a6a4a'); faceX(c, o, 0, 8, 30, 12, 30, '#fdfdf8');
+  const cols = [[23, 30, '#ef6b6b', board.todo], [16, 23, '#f2c14e', board.doing], [8, 16, '#58c07a', board.done]];
+  cols.forEach(([y0, y1, hc, n], ci) => {
+    faceX(c, o, 0, y0, y1, 27, 30, hc);
+    for (let k = 0; k < Math.min(6, n); k++) {
+      const r = k >> 1, ny = y0 + 1 + (k & 1) * 3, z1 = 26 - r * 5;
+      faceX(c, o, 0, ny, ny + 2, z1 - 3, z1, NOTE[(ci + k) % NOTE.length]);
+    }
+  });
+  c.fillStyle = '#c9c2b0';
+  for (const y of [16, 23]) { const [sx, sy] = P(o, 0, y, 27); c.fillRect(sx - 1, sy, 1, 15); }
+}
+
+// 机器人：场景里唯一会走动的角色（也是 box() 拼的）
+const BOT_LINES = ['清理缓存中…', '巡检 GPU', 'Beep!', '压缩上下文~', '送咖啡 ☕'];
+const robot = { x: 20, y: 33, path: [[57, 33], [57, 56], [20, 56], [20, 33]], i: 0, wait: 900, dir: '+x', moving: false, text: '', textUntil: 0, hx: 0, hy: 0, bub: mkEl('bub bot') };
+const robotObj = { h: 14, minX: 0, maxX: 0, minY: 0, maxY: 0, draw: c => {
+  const bob = robot.moving && ((simNow / 150) | 0) % 2 ? 1 : 0;
+  blit(c, SP.robot(robot.dir), robot.x, robot.y, bob);
+  const [sx, sy] = P(VIEW, robot.x, robot.y, 14 + bob); robot.hx = sx; robot.hy = sy;
+} };
+function updRobot(dt) {
+  if (robot.wait > 0) { robot.wait -= dt; robot.moving = false; return; }
+  const [tx, ty] = robot.path[robot.i], dx = tx - robot.x, dy = ty - robot.y, dist = Math.hypot(dx, dy), sp = dt * 0.011;
+  robot.moving = true;
+  if (dist <= sp) {
+    robot.x = tx; robot.y = ty; robot.i = (robot.i + 1) % robot.path.length; robot.wait = 900 + R() * 1800;
+    if (R() < .4) { robot.text = pick(BOT_LINES); robot.textUntil = simNow + 2200; }
+  } else {
+    robot.x += dx / dist * sp; robot.y += dy / dist * sp;
+    robot.dir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? '+x' : '-x') : (dy > 0 ? '+y' : '-y');
+  }
+}
+
+// 深度排序：按等距足迹做拓扑排序（只比较屏幕上重叠的对象）
+const sbb = o => [2 * (o.minX - o.maxY), 2 * (o.maxX - o.minY), o.minX + o.minY - o.h, o.maxX + o.maxY];
+function behind(a, b) {
+  const ab = a.maxX <= b.minX || a.maxY <= b.minY, ba = b.maxX <= a.minX || b.maxY <= a.minY;
+  if (ab !== ba) return ab;
+  return a.minX + a.maxX + a.minY + a.maxY < b.minX + b.maxX + b.minY + b.maxY;
+}
+function depthSort(list) {
+  const n = list.length, deps = list.map(() => []), bb = list.map(sbb);
+  for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) {
+    const A = bb[i], B = bb[j];
+    if (!(A[0] < B[1] && B[0] < A[1] && A[2] < B[3] && B[2] < A[3])) continue;
+    if (behind(list[i], list[j])) deps[j].push(i); else deps[i].push(j);
+  }
+  const out = [], mark = new Uint8Array(n);
+  const visit = i => { if (mark[i]) return; mark[i] = 1; deps[i].forEach(visit); out.push(list[i]); };
+  list.map((_, i) => i).sort((i, j) => (list[i].maxX + list[i].maxY) - (list[j].maxX + list[j].maxY)).forEach(visit);
+  return out;
+}
+
+function drawOverlays(c) {
+  // 信封（agent 之间的消息）
+  for (let i = envelopes.length - 1; i >= 0; i--) {
+    const e = envelopes[i], t = Math.min(1, (simNow - e.t0) / e.dur);
+    const x = e.a.hx + (e.b.hx - e.a.hx) * t, y = e.a.hy + 4 + (e.b.hy - e.a.hy) * t - Math.sin(Math.PI * t) * 22;
+    const s = envSpr(); c.drawImage(s.cv, Math.round(x - 5), Math.round(y - 4)); blits++;
+    e.x = x; e.y = y - 4;
+    if (t >= 1) { e.b.pingUntil = simNow + 600; if (e.el) e.el.remove(); envelopes.splice(i, 1); }
+  }
+  // 头顶状态图标
+  const bobT = ((simNow / 260) | 0) % 2;
+  for (const a of Object.values(AG)) {
+    if (!a.hx) continue;
+    let n = null, col = '#ffe14d';
+    if (simNow < a.pingUntil) n = 'ex';
+    else if (a.state === 'think') n = 'q';
+    else if (a.state === 'error') { n = 'ex'; col = '#ff5a4f'; }
+    else if (a.state === 'done') n = 'star';
+    else if (a.state === 'idle' && simNow - a.stateAt > 12000) { n = 'z'; col = '#cfe9ff'; }
+    if (n) { const s = miniSpr(n, col); c.drawImage(s.cv, a.hx + 5, a.hy - 3 - bobT); blits++; }
+    if (a.id === selected) { const s = miniSpr('arrow', '#ffe14d'); c.drawImage(s.cv, a.hx - 3, a.hy - 10 - bobT * 2); blits++; }
+  }
+  // 飘字 +N
+  for (let i = floats.length - 1; i >= 0; i--) {
+    const f = floats[i], t = (simNow - f.t0) / 900;
+    if (t >= 1) { floats.splice(i, 1); continue; }
+    [...f.s].forEach((ch, k) => { const s = digitSpr(ch, f.col); c.drawImage(s.cv, Math.round(f.x + k * 4), Math.round(f.y - t * 12)); blits++; });
+  }
+}
+function placeDom() {
+  const k = cv.clientWidth / VIEW.w; if (!k) return;
+  const put = (el, x, y) => { el.style.left = (x * k) + 'px'; el.style.top = (y * k) + 'px'; };
+  for (const a of Object.values(AG)) {
+    if (a.text && simNow < a.textUntil && a.hx) {
+      if (a.bub.textContent !== a.text) a.bub.textContent = a.text;
+      a.bub.hidden = false; put(a.bub, a.hx, a.hy - 2);
+    } else a.bub.hidden = true;
+  }
+  if (robot.text && simNow < robot.textUntil) { robot.bub.textContent = robot.text; robot.bub.hidden = false; put(robot.bub, robot.hx, robot.hy - 1); }
+  else robot.bub.hidden = true;
+  for (const e of envelopes) if (e.el && e.x !== undefined) { e.el.hidden = false; put(e.el, e.x, e.y); }
+}
+function render() {
+  blits = 0;
+  ctx.drawImage(BG, 0, 0);
+  drawWalls(ctx);
+  robotObj.minX = robot.x - 2; robotObj.maxX = robot.x + 2; robotObj.minY = robot.y - 2; robotObj.maxY = robot.y + 2;
+  for (const o of depthSort(OBJ.concat(robotObj))) o.draw(ctx);
+  drawOverlays(ctx);
+  placeDom();
+}
+
+/* ---------- 9. 时间 & 主循环 ---------- */
+const waiters = [];
+const wait = ms => new Promise(r => waiters.push({ t: simNow + ms, r }));
+let last = performance.now(), uiTick = 0;
+function loop(ts) {
+  const dt = Math.min(64, ts - last); last = ts;
+  if (!paused) {
+    simNow += dt * speed;
+    for (let i = waiters.length - 1; i >= 0; i--) if (waiters[i].t <= simNow) { const w = waiters[i]; waiters.splice(i, 1); w.r(); }
+    updRobot(dt * speed);
+  }
+  render();
+  if ((uiTick += dt) > 250) { uiTick = 0; hud(); }
+  requestAnimationFrame(loop);
+}
+
+/* ---------- 10. UI ---------- */
+const fmtTok = n => Math.max(0, Math.floor(n / 1e4)).toLocaleString('en-US') + '万';
+const clockStr = () => { const { day, min } = hourNow(); return `第 ${day} 天 ${String(Math.floor(min / 60)).padStart(2, '0')}:${String(Math.floor(min % 60)).padStart(2, '0')}`; };
+function hud() {
+  $('clock').textContent = clockStr();
+  $('tokens').textContent = fmtTok(tokens);
+  $('meta').textContent = `缓存精灵 ${SPR.size} 张，本帧绘制 ${blits} 次`;
+}
+function renderTask() {
+  if (!task) return;
+  const need = task.need, pts = task.pts;
+  for (const k of ['plan', 'code', 'review', 'test']) $('st-' + k).textContent = pts[k];
+  const tot = Object.values(need).reduce((s, v) => s + v, 0);
+  const got = Object.keys(need).reduce((s, k) => s + Math.min(pts[k], need[k]), 0);
+  const p = Math.round(got / tot * 100);
+  $('pv').textContent = p; $('pb').style.width = p + '%';
+  $('qv').textContent = task.quality; $('qb').style.width = task.quality + '%';
+  $('eta').textContent = Math.max(0, Math.ceil((tot - got) / 5));
+  $('taskTitle').textContent = task.title;
+}
+function rosterAdd(a) {
+  const b = document.createElement('button'); b.className = 'mate'; b.type = 'button'; b.setAttribute('aria-pressed', 'false');
+  const pc = mk(14, 13); pc.getContext('2d').drawImage(charSprite(a.look, 'front', 'idle', false).cv, 0, 0);
+  const nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = a.name;
+  const rl = document.createElement('span'); rl.className = 'rl'; rl.textContent = ROLES[a.role].name;
+  const st = document.createElement('span'); st.className = 'stt';
+  b.append(pc, nm, st, rl); b.onclick = () => select(a.id === selected ? null : a.id);
+  $('roster').appendChild(b); a.li = b; a.stEl = st; rosterUpd(a);
+  $('teamCount').textContent = Object.keys(AG).length + ' 人';
+}
+function rosterUpd(a) { if (!a.stEl) return; a.stEl.className = 'stt ' + a.state; a.stEl.textContent = STATE_TXT[a.state] || a.state; }
+function select(id) {
+  selected = id;
+  for (const a of Object.values(AG)) a.li.setAttribute('aria-pressed', a.id === id ? 'true' : 'false');
+  if (id) { const a = AG[id]; say(id, `${a.name}（${ROLES[a.role].name}）${STATE_TXT[a.state]}`, 2400); }
+}
+function log(msg) {
+  const li = document.createElement('li'), t = document.createElement('time');
+  t.textContent = clockStr().slice(-5); li.append(t, msg);
+  $('log').prepend(li); while ($('log').children.length > 8) $('log').lastChild.remove();
+}
+cv.addEventListener('click', e => {
+  const r = cv.getBoundingClientRect(), k = VIEW.w / r.width;
+  const x = (e.clientX - r.left) * k, y = (e.clientY - r.top) * k;
+  let best = null, bd = 1e9;
+  for (const a of Object.values(AG)) {
+    const dx = x - a.hx, dy = y - (a.hy + 8), d = dx * dx + dy * dy;
+    if (Math.abs(dx) < 9 && Math.abs(dy) < 12 && d < bd) { bd = d; best = a; }
+  }
+  select(best ? best.id : null);
+});
+document.querySelectorAll('canvas[data-icon]').forEach(el => {
+  const I = ICON8[el.dataset.icon], s = pix(I.rows, I.pal);
+  el.width = s.width; el.height = s.height; el.getContext('2d').drawImage(s, 0, 0);
+});
+// 画布尽量按整数倍放大，像素才整齐
+function fit() {
+  const stage = $('stage'), W = stage.clientWidth, dpr = window.devicePixelRatio || 1;
+  if (!W) return;
+  let k = Math.floor(W * dpr / VIEW.w) / dpr;
+  if (k * VIEW.w < W * .8 || k <= 0) k = W / VIEW.w;
+  if (W < 560) k = Math.max(k, Math.ceil(1.6 * dpr) / dpr);   // 手机上放大，左右滑动看全景
+  cv.style.width = (k * VIEW.w) + 'px'; cv.style.height = (k * VIEW.h) + 'px';
+  stage.scrollLeft = Math.max(0, (k * VIEW.w - W) / 2);
+}
+window.addEventListener('resize', fit);
+
+const HIRE_NAMES = ['Nova', 'Echo', 'Rune', 'Flux', 'Orbit', 'Quill', 'Mochi', 'Tofu'];
+function updateHire() { const free = Object.values(STN).some(s => !s.agent); $('bHire').disabled = !free; }
+function hire() {
+  const role = pick(['coder', 'tester', 'designer', 'ops']);
+  const name = HIRE_NAMES.find(n => !Object.values(AG).some(a => a.name === n)) || 'Agent' + Object.keys(AG).length;
+  const a = addAgent({ id: 'r_' + name.toLowerCase(), name, role, recruit: true });
+  if (!a) return;
+  setState(a.id, 'done', '报到！', 2000); log(`🧑‍💻 ${name}（${ROLES[role].name}）加入团队`);
+  wait(2000).then(() => { if (a.state === 'done') setState(a.id, 'idle'); });
+}
+$('bHire').onclick = hire;
+$('bPause').onclick = () => { paused = !paused; $('bPause').textContent = paused ? '继续' : '暂停'; };
+$('bSpeed').onclick = () => { speed = speed === 1 ? 2 : speed === 2 ? 4 : 1; $('bSpeed').textContent = `速度 ${speed}x`; };
+$('bDemo').onclick = () => setDemo(!demoOn);
+
+/* ---------- 11. 演示：一个管理者 + 多个 worker 的流水线 ---------- */
+const STOP = Symbol('stop');
+let demoOn = true, demoEpoch = 0, loopRunning = false, prNo = 40;
+async function step(ms) { const ep = demoEpoch; await wait(ms); if (!demoOn || ep !== demoEpoch) throw STOP; }
+const TASKS = ['实现 OAuth 登录', '重构记忆模块', '接入向量检索', '优化长上下文压缩', '补齐 E2E 测试', '修复并发写入 bug', '加上多语言支持', '做一个插件市场'];
+let taskIdx = 0;
+function newTask() {
+  const title = TASKS[taskIdx++ % TASKS.length];
+  return { title, need: { plan: 10 + (R() * 6 | 0), code: 22 + (R() * 10 | 0), review: 8 + (R() * 4 | 0), test: 10 + (R() * 5 | 0) },
+    pts: { plan: 0, code: 0, review: 0, test: 0 }, quality: 40 };
+}
+async function produce(ids, stat, target, text) {
+  const crew = () => ids.concat(Object.values(AG).filter(a => a.recruit && ROLES[a.role].stat === stat).map(a => a.id));
+  crew().forEach(id => setState(id, 'work', AG[id].recruit ? '来帮忙！' : text));
+  while (task.pts[stat] < target) {
+    await step(650 + R() * 550);
+    for (const id of crew()) {
+      const a = AG[id]; if (a.state !== 'work') setState(id, 'work');
+      const n = 1 + ((R() * 3) | 0); task.pts[stat] += n; floatNum(a, n, STATS[stat]);
+      tokens -= (n * (1.2 + R())) * 1e4;
+    }
+    if (stat === 'review' || stat === 'test') task.quality = Math.min(100, task.quality + 2);
+    renderTask();
+  }
+  crew().forEach(id => { if (AG[id].recruit) setState(id, 'idle'); });
+}
+async function runTask(t) {
+  task = t; renderTask(); Object.assign(board, { todo: 4, doing: 0, done: 0 });
+  log(`📥 新任务「${t.title}」`);
+  setState('conductor', 'think', '拆解任务…'); await step(1600);
+  send('conductor', 'planner', '需求'); await step(900);
+  setState('conductor', 'work', '盯进度');
+  Object.assign(board, { todo: 3, doing: 1 });
+  send('planner', 'researcher', '调研方向'); await step(500);
+  setState('researcher', 'work', '查资料…');
+  await produce(['planner', 'researcher'], 'plan', t.need.plan, '规划中…');
+  setState('researcher', 'idle', '资料齐了'); setState('planner', 'idle', '好！');
+  Object.assign(board, { todo: 2, doing: 2, done: 1 });
+  send('planner', 'coderA', '子任务 A'); send('planner', 'coderB', '子任务 B'); await step(1000);
+  await produce(['coderA', 'coderB'], 'code', t.need.code, '编码中…');
+  for (let round = 0; ; round++) {
+    setState('coderA', 'idle'); setState('coderB', 'idle', '提 PR');
+    send('coderB', 'reviewer', `PR #${++prNo}`); await step(1000);
+    await produce(['reviewer'], 'review', round ? t.need.review : Math.ceil(t.need.review * .6), '审查中…');
+    if (round === 0 && R() < .55) {
+      setState('reviewer', 'error', '打回，改一下'); log(`↩️ PR #${prNo} 被打回`);
+      send('reviewer', 'coderA', '修改意见'); await step(1000);
+      setState('reviewer', 'idle'); t.need.code += 4; task.quality = Math.max(0, task.quality - 4); renderTask();
+      await produce(['coderA'], 'code', t.need.code, '按意见修改…');
+      continue;
+    }
+    break;
+  }
+  setState('reviewer', 'done', 'LGTM ✓'); Object.assign(board, { todo: 1, doing: 1, done: 2 });
+  send('reviewer', 'tester', '构建产物'); await step(1000);
+  setState('reviewer', 'idle');
+  await produce(['tester'], 'test', Math.ceil(t.need.test * .5), '跑测试…');
+  if (R() < .5) {
+    setState('tester', 'error', '发现 Bug!'); log('🐞 测试发现缺陷');
+    send('tester', 'coderB', '缺陷单'); await step(1000);
+    setState('tester', 'idle'); t.need.code += 3; renderTask();
+    await produce(['coderB'], 'code', t.need.code, '修 bug…');
+    setState('coderB', 'idle'); send('coderB', 'tester', '修复'); await step(1000);
+  }
+  await produce(['tester'], 'test', t.need.test, '回归测试…');
+  setState('tester', 'done', '全部通过！'); Object.assign(board, { todo: 0, doing: 0, done: 4 });
+  send('tester', 'conductor', '测试报告'); await step(1100);
+  setState('conductor', 'done', '交付！');
+  shipped++; tokens += 3000000; $('shipped').textContent = '已交付 ' + shipped;
+  log(`🚀 「${t.title}」交付，质量 ${task.quality}，奖励 300万 Token`);
+  for (const a of Object.values(AG)) if (a.id !== 'conductor') setState(a.id, 'done', pick(['好！', '耶！', '收工~', '👏']), 1800);
+  await step(2400);
+  for (const a of Object.values(AG)) setState(a.id, 'idle');
+}
+async function demoLoop() {
+  if (loopRunning) return; loopRunning = true;
+  try { while (demoOn) { await runTask(newTask()); await step(2600); } }
+  catch (e) { if (e !== STOP) console.error(e); }
+  finally { loopRunning = false; if (demoOn) demoLoop(); }
+}
+function setDemo(on) {
+  demoOn = !!on; demoEpoch++;
+  $('bDemo').textContent = demoOn ? '演示：开' : '演示：关';
+  if (!demoOn) { for (const a of Object.values(AG)) setState(a.id, 'idle'); log('⏹ 演示已停止，等待外部事件'); }
+  else demoLoop();
+}
+
+/* ---------- 12. 初始团队 ---------- */
+addAgent({ id: 'conductor', name: 'Maestro', role: 'conductor', seat: 's_conductor', look: { hair: '#3b2a22', skin: '#f7d5b5', shirt: '#2d406e', pants: '#262b38', acc: ['tie'] } });
+addAgent({ id: 'planner', name: 'Atlas', role: 'planner', seat: 's_planner', look: { hair: '#b8683a', skin: '#f9dcc0', shirt: '#f2a444', acc: ['long'] } });
+addAgent({ id: 'researcher', name: 'Scout', role: 'researcher', seat: 's_research', look: { hair: '#2c2a38', skin: '#eec7a3', shirt: '#7a62d8', acc: ['long'] } });
+addAgent({ id: 'coderA', name: 'Byte', role: 'coder', seat: 's_coderA', look: { hair: '#231d1c', skin: '#f5d2b0', shirt: '#3aa56b', acc: ['headset'] } });
+addAgent({ id: 'coderB', name: 'Kernel', role: 'coder', seat: 's_coderB', look: { hair: '#8b5a39', skin: '#d9a77f', shirt: '#e0574c', acc: ['headset'] } });
+addAgent({ id: 'reviewer', name: 'Lint', role: 'reviewer', seat: 's_review', look: { hair: '#5b3b2b', skin: '#f7d6b8', shirt: '#4a8fdc', acc: ['glasses'] } });
+addAgent({ id: 'tester', name: 'Probe', role: 'tester', seat: 's_test', look: { hair: '#dcb24c', skin: '#f8d8bb', shirt: '#9a5cc0', acc: ['cap'], accColor: '#e8544a' } });
+
+window.AgentOffice = {
+  setState, say, send,
+  addAgent: o => addAgent({ recruit: true, ...o }),
+  board: (todo, doing, done) => Object.assign(board, { todo, doing, done }),
+  demo: on => setDemo(on),
+  apply(ev) {
+    const f = { state: () => setState(ev.id, ev.state, ev.text), say: () => say(ev.id, ev.text, ev.ms),
+      send: () => send(ev.from, ev.to, ev.label), board: () => this.board(ev.todo, ev.doing, ev.done) }[ev.type];
+    f && f();
+  },
+  get agents() { return Object.values(AG).map(a => ({ id: a.id, name: a.name, role: a.role, state: a.state })); },
+};
+
+fit(); hud();
+requestAnimationFrame(t => { last = t; requestAnimationFrame(loop); });
+setDemo(true);
+})();
+</script>
+</body>
+</html>

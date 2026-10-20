@@ -1,0 +1,57 @@
+/* 寒蝉点阵体 16px(ChillBitmap_16px)按需分片,许可见 fonts/LICENSE-ChillBitmap.txt */
+@font-face {
+  font-family: "ACE Pixel";
+  src: url("fonts/chill-16-cjk-6.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+7E00-9FFF;
+}
+@font-face {
+  font-family: "ACE Pixel";
+  src: url("fonts/chill-16-cjk-5.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+6E00-7DFF;
+}
+@font-face {
+  font-family: "ACE Pixel";
+  src: url("fonts/chill-16-cjk-4.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+5E00-6DFF;
+}
+@font-face {
+  font-family: "ACE Pixel";
+  src: url("fonts/chill-16-cjk-3.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+4E00-5DFF;
+}
+@font-face {
+  font-family: "ACE Pixel";
+  src: url("fonts/chill-16-cjk-2.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+4E00-9FFF;
+}
+@font-face {
+  font-family: "ACE Pixel";
+  src: url("fonts/chill-16-cjk-1.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+3000-303F, U+FF00-FFEF, U+4E00-9FFF;
+}
+@font-face {
+  font-family: "ACE Pixel";
+  src: url("fonts/chill-16-base.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-024F, U+02B0-02FF, U+2000-206F, U+20A0-20CF, U+2100-218F, U+2190-21FF, U+2200-22FF, U+2300-23FF, U+2460-24FF, U+2500-259F, U+25A0-25FF, U+2600-26FF, U+2700-27BF;
+}

@@ -1,0 +1,24 @@
+:root {
+  --ace-navy: #102a43;
+  --ace-navy-strong: #0b2239;
+  --ace-navy-light: #5f82a1;
+  --ace-ink: #111315;
+  --ace-graphite: #4f565d;
+  --ace-muted: #747b82;
+  --ace-line: #d9dde1;
+  --ace-line-strong: #aeb5bc;
+  --ace-paper: #ffffff;
+  --ace-wash: #f4f5f6;
+  --ace-on-navy-muted: #c8d3dc;
+  --ace-terminal: #111315;
+  --ace-terminal-text: #f3f3f3;
+  --ace-terminal-dim: #8f98a1;
+  --ace-pixel: 2px solid var(--ace-ink);
+  --ace-shadow: 4px 4px 0 var(--ace-ink);
+  --ace-shadow-sm: 2px 2px 0 var(--ace-ink);
+  --ace-shadow-navy: 7px 7px 0 var(--ace-navy);
+  --ace-header-h: 60px;
+  --ace-font: "ACE Pixel", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono",
+    "Microsoft YaHei UI", "PingFang SC", "Noto Sans Mono CJK SC", monospace;
+  color-scheme: light;
+}

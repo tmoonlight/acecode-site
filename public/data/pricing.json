@@ -1,0 +1,605 @@
+{
+  "models": [
+    {
+      "model": "aurora",
+      "channel": "codex",
+      "source": "synced",
+      "pricing": {
+        "source": "synced",
+        "input": 2,
+        "cached_input": 0.1,
+        "cache_write_5m": 2.5,
+        "cache_write_1h": 2.5,
+        "output": 10,
+        "input_priority": 4,
+        "cached_input_priority": 0.2,
+        "output_priority": 20,
+        "input_long": 4,
+        "cached_input_long": 0.2,
+        "output_long": 15,
+        "input_long_priority": 8,
+        "cached_input_long_priority": 0.4,
+        "output_long_priority": 30,
+        "long_context_threshold_tokens": 272000
+      },
+      "canonical_model": "gpt-6.1-sol",
+      "is_alias": true
+    },
+    {
+      "model": "moonlight",
+      "channel": "codex",
+      "source": "synced",
+      "pricing": {
+        "source": "synced",
+        "input": 2,
+        "cached_input": 0.2,
+        "output": 12,
+        "input_priority": 4,
+        "cached_input_priority": 0.4,
+        "output_priority": 24,
+        "input_long": 4,
+        "cached_input_long": 0.4,
+        "output_long": 18,
+        "input_long_priority": 8,
+        "cached_input_long_priority": 0.8,
+        "output_long_priority": 36,
+        "long_context_threshold_tokens": 272000
+      },
+      "canonical_model": "gpt-5.6-terra",
+      "is_alias": true
+    },
+    {
+      "model": "starrylight",
+      "channel": "codex",
+      "source": "synced",
+      "pricing": {
+        "source": "synced",
+        "input": 0.1,
+        "cached_input": 0.01,
+        "output": 0.5,
+        "input_priority": 0.2,
+        "cached_input_priority": 0.02,
+        "output_priority": 1,
+        "input_long": 0.2,
+        "cached_input_long": 0.02,
+        "output_long": 0.75,
+        "input_long_priority": 0.4,
+        "cached_input_long_priority": 0.04,
+        "output_long_priority": 1.5,
+        "long_context_threshold_tokens": 272000
+      },
+      "canonical_model": "gpt-6-luna",
+      "is_alias": true
+    },
+    {
+      "model": "gpt-6-astra",
+      "channel": "codex",
+      "source": "synced",
+      "pricing": {
+        "source": "synced",
+        "input": 10,
+        "cached_input": 1,
+        "output": 50,
+        "input_priority": 20,
+        "cached_input_priority": 2,
+        "output_priority": 100,
+        "input_long": 20,
+        "cached_input_long": 2,
+        "output_long": 75
+      }
+    },
+    {
+      "model": "gpt-6.1-sol",
+      "channel": "codex",
+      "source": "synced",
+      "pricing": {
+        "source": "synced",
+        "input": 2,
+        "cached_input": 0.1,
+        "cache_write_5m": 2.5,
+        "cache_write_1h": 2.5,
+        "output": 10,
+        "input_priority": 4,
+        "cached_input_priority": 0.2,
+        "output_priority": 20,
+        "input_long": 4,
+        "cached_input_long": 0.2,
+        "output_long": 15,
+        "input_long_priority": 8,
+        "cached_input_long_priority": 0.4,
+        "output_long_priority": 30,
+        "long_context_threshold_tokens": 272000
+      }
+    },
+    {
+      "model": "gpt-6-sol",
+      "channel": "codex",
+      "source": "synced",
+      "pricing": {
+        "source": "synced",
+        "input": 2,
+        "cached_input": 0.2,
+        "output": 10,
+        "input_priority": 4,
+        "cached_input_priority": 0.4,
+        "output_priority": 20,
+        "input_long": 4,
+        "cached_input_long": 0.4,
+        "output_long": 15,
+        "input_long_priority": 8,
+        "cached_input_long_priority": 0.8,
+        "output_long_priority": 30,
+        "long_context_threshold_tokens": 272000
+      }
+    },
+    {
+      "model": "gpt-6-luna",
+      "channel": "codex",
+      "source": "synced",
+      "pricing": {
+        "source": "synced",
+        "input": 0.1,
+        "cached_input": 0.01,
+        "output": 0.5,
+        "input_priority": 0.2,
+        "cached_input_priority": 0.02,
+        "output_priority": 1,
+        "input_long": 0.2,
+        "cached_input_long": 0.02,
+        "output_long": 0.75,
+        "input_long_priority": 0.4,
+        "cached_input_long_priority": 0.04,
+        "output_long_priority": 1.5,
+        "long_context_threshold_tokens": 272000
+      }
+    },
+    {
+      "model": "gpt-5.6-sol",
+      "channel": "codex",
+      "source": "synced",
+      "pricing": {
+        "source": "synced",
+        "input": 4,
+        "cached_input": 0.4,
+        "output": 20,
+        "input_priority": 8,
+        "cached_input_priority": 0.8,
+        "output_priority": 40,
+        "input_long": 8,
+        "cached_input_long": 0.8,
+        "output_long": 30,
+        "input_long_priority": 16,
+        "cached_input_long_priority": 1.6,
+        "output_long_priority": 60,
+        "long_context_threshold_tokens": 272000
+      }
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "channel": "codex",
+      "source": "synced",
+      "pricing": {
+        "source": "synced",
+        "input": 2,
+        "cached_input": 0.2,
+        "output": 12,
+        "input_priority": 4,
+        "cached_input_priority": 0.4,
+        "output_priority": 24,
+        "input_long": 4,
+        "cached_input_long": 0.4,
+        "output_long": 18,
+        "input_long_priority": 8,
+        "cached_input_long_priority": 0.8,
+        "output_long_priority": 36,
+        "long_context_threshold_tokens": 272000
+      }
+    },
+    {
+      "model": "gpt-5.6-luna",
+      "channel": "codex",
+      "source": "synced",
+      "pricing": {
+        "source": "synced",
+        "input": 0.2,
+        "cached_input": 0.02,
+        "output": 1.2,
+        "input_priority": 0.4,
+        "cached_input_priority": 0.04,
+        "output_priority": 2.4,
+        "input_long": 0.4,
+        "cached_input_long": 0.04,
+        "output_long": 1.8,
+        "input_long_priority": 0.8,
+        "cached_input_long_priority": 0.08,
+        "output_long_priority": 3.6,
+        "long_context_threshold_tokens": 272000
+      }
+    },
+    {
+      "model": "gpt-5.5",
+      "channel": "codex",
+      "source": "synced",
+      "pricing": {
+        "source": "synced",
+        "input": 5,
+        "cached_input": 0.5,
+        "output": 30,
+        "input_priority": 12.5,
+        "cached_input_priority": 1.25,
+        "output_priority": 75,
+        "input_long": 10,
+        "cached_input_long": 1,
+        "output_long": 45,
+        "input_long_priority": 25,
+        "cached_input_long_priority": 2.5,
+        "output_long_priority": 112.5,
+        "long_context_threshold_tokens": 272000
+      }
+    },
+    {
+      "model": "gpt-5.3-codex-spark",
+      "channel": "codex",
+      "source": "synced",
+      "pricing": {
+        "source": "synced",
+        "input": 1.25,
+        "cached_input": 0.125,
+        "output": 10,
+        "input_priority": 2.5,
+        "cached_input_priority": 0.25,
+        "output_priority": 20
+      }
+    },
+    {
+      "model": "gpt-image-2.5-flare",
+      "channel": "codex",
+      "source": "synced",
+      "pricing": {
+        "image_input": 8,
+        "cached_image_input": 2,
+        "source": "synced",
+        "input": 5,
+        "cached_input": 1.25,
+        "output": 30
+      }
+    },
+    {
+      "model": "gpt-image-2.5-sunburst",
+      "channel": "codex",
+      "source": "synced",
+      "pricing": {
+        "image_input": 8,
+        "cached_image_input": 2,
+        "source": "synced",
+        "input": 5,
+        "cached_input": 1.25,
+        "output": 30
+      }
+    },
+    {
+      "model": "gpt-image-2-4k",
+      "channel": "codex",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 1,
+        "output": 2
+      }
+    },
+    {
+      "model": "gpt-image-2-2k",
+      "channel": "codex",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 1,
+        "output": 2
+      }
+    },
+    {
+      "model": "gpt-image-2",
+      "channel": "codex",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 1,
+        "output": 2
+      }
+    },
+    {
+      "model": "codex-auto-review",
+      "channel": "codex",
+      "source": "synced",
+      "pricing": {
+        "source": "synced",
+        "input": 2.5,
+        "cached_input": 0.25,
+        "output": 15,
+        "input_priority": 5,
+        "cached_input_priority": 0.5,
+        "output_priority": 30,
+        "input_long": 5,
+        "cached_input_long": 0.5,
+        "output_long": 22.5,
+        "input_long_priority": 10,
+        "cached_input_long_priority": 1,
+        "output_long_priority": 45
+      },
+      "canonical_model": "gpt-5.4",
+      "is_alias": true
+    },
+    {
+      "model": "gpt-reserve",
+      "channel": "codex",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 1,
+        "output": 2
+      }
+    },
+    {
+      "model": "grok-4.7",
+      "channel": "grok",
+      "source": "synced",
+      "pricing": {
+        "source": "synced",
+        "input": 2,
+        "cached_input": 0.5,
+        "output": 6,
+        "input_long": 4,
+        "cached_input_long": 1,
+        "output_long": 12,
+        "long_context_threshold_tokens": 200000
+      }
+    },
+    {
+      "model": "grok-4.7-fast",
+      "channel": "grok",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 2,
+        "cached_input": 0.5,
+        "output": 6,
+        "input_long": 4,
+        "cached_input_long": 1,
+        "output_long": 12,
+        "long_context_threshold_tokens": 200000
+      }
+    },
+    {
+      "model": "grok-4.6",
+      "channel": "grok",
+      "source": "synced",
+      "pricing": {
+        "source": "synced",
+        "input": 2,
+        "cached_input": 0.5,
+        "output": 6,
+        "input_long": 4,
+        "cached_input_long": 1,
+        "output_long": 12,
+        "long_context_threshold_tokens": 200000
+      }
+    },
+    {
+      "model": "grok-4.5",
+      "channel": "grok",
+      "source": "synced",
+      "pricing": {
+        "source": "synced",
+        "input": 2,
+        "cached_input": 0.3,
+        "output": 6,
+        "input_long": 4,
+        "cached_input_long": 0.6,
+        "output_long": 12,
+        "long_context_threshold_tokens": 200000
+      }
+    },
+    {
+      "model": "grok-4",
+      "channel": "grok",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 3,
+        "cached_input": 0.75,
+        "output": 15
+      }
+    },
+    {
+      "model": "grok-3",
+      "channel": "grok",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 3,
+        "cached_input": 0.75,
+        "output": 15
+      }
+    },
+    {
+      "model": "grok-3-fast",
+      "channel": "grok",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 5,
+        "output": 25
+      }
+    },
+    {
+      "model": "grok-2",
+      "channel": "grok",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 2,
+        "output": 10
+      }
+    },
+    {
+      "model": "grok-imagine-video-1.5",
+      "channel": "grok",
+      "source": "default",
+      "pricing": {
+        "media_unit_cost": 0.08,
+        "source": "default"
+      },
+      "media_unit": "second"
+    },
+    {
+      "model": "grok-imagine-image",
+      "channel": "grok",
+      "source": "default",
+      "pricing": {
+        "media_unit_cost": 0.02,
+        "source": "default"
+      },
+      "media_unit": "image"
+    },
+    {
+      "model": "grok-imagine-image-quality",
+      "channel": "grok",
+      "source": "default",
+      "pricing": {
+        "media_unit_cost": 0.05,
+        "source": "default"
+      },
+      "media_unit": "image"
+    },
+    {
+      "model": "grok-imagine-video",
+      "channel": "grok",
+      "source": "default",
+      "pricing": {
+        "media_unit_cost": 0.05,
+        "source": "default"
+      },
+      "media_unit": "second"
+    },
+    {
+      "model": "gpt-oss-120b-medium",
+      "channel": "antigravity",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 1,
+        "output": 2
+      }
+    },
+    {
+      "model": "gemini-3.8-flash-high",
+      "channel": "antigravity",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 1,
+        "output": 2
+      }
+    },
+    {
+      "model": "gemini-3.8-flash-low",
+      "channel": "antigravity",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 1,
+        "output": 2
+      }
+    },
+    {
+      "model": "gemini-3.8-flash-medium",
+      "channel": "antigravity",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 1,
+        "output": 2
+      }
+    },
+    {
+      "model": "gemini-3.7-flash-high",
+      "channel": "antigravity",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 1,
+        "output": 2
+      }
+    },
+    {
+      "model": "gemini-3.7-flash-low",
+      "channel": "antigravity",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 1,
+        "output": 2
+      }
+    },
+    {
+      "model": "gemini-3.7-flash-medium",
+      "channel": "antigravity",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 1,
+        "output": 2
+      }
+    },
+    {
+      "model": "gemini-3.6-flash-high",
+      "channel": "antigravity",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 1,
+        "output": 2
+      }
+    },
+    {
+      "model": "gemini-3.6-flash-low",
+      "channel": "antigravity",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 1,
+        "output": 2
+      }
+    },
+    {
+      "model": "gemini-3.6-flash-medium",
+      "channel": "antigravity",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 1,
+        "output": 2
+      }
+    },
+    {
+      "model": "gemini-3.1-pro-high",
+      "channel": "antigravity",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 2,
+        "output": 12
+      }
+    },
+    {
+      "model": "gemini-3.1-pro-low",
+      "channel": "antigravity",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 2,
+        "output": 12
+      }
+    }
+  ]
+}
