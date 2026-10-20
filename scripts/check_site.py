@@ -8,6 +8,7 @@ import re
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 CDN_HOST = "acecodedownload.b-cdn.net"
+PUBLIC_HOSTS = {CDN_HOST, "acecode.cc"}
 errors = []
 checked = 0
 
@@ -29,7 +30,7 @@ class References(HTMLParser):
             if not value or value.startswith(("#", "data:", "mailto:", "tel:", "javascript:")):
                 continue
             url = urlparse(value)
-            if url.netloc and url.netloc != CDN_HOST:
+            if url.netloc and url.netloc not in PUBLIC_HOSTS:
                 if url.netloc == "2017studio.imwork.net:82" and "/aupdate/download" in url.path:
                     errors.append(f"{self.page}: local download page still linked")
                 continue

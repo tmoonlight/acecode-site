@@ -2,13 +2,15 @@
 
 产品首页、模型价格、接入指南、下载页和两套帮助文档。
 
-- 统一入口：https://acecodedownload.b-cdn.net/
-- 用户中心：https://acecode.cc/customerv2
+- 官网入口：https://acecode.cc/
+- CDN 下载：https://acecodedownload.b-cdn.net/download/
+- 用户中心：https://customers.acecode.cc/
 - 安装包来源：https://github.com/tmoonlight/acecode/releases
 
 保留既有页面设计。账户、支付和管理服务不在此仓库。
 GitHub Pages 存储公开网站资源，Bunny 按路径回源到 Pages、GitHub Releases
 及既有的公开模型价格接口。
+官网由现有服务器按公开路径读取 CDN 内容，模型 API 保持原有直连路由。
 
 ## 构建
 

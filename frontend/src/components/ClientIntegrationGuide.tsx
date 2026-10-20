@@ -336,7 +336,7 @@ export function ClientIntegrationGuide({ embedded = false }: { embedded?: boolea
               </li>
             ))}
           </ol>
-          <a href="https://acecodedownload.b-cdn.net/acecode/acemodel.html" target="_blank" rel="noreferrer" className="inline-flex w-fit items-center gap-2 border-b border-black pb-1 text-sm font-bold hover:opacity-60 dark:border-white">
+          <a href="https://acecode.cc/acecode/acemodel.html" target="_blank" rel="noreferrer" className="inline-flex w-fit items-center gap-2 border-b border-black pb-1 text-sm font-bold hover:opacity-60 dark:border-white">
             {copy.acecodeDocs}<ExternalLink className="size-3.5" />
           </a>
         </GuidePanel>
@@ -432,7 +432,7 @@ export function ClientIntegrationGuide({ embedded = false }: { embedded?: boolea
     );
   return (
     <div className="min-h-dvh bg-white text-black dark:bg-black dark:text-white">
-      <div className="ace-page-tools"><Button asChild variant="outline"><a href="https://acecode.cc/customerv2/usage">{i18n.language.startsWith('zh') ? '返回用量查询' : 'Back to usage'}</a></Button></div>
+      <div className="ace-page-tools"><Button asChild variant="outline"><a href="https://customers.acecode.cc/customerv2/usage">{i18n.language.startsWith('zh') ? '返回用量查询' : 'Back to usage'}</a></Button></div>
       <main className="mx-auto max-w-[1180px] px-5 py-12 sm:py-16">
         <section className="grid gap-10 border-b border-black/15 pb-12 dark:border-white/20 lg:grid-cols-[1.45fr_0.75fr] lg:items-end">
           <div>
@@ -441,7 +441,7 @@ export function ClientIntegrationGuide({ embedded = false }: { embedded?: boolea
               {copy.title}
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-7 text-black/60 dark:text-white/60">{copy.description}</p>
-            <a href="https://acecodedownload.b-cdn.net/acecode/" target="_blank" rel="noreferrer" className="mt-7 inline-flex items-center gap-2 bg-black px-5 py-3 text-sm font-bold text-white shadow-[4px_4px_0_0_var(--ace-ink)] transition-transform hover:-translate-y-0.5 dark:bg-white dark:text-black">
+            <a href="https://acecode.cc/acecode/" target="_blank" rel="noreferrer" className="mt-7 inline-flex items-center gap-2 bg-black px-5 py-3 text-sm font-bold text-white shadow-[4px_4px_0_0_var(--ace-ink)] transition-transform hover:-translate-y-0.5 dark:bg-white dark:text-black">
               <BookOpen className="size-4" />
               {copy.fullDocs}
               <ExternalLink className="size-4" />

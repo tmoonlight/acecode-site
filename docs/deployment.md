@@ -4,10 +4,12 @@
 
 产品 `/acemodel/`、下载 `/download/`、帮助 `/help/` 和 `/acecode/`、
 价格 `/key-usage/pricing/`、接入指南 `/key-usage/guide/` 由本仓库发布。
-导航中的用户中心、登录、充值等动作继续进入 `https://acecode.cc/customerv2`。
+导航中的用户中心、登录、充值等动作进入 `https://customers.acecode.cc/customerv2`。
 模型 API 接入地址继续使用 `https://acecode.cc/aceapi/v1`。
 
-网页、脚本、样式、字体、截图和宣传片都通过 Bunny 访问。
+网页、脚本、样式、字体、截图和宣传片由 Bunny 提供。
+`acecode.cc` 的公开路径由现有 Caddy 代理到 Bunny，地址栏保留官网域名。
+安装包链接直接使用 Bunny。API 路径仍直达原服务器，未加入 CDN。
 GitHub Pages 项目继承账号已有博客域名，源地址为
 `https://blog.bigjuan.xyz/acecode-site`，不改变博客根目录。
 Bunny 默认源站使用此地址；`/v*/...` 文件请求覆盖到 GitHub Releases，
@@ -38,7 +40,7 @@ SHA-256 和校验文件；失败不推送。同步后等待 CDN 清单哈希与�
 - GitHub Pages 部署完成后核对各公开页面和静态资源。
 - CDN 逐页 HTTP、缓存和完整安装包哈希检查。
 - 浏览器检查价格筛选、语言、指南标签页、下载清单、宣传片和桌面/手机布局。
-- 核对用户中心链接继续使用原站；不复制账户后台、数据或凭据。
+- 核对用户中心链接使用独立子域名；不复制账户后台、数据或凭据。
 
 ## 回退
 
@@ -66,3 +68,22 @@ SHA-256 和校验文件；失败不推送。同步后等待 CDN 清单哈希与�
 浏览器缓存 60 秒；公开价格为 60/30 秒；版本安装包为 604800/3600 秒。
 下载清单在 Pages 工作流运行时更新；初次部署时的人工刷新步骤现由上述
 发布后同步流程替代。
+
+## 官网与用户中心域名
+
+DNS 使用 NameSilo/DNSOWL。根域名保持现有 A 记录，新增用户中心子域名：
+
+| 类型 | 主机 | 值 |
+| --- | --- | --- |
+| A | @（或留空） | 195.201.40.127 |
+| A | customers | 195.201.40.127 |
+
+NameSilo 不支持根域名 CNAME/ALIAS，因此不将根域名直接改为 Bunny CNAME。
+Caddy 只代理公开 GET/HEAD 页面、`/_app/*`、下载清单与静态资源到 CDN；
+`/aceapi/*`、`/api/customer/*`、`/api/key-usage/*` 等原有接口保持原后端。
+原 `/customerv2` 和 `/customer` 的页面 GET/HEAD 请求跳转到新子域名并保留路径及查询。
+
+新用户中心沿用已有应用与数据库。仅在 `customers.acecode.cc` 的
+`/api/customer/*` 请求上，将精确匹配的新 Origin 映射为后端现有的规范 Origin；
+其他来源仍受原校验限制。该兼容层避免重启模型 API 进程，
+原支付回调与接入地址继续有效。新域名首次访问需要重新登录。

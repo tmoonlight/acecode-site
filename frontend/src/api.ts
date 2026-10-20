@@ -5,7 +5,7 @@ export const api = {
   async getPublicModelPricing(): Promise<{ models: PublicModelPricingRow[] }> {
     // Bunny serves only this public read-only endpoint from the existing API.
     // Direct GitHub Pages access uses the exported snapshot.
-    const path = location.hostname === 'acecodedownload.b-cdn.net'
+    const path = ['acecodedownload.b-cdn.net', 'acecode.cc'].includes(location.hostname)
       ? 'api/key-usage/pricing' : 'data/pricing.json'
     const response = await fetch(new URL(path, siteRoot), {
       credentials: 'omit', headers: { Accept: 'application/json' },

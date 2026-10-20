@@ -142,7 +142,7 @@ export default function PublicModelPricing() {
             <p className="mt-1 text-xl sm:text-2xl"><strong>¥{TRIAL_AMOUNT_CENTS / 100}</strong><span className="mx-2">→</span><strong>${TRIAL_CREDIT_USD}</strong> {isChinese ? '模型额度' : 'model credits'}</p>
             <p className="mt-1 text-sm">{isChinese ? '每个账户和浏览器限购一次' : 'Once per account and browser'}</p>
           </div>
-          <Button asChild variant="secondary"><a href="https://acecode.cc/customerv2/wallet?plan=trial">{isChinese ? '购买体验包' : 'Get trial pack'}</a></Button>
+          <Button asChild variant="secondary"><a href="https://customers.acecode.cc/customerv2/wallet?plan=trial">{isChinese ? '购买体验包' : 'Get trial pack'}</a></Button>
 
         </section>
 
