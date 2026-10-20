@@ -8,7 +8,8 @@
 模型 API 接入地址继续使用 `https://acecode.cc/aceapi/v1`。
 
 网页、脚本、样式、字体、截图和宣传片都通过 Bunny 访问。
-GitHub Pages 源地址为 `https://tmoonlight.github.io/acecode-site`。
+GitHub Pages 项目继承账号已有博客域名，源地址为
+`https://blog.bigjuan.xyz/acecode-site`，不改变博客根目录。
 Bunny 默认源站使用此地址；`/v*/...` 文件请求覆盖到 GitHub Releases，
 `/api/key-usage/pricing` 只回源公开模型价格接口。账户 API 不进入缓存配置。
 
