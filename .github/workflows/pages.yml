@@ -31,6 +31,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: python scripts/sync_catalog.py
+      - run: python -m unittest discover -s scripts -p "test_*.py"
       - run: npm ci --prefix frontend
       - run: npm run typecheck --prefix frontend
       - run: npm run build --prefix frontend

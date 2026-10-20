@@ -1,5 +1,6 @@
 """Export public release metadata. GitHub credentials stay inside the gh CLI."""
 from pathlib import Path
+import argparse
 import json
 import re
 import subprocess
@@ -32,7 +33,27 @@ def classify(name):
     return platform, arch, kind
 
 
-def main():
+def validate_release(releases, tag):
+    release = next((r for r in releases if r["tag"] == tag), None)
+    if release is None:
+        raise RuntimeError(f"Release {tag} is not published with installation assets")
+    version = release["version"]
+    required = {"acecode-windows-x64.zip", "acecode-windows-arm64.zip"}
+    for arch in ["x64", "arm64"]:
+        required.update({
+            f"ACECode-{version}-macos-{arch}-update.zip",
+            f"ACECode-{version}-macos-{arch}.pkg",
+            f"acecode-{version}-linux-{arch}-update.zip",
+        })
+    missing = required - {p["file"] for p in release["packages"]}
+    if missing or not release.get("sums"):
+        raise RuntimeError(f"Release {tag} is incomplete: missing {sorted(missing)} or SHA256SUMS.txt")
+    if any(not re.fullmatch(r"[0-9a-f]{64}", p.get("sha256") or "") for p in release["packages"]):
+        raise RuntimeError(f"Release {tag} has installation assets without valid SHA-256")
+    return release
+
+
+def main(require_tag=None, releases_only=False):
     result = subprocess.run(
         ["gh", "api", "--paginate", "--slurp", f"repos/{REPO}/releases?per_page=100"],
         check=True, capture_output=True, encoding="utf-8",
@@ -86,11 +107,26 @@ def main():
         })
     if not releases:
         raise RuntimeError("GitHub returned no published installation assets")
+    requested = validate_release(releases, require_tag) if require_tag else None
     latest = next(item["version"] for item in releases if not item["prerelease"])
     target = ROOT / "public/aceupdate.json"
     target.write_text(json.dumps({
         "schema_version": 1, "latest": latest, "releases": releases,
     }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    if requested:
+        (ROOT / "public/data/release-source.json").write_text(json.dumps({
+            "tag": requested["tag"],
+            "release_url": f"https://github.com/{REPO}/releases/tag/{quote(require_tag, safe='')}",
+            "published_at": requested["published_at"],
+        }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    summary = {
+        "latest": latest, "releases": len(releases),
+        "packages": sum(len(item["packages"]) for item in releases),
+        "missing_digests": sum(not asset["sha256"] for item in releases for asset in item["packages"]),
+    }
+    if releases_only:
+        print(json.dumps(summary))
+        return
 
     request = urllib.request.Request("https://acecode.cc/api/key-usage/pricing",
                                      headers={"User-Agent": "ACECode-public-site"})
@@ -101,13 +137,12 @@ def main():
     (ROOT / "public/data/pricing.json").write_text(
         json.dumps(pricing, ensure_ascii=False, indent=2) + "\n", encoding="utf-8",
     )
-    print(json.dumps({
-        "latest": latest, "releases": len(releases),
-        "packages": sum(len(item["packages"]) for item in releases),
-        "missing_digests": sum(not asset["sha256"] for item in releases for asset in item["packages"]),
-        "pricing_models": len(pricing["models"]),
-    }))
+    print(json.dumps({**summary, "pricing_models": len(pricing["models"])}))
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--require-tag", help="Reject missing or incomplete published releases")
+    parser.add_argument("--releases-only", action="store_true", help="Leave the pricing snapshot unchanged")
+    args = parser.parse_args()
+    main(args.require_tag, args.releases_only)

@@ -21,8 +21,16 @@ Bunny 默认源站使用此地址；`/v*/...` 文件请求覆盖到 GitHub Relea
 CDN 价格页使用当前公开接口；直接访问 GitHub Pages 时使用构建时快照。
 HTML/版本清单使用短缓存，安装包路径带固定版本并使用长缓存。
 
-每次更新网站或发布安装包后运行 Pages 工作流。工作流支持外部
-`repository_dispatch` 的 `release-published` 事件，以便现有发布流水线调用。
+网站更新通过 push 自动部署。ACECode 发布工作流在 Release 成功后调用
+`refresh-public-downloads.yml`，使用仅限本站的 SSH 部署密钥更新公开清单
+和 `public/data/release-source.json`，触发本站 push 部署。
+生成器使用 `--require-tag <tag> --releases-only` 校验目标版本的核心资产、
+SHA-256 和校验文件；失败不推送。同步后等待 CDN 清单哈希与提交内容一致。
+重复运行没有内容变化时不创建空提交。
+
+维护时可在 ACECode Actions 中重跑网站同步任务，或手动触发该工作流并填写
+已有发布标签；网站自身构建失败时修复后重跑本站 `Deploy Pages`。
+普通发布无需用户执行刷新命令。保留原 `repository_dispatch` 接口兼容既有调用。
 
 ## 验收
 
@@ -56,5 +64,5 @@ HTML/版本清单使用短缓存，安装包路径带固定版本并使用长缓
 
 现有 Bunny 区域保持 Standard 计费类型。常规页面边缘缓存 300 秒、
 浏览器缓存 60 秒；公开价格为 60/30 秒；版本安装包为 604800/3600 秒。
-下载清单在 Pages 工作流运行时更新；尚未把 ACECode 发布流水线接入
-`repository_dispatch`，发布新版本后需运行 README 中的刷新命令。
+下载清单在 Pages 工作流运行时更新；初次部署时的人工刷新步骤现由上述
+发布后同步流程替代。

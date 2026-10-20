@@ -21,5 +21,6 @@ python scripts/assemble.py
 python scripts/check_site.py
 ```
 
-部署由 GitHub Actions 的 `Deploy Pages` 工作流完成。发布新版本后可通过
-`gh workflow run pages.yml --repo tmoonlight/acecode-site` 同步最新版本并部署。
+ACECode 的 `package` 工作流在 Release 发布成功后自动更新本站清单，
+通过仓库 push 触发 `Deploy Pages`，并检查 CDN 上的实际清单。
+正常发布不需要手动刷新。维护重试见 [部署说明](docs/deployment.md)。
