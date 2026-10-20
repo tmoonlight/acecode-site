@@ -96,7 +96,6 @@ export default function PublicModelPricing() {
   const handleLanguageChange = async () => {
     const nextLanguage = isChinese ? 'en' : 'zh'
     await i18n.changeLanguage(nextLanguage)
-    localStorage.setItem('lang', nextLanguage)
     document.documentElement.lang = nextLanguage === 'zh' ? 'zh-CN' : 'en'
   }
 

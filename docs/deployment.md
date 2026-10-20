@@ -87,3 +87,16 @@ Caddy 只代理公开 GET/HEAD 页面、`/_app/*`、下载清单与静态资源�
 `/api/customer/*` 请求上，将精确匹配的新 Origin 映射为后端现有的规范 Origin；
 其他来源仍受原校验限制。该兼容层避免重启模型 API 进程，
 原支付回调与接入地址继续有效。新域名首次访问需要重新登录。
+
+## 浏览器语言
+
+首页、模型价格和接入指南使用共享的浏览器语言选择逻辑，依次匹配
+`navigator.languages` 和 `navigator.language`。支持简体中文、繁体中文
+与英文；中文的 Hans/Hant 脚本优先于地区，台湾、香港、澳门默认繁体。
+没有可识别的偏好时回退英文，没有提供语言信息时使用中文。
+首页保留中文静态内容作为 JavaScript 不可用时的回退。
+
+公开页面不读取历史 `localStorage.lang`。价格页的手动切换仅作用于当前页面，
+重新加载和浏览器的 `languagechange` 事件会重新应用浏览器设置。
+`node --test scripts/browser-language.test.mjs` 检查偏好顺序、地区/脚本、
+完整首页文案、无障碍属性，以及旧缓存和运行时语言变更。

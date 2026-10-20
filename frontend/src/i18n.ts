@@ -3,16 +3,7 @@ import { initReactI18next } from 'react-i18next'
 import zh from './locales/zh.json'
 import zhTW from './locales/zh-TW.json'
 import en from './locales/en.json'
-
-const LANG_KEY = 'lang'
-
-function getInitialLang(): string {
-  const stored = localStorage.getItem(LANG_KEY)
-  if (stored === 'zh' || stored === 'zh-TW' || stored === 'en') return stored
-  const browserLanguage = (navigator.languages?.[0] || navigator.language || 'en').toLowerCase()
-  if (browserLanguage.startsWith('zh-hant') || browserLanguage.startsWith('zh-tw') || browserLanguage.startsWith('zh-hk') || browserLanguage.startsWith('zh-mo')) return 'zh-TW'
-  return browserLanguage.startsWith('zh') ? 'zh' : 'en'
-}
+import { browserLanguage, documentLanguage } from '../../public/acemodel/assets/browser-language.js'
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -20,7 +11,7 @@ i18n.use(initReactI18next).init({
     'zh-TW': { translation: zhTW },
     en: { translation: en },
   },
-  lng: getInitialLang(),
+  lng: browserLanguage(navigator),
   fallbackLng: {
     'zh-TW': ['zh'],
     default: ['zh'],
@@ -31,10 +22,13 @@ i18n.use(initReactI18next).init({
 })
 
 const syncDocumentLanguage = (language: string) => {
-  document.documentElement.lang = language === 'zh-TW' ? 'zh-TW' : language === 'zh' ? 'zh-CN' : 'en'
+  document.documentElement.lang = documentLanguage(language === 'zh-TW' ? 'zh-TW' : language === 'zh' ? 'zh' : 'en')
 }
 
 syncDocumentLanguage(i18n.resolvedLanguage || i18n.language)
 i18n.on('languageChanged', syncDocumentLanguage)
+window.addEventListener('languagechange', () => {
+  void i18n.changeLanguage(browserLanguage(navigator))
+})
 
 export default i18n

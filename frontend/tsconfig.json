@@ -11,6 +11,7 @@
     "jsx": "react-jsx",
     "resolveJsonModule": true,
     "allowImportingTsExtensions": true,
+    "allowJs": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "strict": true,

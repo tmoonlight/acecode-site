@@ -1,0 +1,8 @@
+{
+  "name": "acecode-public-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:language": "node --test scripts/browser-language.test.mjs"
+  }
+}
