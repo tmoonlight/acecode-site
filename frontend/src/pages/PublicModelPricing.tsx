@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
-    CircleDollarSign,
   Loader2,
     RefreshCw,
   Search,
@@ -95,16 +94,12 @@ export default function PublicModelPricing() {
 
   return (
     <div className={embedded ? "space-y-5" : "min-h-dvh bg-background text-foreground"}>
-      <div className={embedded ? "flex items-center justify-between gap-3" : "ace-page-tools"}><h1 className="text-2xl font-bold">{t('keyUsage.pricingTitle')}</h1></div>
-      <div className={embedded ? "space-y-5" : "mx-auto max-w-[1500px] space-y-5 px-4 py-6 sm:px-6"}>
-        <section className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-6">
+      <div className={embedded ? "space-y-5" : "ace-content-shell space-y-6"}>
+        <section className="flex flex-col gap-5 border-b border-border pb-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex items-start gap-3">
-              <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-emerald-500/12 text-emerald-600 dark:text-emerald-300">
-                <CircleDollarSign className="size-5" />
-              </div>
               <div>
-                <h2 className="text-xl font-semibold tracking-tight">{t('keyUsage.pricingTitle')}</h2>
+                <h1 className="text-3xl font-semibold tracking-tight">{t('keyUsage.pricingTitle')}</h1>
                 <p className="mt-1 max-w-3xl text-sm text-muted-foreground">{t('keyUsage.pricingDescription')}</p>
               </div>
             </div>
@@ -117,11 +112,11 @@ export default function PublicModelPricing() {
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             <div className="relative w-full lg:max-w-sm">
               <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-              <Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t('keyUsage.pricingSearch')} className="pl-9" />
+              <Input value={query} onChange={(event) => setQuery(event.target.value)} aria-label={t('keyUsage.pricingSearch')} placeholder={t('keyUsage.pricingSearch')} className="pl-9" />
             </div>
             <div className="flex flex-wrap gap-1.5">
               {CHANNELS.filter((item) => !HIDDEN_PUBLIC_PRICING_CHANNELS.has(item)).map((item) => (
-                <Button key={item} type="button" variant={channel === item ? 'default' : 'outline'} size="sm" onClick={() => setChannel(item)}>
+                <Button key={item} type="button" aria-pressed={channel === item} variant={channel === item ? 'default' : 'outline'} size="sm" onClick={() => setChannel(item)}>
                   {item === 'all' ? t('common.all') : CHANNEL_LABELS[item]}
                 </Button>
               ))}
@@ -182,29 +177,29 @@ function PricingCard({ row, multiplier }: { row: PublicModelPricingRow; multipli
   ] as const
 
   return (
-    <Card className="py-0 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+    <Card className="py-0 shadow-none">
       <CardContent className="p-4">
         <div className="flex items-start justify-between gap-3">
           <div className="flex min-w-0 items-center gap-3">
             <ModelLogo model={row.model} size={38} />
             <div className="min-w-0">
-              <h3 className="break-words font-mono text-sm font-semibold" title={row.model}>{ACE_MODEL_NAMES[row.model] || row.model}</h3>
+              <h3 className="break-words text-base font-semibold" title={row.model}>{ACE_MODEL_NAMES[row.model] || row.model}</h3>
               <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                <Badge variant="secondary" className="text-[10px]">{ACE_MODEL_NAMES[row.model] ? 'ACEModel' : CHANNEL_LABELS[channel]}</Badge>
-                {row.is_alias && !ACE_MODEL_NAMES[row.model] ? <Badge variant="outline" className="text-[10px]">Alias</Badge> : null}
-                {hasLongContext(pricing) ? <Badge variant="outline" className="text-[10px]">Long</Badge> : null}
-                {hasPriority(pricing) ? <Badge variant="outline" className="text-[10px]">Priority</Badge> : null}
+                <Badge variant="secondary" className="text-xs">{ACE_MODEL_NAMES[row.model] ? 'ACEModel' : CHANNEL_LABELS[channel]}</Badge>
+                {row.is_alias && !ACE_MODEL_NAMES[row.model] ? <Badge variant="outline" className="text-xs">{isChinese ? (i18n.language === 'zh-TW' ? '別名' : '别名') : 'Alias'}</Badge> : null}
+                {hasLongContext(pricing) ? <Badge variant="outline" className="text-xs">{isChinese ? (i18n.language === 'zh-TW' ? '長上下文' : '长上下文') : 'Long context'}</Badge> : null}
+                {hasPriority(pricing) ? <Badge variant="outline" className="text-xs">{isChinese ? (i18n.language === 'zh-TW' ? '優先處理' : '优先处理') : 'Priority'}</Badge> : null}
               </div>
             </div>
           </div>
           {imageEstimate ? (
             <div className="shrink-0 rounded-md bg-primary px-3 py-2 text-right text-primary-foreground" aria-label={(i18n.language === 'zh-TW' ? '單張估價' : isChinese ? '单张估价' : 'Per-image estimate')}>
-              <div className="text-[10px]">{imageEstimate.exact ? ((i18n.language === 'zh-TW' ? '每張' : isChinese ? '每张' : 'Per image')) : ((i18n.language === 'zh-TW' ? '約 / 張' : isChinese ? '约 / 张' : 'Est. / image'))}</div>
+              <div className="text-xs">{imageEstimate.exact ? ((i18n.language === 'zh-TW' ? '每張' : isChinese ? '每张' : 'Per image')) : ((i18n.language === 'zh-TW' ? '約 / 張' : isChinese ? '约 / 张' : 'Est. / image'))}</div>
               <div className="font-mono text-lg font-semibold tabular-nums">{formatImageEstimate(imageEstimate.usd)}</div>
             </div>
           ) : !row.media_unit && !/^gpt-image-|^acemodel-image/.test(row.model) ? (
             <div className="shrink-0 rounded-md bg-primary px-3 py-2 text-right text-primary-foreground" aria-label={(i18n.language === 'zh-TW' ? '輸入倍率' : isChinese ? '输入倍率' : 'Input multiplier')}>
-              <div className="text-[10px]">{(i18n.language === 'zh-TW' ? '輸入倍率' : isChinese ? '输入倍率' : 'Input multiplier')}</div>
+              <div className="text-xs">{(i18n.language === 'zh-TW' ? '輸入倍率' : isChinese ? '输入倍率' : 'Input multiplier')}</div>
               <div className="font-mono text-lg font-semibold tabular-nums">{formatInputMultiplier(multiplier)}</div>
             </div>
           ) : null}
@@ -213,12 +208,12 @@ function PricingCard({ row, multiplier }: { row: PublicModelPricingRow; multipli
         <div className={`mt-4 grid gap-2 ${row.media_unit ? 'grid-cols-1' : 'grid-cols-3'}`}>
           {values.map(([label, value]) => (
             <div key={label} className="rounded-xl border border-border/70 bg-muted/25 px-2.5 py-2.5">
-              <div className="truncate text-[10px] font-semibold uppercase tracking-wide text-muted-foreground" title={label}>{label}</div>
+              <div className="truncate text-xs font-semibold uppercase tracking-wide text-muted-foreground" title={label}>{label}</div>
               <div className="mt-1 font-mono text-sm font-bold tabular-nums">{price(value)}</div>
             </div>
           ))}
         </div>
-        {!row.media_unit && <div className="mt-2 text-right text-[10px] text-muted-foreground">{t('keyUsage.pricingUnit')}</div>}
+        {!row.media_unit && <div className="mt-2 text-right text-xs text-muted-foreground">{t('keyUsage.pricingUnit')}</div>}
         {imageEstimate && !imageEstimate.exact && <p className="mt-2 text-xs text-muted-foreground">{(i18n.language === 'zh-TW' ? `${imageEstimate.size} 中畫質輸出估價；提示詞和參考圖另計。` : isChinese ? `${imageEstimate.size} 中画质输出估价；提示词和参考图另计。` : `${imageEstimate.size}, medium-quality output estimate; text and reference images cost extra.`)}</p>}
       </CardContent>
     </Card>

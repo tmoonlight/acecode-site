@@ -59,7 +59,7 @@ test('homepage translates all content, metadata and accessible names without cha
     assert.deepEqual([...used].sort(), Object.keys(homeCopy[language]).sort());
     assert.deepEqual(doc.nodes.map(node => node.attrs.href), links);
   }
-  assert.match(html, /<span data-i18n="heroTitle">和你一起<\/span>/);
+  assert.match(html, /<span data-i18n="heroTitle">桌面与终端的<\/span>/);
   assert.doesNotMatch(html, />Software that</);
   assert.match(html, /type="module" src="assets\/home-i18n.js/);
 });

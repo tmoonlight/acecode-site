@@ -97,11 +97,11 @@ const COPY: Record<'zh' | 'zh-TW' | 'en', GuideCopy> = {
     },
     acecodeTitle: '在 ACECode 中使用 ACEModel',
     acecodeDescription:
-      'ACECode 已原生内置 ACEModel 服务商，接口地址和模型目录都已准备好，只需粘贴本站 API Key。',
+      'ACECode 内置 ACEModel 服务商。选择后填入 API Key，再选择模型。',
     acecodeSteps: [
       '打开 ACECode，进入“设置 → 模型 → 新增模型”。',
       '在服务商列表中选择“ACEModel”。',
-      '粘贴在 ACEProxy 用户中心创建的 API Key。',
+      '粘贴在 ACEModel 用户中心创建的 API Key。',
       '选择 moonlight / starrylight / aurora，保存后设为默认模型。',
     ],
     codexTitle: 'Codex CLI 配置',
@@ -147,7 +147,7 @@ const COPY: Record<'zh' | 'zh-TW' | 'en', GuideCopy> = {
       ['推荐模型', 'aurora / moonlight / starrylight'],
     ],
     modelsTitle: '公开模型别名',
-    modelsDescription: '客户端只需要填写下列稳定别名，无需关心上游模型名称。',
+    modelsDescription: '可使用以下模型别名，也支持价格表中的原始模型名称。',
     modelRows: [
       ['aurora', '旗舰编码 / 复杂 Agent', '高推理强度 · 1M 上下文'],
       ['moonlight', '日常开发 / 速度平衡', '中等推理强度 · 1M 上下文'],
@@ -193,7 +193,7 @@ const COPY: Record<'zh' | 'zh-TW' | 'en', GuideCopy> = {
     },
     acecodeTitle: '在 ACECode 中使用 ACEModel',
     acecodeDescription:
-      'ACECode 已原生內建 ACEModel 服務商，介面地址和模型目錄都已準備好，只需貼上本站 API Key。',
+      'ACECode 內建 ACEModel 服務商。選擇後填入 API Key，再選擇模型。',
     acecodeSteps: [
       '開啟 ACECode，進入“設定 → 模型 → 新增模型”。',
       '在服務商列表中選擇“ACEModel”。',
@@ -243,7 +243,7 @@ const COPY: Record<'zh' | 'zh-TW' | 'en', GuideCopy> = {
       ['推薦模型', 'aurora / moonlight / starrylight'],
     ],
     modelsTitle: '公開模型別名',
-    modelsDescription: '客戶端只需要填寫下列穩定別名，無需關心上游模型名稱。',
+    modelsDescription: '可使用以下模型別名，也支援價格表中的原始模型名稱。',
     modelRows: [
       ['aurora', '旗艦編碼 / 複雜 Agent', '高推理強度 · 1M 上下文'],
       ['moonlight', '日常開發 / 速度平衡', '中等推理強度 · 1M 上下文'],
@@ -339,7 +339,7 @@ const COPY: Record<'zh' | 'zh-TW' | 'en', GuideCopy> = {
       ['Recommended models', 'aurora / moonlight / starrylight'],
     ],
     modelsTitle: 'Public model aliases',
-    modelsDescription: 'Use these stable aliases in clients; upstream model names can change independently.',
+    modelsDescription: 'Use these model aliases, or the original model names listed on the pricing page.',
     modelRows: [
       ['aurora', 'Flagship coding / complex agents', 'High reasoning · 1M context'],
       ['moonlight', 'Daily development / balanced speed', 'Medium reasoning · 1M context'],
@@ -529,14 +529,13 @@ export function ClientIntegrationGuide({ embedded = false }: { embedded?: boolea
   return (
     <div className="min-h-dvh bg-white text-black dark:bg-black dark:text-white">
       <div className="ace-page-tools"><Button asChild variant="outline"><a href="https://customers.acecode.cc/customerv2/usage">{i18n.language === 'zh-TW' ? '用量查詢' : i18n.language.startsWith('zh') ? '用量查询' : 'Usage'}</a></Button></div>
-      <main className="mx-auto max-w-[1180px] px-5 py-12 sm:py-16">
+      <main className="ace-content-shell">
         <section className="grid gap-10 border-b border-black/15 pb-12 dark:border-white/20 lg:grid-cols-[1.45fr_0.75fr] lg:items-end">
           <div>
-            <div className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-black/45 dark:text-white/45">{copy.eyebrow}</div>
-            <h1 id="integration-guide-title" className="mt-5 max-w-3xl text-4xl font-semibold leading-[1.04] tracking-[-0.04em] sm:text-6xl">
+            <h1 id="integration-guide-title" className="max-w-3xl text-3xl font-semibold leading-tight tracking-tight">
               {copy.title}
             </h1>
-            <p className="mt-6 max-w-2xl text-base leading-7 text-black/60 dark:text-white/60">{copy.description}</p>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-black/60 dark:text-white/60">{copy.description}</p>
             <a href="https://acecode.cc/acecode/" target="_blank" rel="noreferrer" className="mt-7 inline-flex items-center gap-2 bg-black px-5 py-3 text-sm font-bold text-white shadow-[4px_4px_0_0_var(--ace-ink)] transition-transform hover:-translate-y-0.5 dark:bg-white dark:text-black">
               <BookOpen className="size-4" />
               {copy.fullDocs}
@@ -546,7 +545,7 @@ export function ClientIntegrationGuide({ embedded = false }: { embedded?: boolea
           <div className="border border-black/20 dark:border-white/25">
             <CopyRow label={copy.baseUrl} value={API_BASE_URL} copy={copy} />
             <div className="border-t border-black/15 px-4 py-3 dark:border-white/20">
-              <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-black/45 dark:text-white/45">{copy.apiKey}</div>
+              <div className="text-xs font-semibold text-black/45 dark:text-white/45">{copy.apiKey}</div>
               <div className="mt-1 flex items-center gap-2 font-mono text-sm"><KeyRound className="size-3.5" /> sk-••••••••••••</div>
               <div className="mt-1 text-xs text-black/45 dark:text-white/45">{copy.apiKeyHint}</div>
             </div>
@@ -554,7 +553,7 @@ export function ClientIntegrationGuide({ embedded = false }: { embedded?: boolea
         </section>
 
         <section className="py-12">
-          <div className="mb-5 flex items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-black/50 dark:text-white/50">
+          <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-black/50 dark:text-white/50">
             <Sparkles className="size-3.5" /> {copy.quickStart}
           </div>
           <div className="grid gap-0 border border-black/20 dark:border-white/25 lg:grid-cols-[240px_1fr]">
@@ -574,7 +573,7 @@ export function ClientIntegrationGuide({ embedded = false }: { embedded?: boolea
         </section>
 
         <section className="grid gap-8 border-t border-black/15 py-12 dark:border-white/20 lg:grid-cols-2">
-          <InfoSection index="01" title={copy.modelsTitle} description={copy.modelsDescription}>
+          <InfoSection title={copy.modelsTitle} description={copy.modelsDescription}>
             <div className="divide-y divide-black/10 border-y border-black/15 dark:divide-white/15 dark:border-white/20">
               {copy.modelRows.map(([model, useCase, detail]) => (
                 <div key={model} className="grid gap-1 py-3 sm:grid-cols-[150px_1fr]">
@@ -584,7 +583,7 @@ export function ClientIntegrationGuide({ embedded = false }: { embedded?: boolea
               ))}
             </div>
           </InfoSection>
-          <InfoSection index="02" title={copy.endpointTitle} description={copy.endpointDescription}>
+          <InfoSection title={copy.endpointTitle} description={copy.endpointDescription}>
             <div className="divide-y divide-black/10 border-y border-black/15 dark:divide-white/15 dark:border-white/20">
               {copy.endpointRows.map(([endpoint, useCase]) => (
                 <div key={endpoint} className="py-3">
@@ -622,10 +621,9 @@ function GuidePanel({ title, description, children }: { title: string; descripti
   )
 }
 
-function InfoSection({ index, title, description, children }: { index: string; title: string; description: string; children: ReactNode }) {
+function InfoSection({ title, description, children }: { title: string; description: string; children: ReactNode }) {
   return (
     <article>
-      <div className="font-mono text-[10px] font-bold tracking-[0.16em] text-black/40 dark:text-white/40">{index}</div>
       <h2 className="mt-3 text-2xl font-semibold tracking-[-0.025em]">{title}</h2>
       <p className="mt-2 mb-6 text-sm leading-6 text-black/55 dark:text-white/55">{description}</p>
       {children}
@@ -639,7 +637,7 @@ function CodeBlock({ label, code, copy }: { label: string; code: string; copy: G
     <div className="min-w-0">
       <div className="mb-2 flex items-center justify-between gap-3">
         <span className="text-xs font-semibold">{label}</span>
-        <button type="button" onClick={() => void copyText(code).then(() => { setCopied(true); window.setTimeout(() => setCopied(false), 1600) })} className="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.08em] text-black/50 hover:text-black dark:text-white/50 dark:hover:text-white">
+        <button type="button" onClick={() => void copyText(code).then(() => { setCopied(true); window.setTimeout(() => setCopied(false), 1600) })} className="inline-flex items-center gap-1.5 text-xs font-semibold text-black/50 hover:text-black dark:text-white/50 dark:hover:text-white">
           {copied ? <Check className="size-3" /> : <Copy className="size-3" />}{copied ? copy.copied : copy.copy}
         </button>
       </div>
@@ -653,7 +651,7 @@ function CopyRow({ label, value, copy }: { label: string; value: string; copy: G
   return (
     <div className="flex items-center justify-between gap-3 px-4 py-3">
       <div className="min-w-0">
-        <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-black/45 dark:text-white/45">{label}</div>
+        <div className="text-xs font-semibold text-black/45 dark:text-white/45">{label}</div>
         <code className="mt-1 block truncate font-mono text-sm">{value}</code>
       </div>
       <button type="button" onClick={() => void copyText(value).then(() => { setCopied(true); window.setTimeout(() => setCopied(false), 1600) })} className="flex size-8 shrink-0 items-center justify-center border border-black/20 hover:bg-black hover:text-white dark:border-white/25 dark:hover:bg-white dark:hover:text-black" aria-label={copied ? copy.copied : copy.copy}>

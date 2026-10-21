@@ -68,3 +68,13 @@
 @media(max-width:760px){.ace-header-inner{flex-wrap:wrap;gap:8px;min-height:60px;padding:10px 0;margin:0 16px}.ace-site-nav{order:3;flex-basis:100%;margin:0;overflow-x:auto}.ace-site-nav a{font-size:14px;padding:6px 9px}.ace-site-nav .ace-nav-cta{margin-left:auto}.ace-site-footer{margin-left:16px;margin-right:16px;gap:16px}.ace-page-tools{padding-left:16px;padding-right:16px}.ace-page-tools h1{font-size:28px}}
 @media(max-width:500px){.customer-toolbar,.ace-public .customer-dashboard{margin-left:16px;margin-right:16px}.customer-toolbar{flex-wrap:wrap}.ace-public .customer-auth-wrap{padding-left:16px;padding-right:16px}.ace-public :is(.customer-auth-card,.customer-section,.customer-balance,.customer-overview-note){padding:22px}.ace-public .customer-dashboard-heading{align-items:start;flex-wrap:wrap}.ace-public .customer-dashboard-heading h1{font-size:32px}.ace-public .customer-key-row{flex-wrap:wrap}.ace-public .customer-intro h1{font-size:40px}.ace-public :is(.customer-secret,.customer-order-detail){padding:12px}}
 @media(prefers-reduced-motion:reduce){.ace-public *{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+/* Public pages use the same content measure and controls as the product page. */
+.ace-content-shell{width:calc(100% - 48px);max-width:1088px;margin:0 auto;padding:36px 0 48px}
+.ace-page-tools{max-width:1136px;padding:24px 24px 0}
+.ace-site-nav a{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+.ace-site-nav .ace-nav-github{width:44px;padding:10px}
+.ace-header-inner>[data-slot=button]{width:44px;height:44px}
+.ace-public [data-slot=card]{box-shadow:none}
+.ace-public [data-slot=input]{min-height:44px}
+@media(max-width:760px){.ace-content-shell{width:calc(100% - 32px);padding-top:28px}.ace-page-tools{padding-left:16px;padding-right:16px}}

@@ -9,3 +9,6 @@
 /* GitHub mark uses the existing @lobehub/icons-static-svg asset. */
 .site-nav .nav-github{display:inline-flex;align-items:center;justify-content:center;flex:none;width:44px;height:44px;padding:10px;margin-left:10px}.nav-github svg{display:block;flex:none}
 @media(max-width:760px){.site-header .site-nav .nav-github{width:40px;height:40px;padding:8px;margin-left:4px}}
+
+/* Keep the shared header aligned when the language selector is present. */
+@media(min-width:1001px){.site-header .site-nav{margin-left:auto}.site-header .header-inner{justify-content:flex-start}}
