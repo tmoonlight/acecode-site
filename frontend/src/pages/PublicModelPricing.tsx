@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
     CircleDollarSign,
-  Languages,
   Loader2,
     RefreshCw,
   Search,
@@ -93,15 +92,10 @@ export default function PublicModelPricing() {
     })
   }, [channel, query, rows])
 
-  const handleLanguageChange = async () => {
-    const nextLanguage = isChinese ? 'en' : 'zh'
-    await i18n.changeLanguage(nextLanguage)
-    document.documentElement.lang = nextLanguage === 'zh' ? 'zh-CN' : 'en'
-  }
 
   return (
     <div className={embedded ? "space-y-5" : "min-h-dvh bg-background text-foreground"}>
-      <div className={embedded ? "flex items-center justify-between gap-3" : "ace-page-tools"}><h1 className="text-2xl font-bold">{t('keyUsage.pricingTitle')}</h1><Button variant="outline" onClick={() => void handleLanguageChange()}><Languages />{isChinese ? 'English' : '中文'}</Button></div>
+      <div className={embedded ? "flex items-center justify-between gap-3" : "ace-page-tools"}><h1 className="text-2xl font-bold">{t('keyUsage.pricingTitle')}</h1></div>
       <div className={embedded ? "space-y-5" : "mx-auto max-w-[1500px] space-y-5 px-4 py-6 sm:px-6"}>
         <section className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
@@ -135,13 +129,13 @@ export default function PublicModelPricing() {
           </div>
         </section>
 
-        <section className="flex flex-wrap items-center justify-between gap-4 rounded-xl border-2 border-primary bg-primary p-5 text-primary-foreground" aria-label={isChinese ? '体验包' : 'Trial pack'}>
+        <section className="flex flex-wrap items-center justify-between gap-4 rounded-xl border-2 border-primary bg-primary p-5 text-primary-foreground" aria-label={(i18n.language === 'zh-TW' ? '體驗包' : isChinese ? '体验包' : 'Trial pack')}>
           <div>
-            <h2 className="font-semibold">{isChinese ? '体验包' : 'Trial pack'}</h2>
-            <p className="mt-1 text-xl sm:text-2xl"><strong>¥{TRIAL_AMOUNT_CENTS / 100}</strong><span className="mx-2">→</span><strong>${TRIAL_CREDIT_USD}</strong> {isChinese ? '模型额度' : 'model credits'}</p>
-            <p className="mt-1 text-sm">{isChinese ? '每个账户和浏览器限购一次' : 'Once per account and browser'}</p>
+            <h2 className="font-semibold">{(i18n.language === 'zh-TW' ? '體驗包' : isChinese ? '体验包' : 'Trial pack')}</h2>
+            <p className="mt-1 text-xl sm:text-2xl"><strong>¥{TRIAL_AMOUNT_CENTS / 100}</strong><span className="mx-2">→</span><strong>${TRIAL_CREDIT_USD}</strong> {(i18n.language === 'zh-TW' ? '模型額度' : isChinese ? '模型额度' : 'model credits')}</p>
+            <p className="mt-1 text-sm">{(i18n.language === 'zh-TW' ? '每個賬戶和瀏覽器限購一次' : isChinese ? '每个账户和浏览器限购一次' : 'Once per account and browser')}</p>
           </div>
-          <Button asChild variant="secondary"><a href="https://customers.acecode.cc/customerv2/wallet?plan=trial">{isChinese ? '购买体验包' : 'Get trial pack'}</a></Button>
+          <Button asChild variant="secondary"><a href="https://customers.acecode.cc/customerv2/wallet?plan=trial">{(i18n.language === 'zh-TW' ? '購買體驗包' : isChinese ? '购买体验包' : 'Get trial pack')}</a></Button>
 
         </section>
 
@@ -161,7 +155,7 @@ export default function PublicModelPricing() {
         ) : (
           <div className="space-y-3">
             <p className="text-sm text-muted-foreground">
-              {isChinese ? `输入倍率以 ${INPUT_PRICE_BASELINE} = 1×；实际费用按输入、缓存和输出分别计算。` : `Input multiplier: ${INPUT_PRICE_BASELINE} = 1×. Input, cache and output are billed separately.`}
+              {(i18n.language === 'zh-TW' ? `輸入倍率以 ${INPUT_PRICE_BASELINE} = 1×；實際費用按輸入、快取和輸出分別計算。` : isChinese ? `输入倍率以 ${INPUT_PRICE_BASELINE} = 1×；实际费用按输入、缓存和输出分别计算。` : `Input multiplier: ${INPUT_PRICE_BASELINE} = 1×. Input, cache and output are billed separately.`)}
             </p>
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
             {filtered.map((row) => (
@@ -181,7 +175,7 @@ function PricingCard({ row, multiplier }: { row: PublicModelPricingRow; multipli
   const channel = normalizeChannel(row.channel)
   const pricing = row.pricing
   const imageEstimate = imagePriceEstimate(row)
-  const values = row.media_unit ? [[row.media_unit === 'image' ? (isChinese ? '每张图片' : 'Per image') : (isChinese ? '每秒视频' : 'Per second'), pricing.image_unit_price || pricing.media_unit_cost]] as const : [
+  const values = row.media_unit ? [[row.media_unit === 'image' ? ((i18n.language === 'zh-TW' ? '每張圖片' : isChinese ? '每张图片' : 'Per image')) : ((i18n.language === 'zh-TW' ? '每秒影片' : isChinese ? '每秒视频' : 'Per second')), pricing.image_unit_price || pricing.media_unit_cost]] as const : [
     [t('settings.pricing.shortInput'), pricing.input],
     [t('settings.pricing.shortCached'), pricing.cached_input],
     [t('settings.pricing.shortOutput'), pricing.output],
@@ -204,13 +198,13 @@ function PricingCard({ row, multiplier }: { row: PublicModelPricingRow; multipli
             </div>
           </div>
           {imageEstimate ? (
-            <div className="shrink-0 rounded-md bg-primary px-3 py-2 text-right text-primary-foreground" aria-label={isChinese ? '单张估价' : 'Per-image estimate'}>
-              <div className="text-[10px]">{imageEstimate.exact ? (isChinese ? '每张' : 'Per image') : (isChinese ? '约 / 张' : 'Est. / image')}</div>
+            <div className="shrink-0 rounded-md bg-primary px-3 py-2 text-right text-primary-foreground" aria-label={(i18n.language === 'zh-TW' ? '單張估價' : isChinese ? '单张估价' : 'Per-image estimate')}>
+              <div className="text-[10px]">{imageEstimate.exact ? ((i18n.language === 'zh-TW' ? '每張' : isChinese ? '每张' : 'Per image')) : ((i18n.language === 'zh-TW' ? '約 / 張' : isChinese ? '约 / 张' : 'Est. / image'))}</div>
               <div className="font-mono text-lg font-semibold tabular-nums">{formatImageEstimate(imageEstimate.usd)}</div>
             </div>
           ) : !row.media_unit && !/^gpt-image-|^acemodel-image/.test(row.model) ? (
-            <div className="shrink-0 rounded-md bg-primary px-3 py-2 text-right text-primary-foreground" aria-label={isChinese ? '输入倍率' : 'Input multiplier'}>
-              <div className="text-[10px]">{isChinese ? '输入倍率' : 'Input multiplier'}</div>
+            <div className="shrink-0 rounded-md bg-primary px-3 py-2 text-right text-primary-foreground" aria-label={(i18n.language === 'zh-TW' ? '輸入倍率' : isChinese ? '输入倍率' : 'Input multiplier')}>
+              <div className="text-[10px]">{(i18n.language === 'zh-TW' ? '輸入倍率' : isChinese ? '输入倍率' : 'Input multiplier')}</div>
               <div className="font-mono text-lg font-semibold tabular-nums">{formatInputMultiplier(multiplier)}</div>
             </div>
           ) : null}
@@ -225,7 +219,7 @@ function PricingCard({ row, multiplier }: { row: PublicModelPricingRow; multipli
           ))}
         </div>
         {!row.media_unit && <div className="mt-2 text-right text-[10px] text-muted-foreground">{t('keyUsage.pricingUnit')}</div>}
-        {imageEstimate && !imageEstimate.exact && <p className="mt-2 text-xs text-muted-foreground">{isChinese ? `${imageEstimate.size} 中画质输出估价；提示词和参考图另计。` : `${imageEstimate.size}, medium-quality output estimate; text and reference images cost extra.`}</p>}
+        {imageEstimate && !imageEstimate.exact && <p className="mt-2 text-xs text-muted-foreground">{(i18n.language === 'zh-TW' ? `${imageEstimate.size} 中畫質輸出估價；提示詞和參考圖另計。` : isChinese ? `${imageEstimate.size} 中画质输出估价；提示词和参考图另计。` : `${imageEstimate.size}, medium-quality output estimate; text and reference images cost extra.`)}</p>}
       </CardContent>
     </Card>
   )

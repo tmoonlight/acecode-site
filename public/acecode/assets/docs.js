@@ -1,3 +1,6 @@
+import '../../acemodel/assets/language-menu.js';
+import {t, localizeTree} from '../../acemodel/assets/interface-i18n.js';
+import {getSiteLanguage, subscribeSiteLanguage} from '../../acemodel/assets/site-language.js';
 (function () {
   'use strict';
   var root = document.documentElement;
@@ -11,9 +14,9 @@
     toastTimer = window.setTimeout(function () { toast.hidden = true; }, 3600);
   }
   function syncThemeLabel() {
-    var nextTheme = root.dataset.theme === 'dark' ? '浅色' : '深色';
-    themeButton.setAttribute('aria-label', '切换到' + nextTheme + '主题');
-    themeButton.title = '切换到' + nextTheme + '主题';
+    var nextTheme = root.dataset.theme === 'dark' ? t("浅色") : t("深色");
+    themeButton.setAttribute('aria-label', t("切换到") + nextTheme + t("主题"));
+    themeButton.title = t("切换到") + nextTheme + t("主题");
   }
   syncThemeLabel();
   themeButton.addEventListener('click', function () {
@@ -36,7 +39,7 @@
     drawerOpen = open;
     sidebar.classList.toggle('is-open', open);
     menuButton.setAttribute('aria-expanded', String(open));
-    menuButton.setAttribute('aria-label', open ? '关闭文档目录' : '打开文档目录');
+    menuButton.setAttribute('aria-label', open ? t("关闭文档目录") : t("打开文档目录"));
     backdrop.hidden = !open;
     document.body.classList.toggle('modal-open', open || searchDialog.open);
     mainLayout.inert = open;
@@ -88,15 +91,15 @@
         button.focus({ preventScroll: true });
       }
       if (success) {
-        button.querySelector('span').textContent = '已复制';
-        announce('已复制到剪贴板');
-        window.setTimeout(function () { button.querySelector('span').textContent = '复制'; }, 1800);
+        button.querySelector('span').textContent = t("已复制");
+        announce(t("已复制到剪贴板"));
+        window.setTimeout(function () { button.querySelector('span').textContent = t("复制"); }, 1800);
       } else {
         var range = document.createRange();
         range.selectNodeContents(code);
         var selection = window.getSelection();
         if (selection) { selection.removeAllRanges(); selection.addRange(range); }
-        announce('浏览器未允许复制，已选中代码，请手动复制。');
+        announce(t("浏览器未允许复制，已选中代码，请手动复制。"));
       }
       button.disabled = false;
     });
@@ -139,8 +142,8 @@
       : searchIndex.filter(function (item) { return !item.url.includes('#'); });
     resultsElement.replaceChildren();
     searchStatus.textContent = terms.length
-      ? (matches.length ? '找到 ' + matches.length + ' 条结果' : '没有找到相关内容')
-      : '全部文档 · ' + searchIndex.filter(function (item) { return !item.url.includes('#'); }).length + ' 篇';
+      ? (matches.length ? t("找到 ") + matches.length + t(" 条结果") : t("没有找到相关内容"))
+      : t("全部文档 · ") + searchIndex.filter(function (item) { return !item.url.includes('#'); }).length + t(" 篇");
     resultLinks = matches.map(function (item, index) {
       var link = document.createElement('a');
       link.className = 'search-result';
@@ -160,7 +163,7 @@
     if (!matches.length) {
       var empty = document.createElement('p');
       empty.className = 'search-empty';
-      empty.textContent = '试试“安装”“模型”“工作区”或具体命令名称。';
+      empty.textContent = t("试试“安装”“模型”“工作区”或具体命令名称。");
       resultsElement.appendChild(empty);
     }
     selectResult(0, false);
@@ -269,3 +272,6 @@
   });
   updateContents();
 }());
+
+for (const node of document.querySelectorAll('.site-header,.sidebar,.contents-title,.rail-note,.search-dialog,.page-navigation,.article-footer,.copy-button,.breadcrumb,.mobile-contents>summary,.skip-link')) localizeTree(node);
+subscribeSiteLanguage(() => location.reload());

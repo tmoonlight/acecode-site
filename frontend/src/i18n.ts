@@ -3,7 +3,8 @@ import { initReactI18next } from 'react-i18next'
 import zh from './locales/zh.json'
 import zhTW from './locales/zh-TW.json'
 import en from './locales/en.json'
-import { browserLanguage, documentLanguage } from '../../public/acemodel/assets/browser-language.js'
+import { documentLanguage } from '../../public/acemodel/assets/browser-language.js'
+import { getSiteLanguage, setSiteLanguage, subscribeSiteLanguage } from '../../public/acemodel/assets/site-language.js'
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -11,7 +12,7 @@ i18n.use(initReactI18next).init({
     'zh-TW': { translation: zhTW },
     en: { translation: en },
   },
-  lng: browserLanguage(navigator),
+  lng: getSiteLanguage(),
   fallbackLng: {
     'zh-TW': ['zh'],
     default: ['zh'],
@@ -23,12 +24,13 @@ i18n.use(initReactI18next).init({
 
 const syncDocumentLanguage = (language: string) => {
   document.documentElement.lang = documentLanguage(language === 'zh-TW' ? 'zh-TW' : language === 'zh' ? 'zh' : 'en')
+  if (language !== getSiteLanguage()) setSiteLanguage(language)
 }
 
 syncDocumentLanguage(i18n.resolvedLanguage || i18n.language)
 i18n.on('languageChanged', syncDocumentLanguage)
-window.addEventListener('languagechange', () => {
-  void i18n.changeLanguage(browserLanguage(navigator))
+subscribeSiteLanguage((language: string) => {
+  if (language !== i18n.language) void i18n.changeLanguage(language)
 })
 
 export default i18n

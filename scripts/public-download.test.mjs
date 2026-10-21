@@ -66,8 +66,8 @@ function videoFixture(playFailure) {
   sound.querySelector = selector => selector.includes('off') ? off : on;
   const nodes = {'promo-video': video, 'promo-sound': sound, 'promo-error': new Element(),
     'promo-error-message': new Element(), 'promo-retry': new Element()};
-  const source = readFileSync(new URL('../public/download/assets/promo.js', import.meta.url), 'utf8');
-  vm.runInNewContext(source, {document: {getElementById: id => nodes[id]}});
+  const source = readFileSync(new URL('../public/download/assets/promo.js', import.meta.url), 'utf8').replace(/^import .*;\r?\n/gm, '');
+  vm.runInNewContext(source, {t: source => source, document: {getElementById: id => nodes[id]}});
   return {video, sound, off, on, nodes};
 }
 

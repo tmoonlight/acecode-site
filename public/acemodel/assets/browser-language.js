@@ -1,6 +1,6 @@
 /**
  * Resolve supported languages in the browser's preference order.
- * No cookies or stored site preferences override the browser setting.
+ * Used as the default until the visitor chooses a site language.
  * @param {{languages?: readonly string[], language?: string}} browser
  * @returns {'zh' | 'zh-TW' | 'en'}
  */

@@ -71,7 +71,7 @@ type GuideCopy = {
   noteBody: string
 }
 
-const COPY: Record<'zh' | 'en', GuideCopy> = {
+const COPY: Record<'zh' | 'zh-TW' | 'en', GuideCopy> = {
   zh: {
     menu: '接入教程',
     close: '关闭接入教程',
@@ -167,6 +167,102 @@ const COPY: Record<'zh' | 'en', GuideCopy> = {
     noteTitle: '连接不上？',
     noteBody:
       '先确认地址中包含 /aceapi/v1，密钥没有多余空格，并在客户端选择 OpenAI 兼容模式。Claude Code 请按 CC Switch 小节启用本地路由。',
+  },
+  'zh-TW': {
+    menu: '接入教程',
+    close: '關閉接入教程',
+    eyebrow: 'ACEModel / Client setup',
+    title: 'ACEModel 大模型接入指南',
+    description:
+      '在 ACECode 中選擇 ACEModel 服務商，或在相容客戶端中填寫 API 地址與使用者中心建立的 Key。',
+    baseUrl: 'API 基礎地址',
+    apiKey: 'API Key',
+    apiKeyHint: '使用使用者中心建立的 API Key',
+    copy: '複製',
+    copied: '已複製',
+    quickStart: '選擇客戶端',
+    fullDocs: '檢視 ACECode 完整文件',
+    acecodeDocs: '檢視 ACEModel 詳細教程',
+    tabs: {
+      acecode: 'ACECode（推薦）',
+      ccswitch: 'CC Switch',
+      codex: 'Codex CLI',
+      claude: 'Claude Code',
+      sdk: 'OpenAI SDK',
+      clients: '其他客戶端',
+    },
+    acecodeTitle: '在 ACECode 中使用 ACEModel',
+    acecodeDescription:
+      'ACECode 已原生內建 ACEModel 服務商，介面地址和模型目錄都已準備好，只需貼上本站 API Key。',
+    acecodeSteps: [
+      '開啟 ACECode，進入“設定 → 模型 → 新增模型”。',
+      '在服務商列表中選擇“ACEModel”。',
+      '貼上在 ACEProxy 使用者中心建立的 API Key。',
+      '選擇 moonlight / starrylight / aurora，儲存後設為預設模型。',
+    ],
+    codexTitle: 'Codex CLI 配置',
+    codexDescription:
+      '將配置寫入 ~/.codex/config.toml，再透過環境變數提供金鑰。aurora 預設使用高推理強度。',
+    codexStep1: '1. 寫入 ~/.codex/config.toml',
+    codexStep2: '2. 設定金鑰並啟動',
+    claudeTitle: 'Claude Code 配置',
+    claudeDescription:
+      '本站客戶 Key 開放 Responses / Chat 文字與工具呼叫。使用 Claude Code 時，透過 CC Switch 的本地路由轉換協議，不直接請求 /messages。',
+    claudeStep1: 'macOS / Linux',
+    claudeStep2: 'Windows PowerShell',
+    sdkTitle: 'OpenAI SDK / curl',
+    sdkDescription:
+      '介面同時相容 Responses API 與 Chat Completions。新專案建議優先使用 Responses API。',
+    ccswitchTitle: '透過 CC Switch 接入 ACEModel',
+    ccswitchDescription: '先在使用者中心複製 API Key。推薦在 CC Switch 的 Codex 頁面新增 ACEModel，使用 Responses 原生直連。',
+    ccswitchSteps: [
+      '安裝並開啟 CC Switch，選擇 Codex，點選“新增供應商”，選擇“自定義配置”。',
+      '名稱填 ACEModel，填入下表的 API 地址和模型，將本站 Key 貼上到 API Key / auth.json 編輯區。',
+      '上游格式選擇 Responses（原生）。下方提供 auth.json 和 config.toml 編輯區的參考內容；認證項由 CC Switch 管理。',
+      '點選“新增”後，在供應商卡片上點選“啟用”或“使用”。退出並重新啟動 Codex，再發起一個簡短任務。',
+    ],
+    ccswitchFields: [['應用', 'Codex'], ['供應商名稱', 'ACEModel'], ['API 地址', API_BASE_URL], ['模型', 'aurora / moonlight / starrylight'], ['上游格式', 'Responses（原生）']],
+    ccswitchAuth: 'CC Switch 的 auth.json 編輯區',
+    ccswitchConfig: 'CC Switch 的 config.toml 編輯區',
+    ccswitchClaude: '在 CC Switch 中配置 Claude Code',
+    ccswitchClaudeSteps: [
+      '選擇 Claude → 新增供應商 → 自定義，填入同一個本站 Key，模型填 aurora。',
+      '請求地址填 https://acecode.cc/aceapi/v1/responses，開啟“完整 URL”，上游格式選“OpenAI Responses API”。',
+      '儲存供應商後進入“路由”，點選“開始路由”並選擇 ACEModel；使用期間保持 CC Switch 執行。舊版介面可能稱為“本地代理 / 接管”。',
+    ],
+    ccswitchTrouble: '401/403：檢查 Key 與賬戶狀態；404：檢查 /aceapi 和 /v1 是否重複或缺失。模型列表獲取失敗時可手動填寫 aurora。仍使用舊配置時重新啟用供應商並重啟客戶端；透過 Key 的使用詳情檢視是否產生請求。',
+    ccswitchDownload: '下載 CC Switch',
+    ccswitchDocs: 'CC Switch 官方配置文件',
+    clientsTitle: 'Cherry Studio、Cline、OpenCode 等',
+    clientsDescription:
+      '在客戶端中新建“OpenAI 相容”或“自定義 OpenAI”提供方，然後填寫以下欄位。若客戶端會自動補 /v1，請將地址末尾的 /v1 去掉。',
+    clientFields: [
+      ['提供方型別', 'OpenAI Compatible'],
+      ['API 地址', API_BASE_URL],
+      ['API Key', '你的 sk-... 金鑰'],
+      ['推薦模型', 'aurora / moonlight / starrylight'],
+    ],
+    modelsTitle: '公開模型別名',
+    modelsDescription: '客戶端只需要填寫下列穩定別名，無需關心上游模型名稱。',
+    modelRows: [
+      ['aurora', '旗艦編碼 / 複雜 Agent', '高推理強度 · 1M 上下文'],
+      ['moonlight', '日常開發 / 速度平衡', '中等推理強度 · 1M 上下文'],
+      ['starrylight', '輕量任務 / 快速響應', '高推理強度 · 128K 上下文'],
+      ['acemodel-image', '標準生圖', 'gpt-image-2'],
+      ['acemodel-image-2k', '2K 生圖', 'gpt-image-2 · 2K'],
+      ['acemodel-image-4k', '4K 生圖', 'gpt-image-2 · 4K'],
+    ],
+    endpointTitle: '相容端點',
+    endpointDescription: '客戶 Key 已開放 Responses / Chat 文字與工具呼叫；其他協議和圖片取決於金鑰許可權。',
+    endpointRows: [
+      ['POST /responses', 'Codex CLI、OpenAI Responses SDK'],
+      ['POST /chat/completions', 'OpenAI 相容客戶端與舊版 SDK'],
+      ['POST /messages', 'Claude Code 與 Anthropic SDK'],
+      ['GET /models', '獲取公開模型列表'],
+    ],
+    noteTitle: '連線不上？',
+    noteBody:
+      '先確認地址中包含 /aceapi/v1，金鑰沒有多餘空格，並在客戶端選擇 OpenAI 相容模式。Claude Code 請按 CC Switch 小節啟用本地路由。',
   },
   en: {
     menu: 'Integration Guide',
@@ -311,7 +407,7 @@ const CURL_EXAMPLE = `curl ${API_BASE_URL}/responses \\
 
 export function ClientIntegrationGuide({ embedded = false }: { embedded?: boolean } = {}) {
   const { i18n } = useTranslation()
-  const copy = COPY[i18n.resolvedLanguage?.toLowerCase().startsWith('zh') ? 'zh' : 'en']
+  const copy = COPY[i18n.language === 'zh-TW' ? 'zh-TW' : i18n.language.startsWith('zh') ? 'zh' : 'en']
   const [activeTab, setActiveTab] = useState<GuideTab>('acecode')
   useEffect(() => {
     const selectHash = () => {
@@ -432,7 +528,7 @@ export function ClientIntegrationGuide({ embedded = false }: { embedded?: boolea
     );
   return (
     <div className="min-h-dvh bg-white text-black dark:bg-black dark:text-white">
-      <div className="ace-page-tools"><Button asChild variant="outline"><a href="https://customers.acecode.cc/customerv2/usage">{i18n.language.startsWith('zh') ? '返回用量查询' : 'Back to usage'}</a></Button></div>
+      <div className="ace-page-tools"><Button asChild variant="outline"><a href="https://customers.acecode.cc/customerv2/usage">{i18n.language === 'zh-TW' ? '返回用量查詢' : i18n.language.startsWith('zh') ? '返回用量查询' : 'Back to usage'}</a></Button></div>
       <main className="mx-auto max-w-[1180px] px-5 py-12 sm:py-16">
         <section className="grid gap-10 border-b border-black/15 pb-12 dark:border-white/20 lg:grid-cols-[1.45fr_0.75fr] lg:items-end">
           <div>

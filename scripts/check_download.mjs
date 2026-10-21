@@ -2,9 +2,12 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 
-const script = fs.readFileSync(new URL('../public/download/assets/release.js', import.meta.url), 'utf8');
+const script = fs.readFileSync(new URL('../public/download/assets/release.js', import.meta.url), 'utf8').replace(/^import .*;\r?\n/gm, '');
 const context = vm.createContext({
   URL, Intl, setTimeout, clearTimeout,
+  t: (source, values = []) => source.replace(/\{(\d+)\}/g, (_, i) => values[i]),
+  getSiteLanguage: () => 'zh',
+  localizeTree() {}, subscribeSiteLanguage() {},
   document: { documentElement: { dataset: {} } },
   location: { href: 'https://acecodedownload.b-cdn.net/download/' },
   navigator: { userAgent: 'Windows NT 10.0; Win64; x64', platform: 'Win32' },

@@ -3,6 +3,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test:language": "node --test scripts/browser-language.test.mjs"
+    "test:language": "node --test scripts/browser-language.test.mjs scripts/site-language.test.mjs"
   }
 }

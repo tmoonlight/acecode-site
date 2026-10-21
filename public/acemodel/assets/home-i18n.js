@@ -1,4 +1,5 @@
-import { browserLanguage, documentLanguage } from './browser-language.js';
+import { documentLanguage } from './browser-language.js';
+import { getSiteLanguage, subscribeSiteLanguage } from './site-language.js';
 
 export const homeCopy = {
   zh: {
@@ -155,7 +156,7 @@ export function applyHomeLanguage(doc, language) {
 }
 
 if (typeof window !== 'undefined' && typeof document !== 'undefined') {
-  const updateLanguage = () => applyHomeLanguage(document, browserLanguage(navigator));
+  const updateLanguage = () => applyHomeLanguage(document, getSiteLanguage());
   updateLanguage();
-  window.addEventListener('languagechange', updateLanguage);
+  subscribeSiteLanguage(updateLanguage);
 }

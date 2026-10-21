@@ -11,14 +11,15 @@
   <link rel="stylesheet" href="assets/site-docs.css?v=20261018-fonts">
   <script src="assets/theme.js"></script>
   <script src="assets/search-index.js" defer></script>
-  <script src="assets/docs.js" defer></script>
+  <script type="module" src="assets/docs.js?v=20261021-global"></script>
+  <link rel="stylesheet" href="../acemodel/assets/language-menu.css?v=20261021-global">
 </head>
 <body>
   <a class="skip-link" href="#main-content">跳到正文</a>
   <header class="site-header">
     <div class="brand-area"><button class="menu-toggle icon-button js-only" type="button" aria-label="打开文档目录" aria-controls="sidebar" aria-expanded="false"><svg class="icon " width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="index.html" aria-label="ACECode 文档首页">ACE<span>Code</span></a><span class="brand-divider" aria-hidden="true"></span><span class="brand-label">文档</span></div>
     <button class="search-trigger js-only" type="button" aria-label="搜索文档" aria-haspopup="dialog"><svg class="icon " width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 4 4"/></svg><span>搜索文档</span><kbd>Ctrl K</kbd></button>
-    <div class="header-actions"><a class="github-link" href="https://github.com/tmoonlight/acecode" target="_blank" rel="noopener noreferrer">GitHub <svg class="icon " width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M14 3h7v7m0-7L10 14M10 5H4v15h15v-6"/></svg></a><span class="header-divider" aria-hidden="true"></span><button class="theme-toggle icon-button js-only" type="button" aria-label="切换到浅色主题" title="切换到浅色主题"><svg class="icon " width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg></button><span class="locale-label">简体中文</span></div>
+    <div class="header-actions"><a class="github-link" href="https://github.com/tmoonlight/acecode" target="_blank" rel="noopener noreferrer">GitHub <svg class="icon " width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M14 3h7v7m0-7L10 14M10 5H4v15h15v-6"/></svg></a><span class="header-divider" aria-hidden="true"></span><button class="theme-toggle icon-button js-only" type="button" aria-label="切换到浅色主题" title="切换到浅色主题"><svg class="icon " width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg></button><span data-site-language></span></div>
   <nav class="ace-doc-links" aria-label="网站导航"><a href="https://acecode.cc/acemodel/">官网</a><a href="https://acecode.cc/key-usage/pricing/">模型价格</a><a href="https://acecode.cc/download/">下载</a><a href="https://acecode.cc/key-usage/guide/">帮助</a><a href="https://customers.acecode.cc/customerv2">用户中心</a></nav></header>
   <div class="drawer-backdrop" hidden></div>
   <aside class="sidebar" id="sidebar" aria-label="文档目录">

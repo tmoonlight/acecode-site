@@ -1,3 +1,5 @@
+import {t, localizeTree} from '../../acemodel/assets/interface-i18n.js';
+import {getSiteLanguage, subscribeSiteLanguage} from '../../acemodel/assets/site-language.js';
 'use strict';
 (() => {
   const video = document.getElementById('promo-video');
@@ -8,7 +10,7 @@
 
   function syncSound() {
     const audible = !video.muted && video.volume > 0;
-    const label = audible ? '关闭声音' : '打开声音';
+    const label = audible ? t("关闭声音") : t("打开声音");
     sound.setAttribute('aria-label', label);
     sound.setAttribute('aria-pressed', String(audible));
     sound.title = label;
@@ -27,7 +29,7 @@
     if (started) started.catch(failure => {
       if (failure.name === 'AbortError') return;
       showError(failure.name === 'NotAllowedError'
-        ? '点击视频中的播放按钮即可播放。' : '视频暂时无法播放，请重试。');
+        ? t("点击视频中的播放按钮即可播放。") : t("视频暂时无法播放，请重试。"));
     });
   }
 
@@ -42,7 +44,7 @@
   });
   video.addEventListener('volumechange', syncSound);
   video.addEventListener('playing', () => { error.hidden = true; });
-  video.addEventListener('error', () => showError('视频暂时无法播放。'));
+  video.addEventListener('error', () => showError(t("视频暂时无法播放。")));
   document.getElementById('promo-retry').addEventListener('click', () => {
     if (video.error) video.load();
     play();

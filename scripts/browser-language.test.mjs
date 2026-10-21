@@ -1,13 +1,9 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { createRequire } from 'node:module';
 import test from 'node:test';
-import vm from 'node:vm';
 import { browserLanguage } from '../public/acemodel/assets/browser-language.js';
 import { applyHomeLanguage, homeCopy } from '../public/acemodel/assets/home-i18n.js';
 
-const requireFrontend = createRequire(new URL('../frontend/package.json', import.meta.url));
-const ts = requireFrontend('typescript');
 const html = readFileSync(new URL('../public/acemodel/index.html', import.meta.url), 'utf8');
 
 test('browser preference order, Chinese scripts/regions, and fallback', () => {
@@ -66,44 +62,4 @@ test('homepage translates all content, metadata and accessible names without cha
   assert.match(html, /<span data-i18n="heroTitle">和你一起<\/span>/);
   assert.doesNotMatch(html, />Software that</);
   assert.match(html, /type="module" src="assets\/home-i18n.js/);
-});
-
-test('public app ignores stale storage and follows languagechange', () => {
-  const source = readFileSync(new URL('../frontend/src/i18n.ts', import.meta.url), 'utf8');
-  const compiled = ts.transpileModule(source, {
-    compilerOptions: {module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true},
-  }).outputText;
-  for (const language of ['zh-CN', 'zh-TW', 'en-US']) {
-    const browser = {languages: [language], language};
-    const target = new EventTarget();
-    const doc = {documentElement: {lang: ''}};
-    let changed;
-    const i18n = {
-      language: '', resolvedLanguage: '',
-      use() { return this; },
-      init(options) { this.language = this.resolvedLanguage = options.lng; },
-      on(event, callback) { if (event === 'languageChanged') changed = callback; },
-      changeLanguage(value) { this.language = this.resolvedLanguage = value; changed(value); return Promise.resolve(); },
-    };
-    const sandbox = {
-      exports: {}, navigator: browser, window: target, document: doc,
-      require(name) {
-        if (name === 'i18next') return i18n;
-        if (name === 'react-i18next') return {initReactI18next: {}};
-        if (name.endsWith('browser-language.js')) return {
-          browserLanguage, documentLanguage: value => value === 'zh' ? 'zh-CN' : value,
-        };
-        if (name.endsWith('.json')) return {};
-        throw new Error(`Unexpected import: ${name}`);
-      },
-    };
-    Object.defineProperty(sandbox, 'localStorage', {get() { throw new Error('Browser language must not depend on storage'); }});
-    vm.runInNewContext(compiled, sandbox);
-    assert.equal(i18n.language, browserLanguage(browser));
-    assert.equal(doc.documentElement.lang, language === 'en-US' ? 'en' : language);
-    browser.languages = ['zh-HK', 'en-US'];
-    target.dispatchEvent(new Event('languagechange'));
-    assert.equal(i18n.language, 'zh-TW');
-    assert.equal(doc.documentElement.lang, 'zh-TW');
-  }
 });

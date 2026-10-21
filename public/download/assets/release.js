@@ -5,6 +5,9 @@
  * - 所有安装包使用包含版本号的 CDN 链接。
  * - 兼容严格 CSP:不使用 eval、内联脚本、内联样式或 style 属性,所有 DOM 经 createElement 构造。
  */
+import '../../acemodel/assets/language-menu.js';
+import {t, localizeTree} from '../../acemodel/assets/interface-i18n.js';
+import {getSiteLanguage, subscribeSiteLanguage} from '../../acemodel/assets/site-language.js';
 (() => {
   'use strict';
 
@@ -28,22 +31,22 @@
       archs: ['x64', 'arm64'],
       archNames: { x64: 'x64', arm64: 'ARM64' },
       defaultArch: 'x64',
-      subtitle: '免安装压缩包，含桌面端与终端版',
+      subtitle: t("免安装压缩包，含桌面端与终端版"),
       hints: [
-        ['解压到任意目录，运行 ', { code: 'acecode-desktop.exe' }, ' 打开桌面端，或在终端运行 ', { code: 'acecode.exe' }, '。'],
-        '桌面端需要 Microsoft Edge WebView2 运行时；请保留解压后的完整目录。',
+        [t("解压到任意目录，运行 "), { code: 'acecode-desktop.exe' }, t(" 打开桌面端，或在终端运行 "), { code: 'acecode.exe' }, '。'],
+        t("桌面端需要 Microsoft Edge WebView2 运行时；请保留解压后的完整目录。"),
       ],
     },
     macos: {
       name: 'macOS',
       badge: 'MAC',
       archs: ['arm64', 'x64'],
-      archNames: { arm64: 'Apple 芯片', x64: 'Intel 芯片' },
+      archNames: { arm64: t("Apple 芯片"), x64: t("Intel 芯片") },
       defaultArch: 'arm64',
-      subtitle: 'Apple 芯片与 Intel 芯片分别提供',
+      subtitle: t("Apple 芯片与 Intel 芯片分别提供"),
       hints: [
-        ['双击 PKG 按提示安装到当前用户，完成后在 ', { code: '~/Applications' }, ' 中打开 ACECode。'],
-        '不确定芯片类型？在苹果菜单 >「关于本机」中查看。',
+        [t("双击 PKG 按提示安装到当前用户，完成后在 "), { code: '~/Applications' }, t(" 中打开 ACECode。")],
+        t("不确定芯片类型？在苹果菜单 >「关于本机」中查看。"),
       ],
     },
     linux: {
@@ -52,23 +55,23 @@
       archs: ['x64', 'arm64', 'armv7'],
       archNames: { x64: 'x64', arm64: 'ARM64', armv7: 'ARMv7' },
       defaultArch: 'x64',
-      subtitle: 'tar.gz 压缩包，含桌面端与终端版',
+      subtitle: t("tar.gz 压缩包，含桌面端与终端版"),
       hints: [
-        ['解压后在目录中运行 ', { code: './acecode' }, '；桌面端运行 ', { code: './acecode-desktop' }, '，需要 WebKitGTK 4.1。'],
-        'glibc 较旧的发行版请改用「旧系统兼容包」。',
+        [t("解压后在目录中运行 "), { code: './acecode' }, t("；桌面端运行 "), { code: './acecode-desktop' }, t("，需要 WebKitGTK 4.1。")],
+        t("glibc 较旧的发行版请改用「旧系统兼容包」。"),
       ],
     },
     extension: {
-      name: '浏览器扩展',
+      name: t("浏览器扩展"),
       badge: 'EXT',
       archs: ['any'],
       archNames: { any: 'Chrome / Edge' },
       defaultArch: 'any',
       subtitle: 'ACE Browser Bridge',
-      hints: ['解压后在浏览器扩展管理页开启开发者模式，选择「加载已解压的扩展程序」。'],
+      hints: [t("解压后在浏览器扩展管理页开启开发者模式，选择「加载已解压的扩展程序」。")],
     },
     other: {
-      name: '其它',
+      name: t("其它"),
       badge: 'OTHER',
       archs: [],
       archNames: {},
@@ -80,18 +83,18 @@
 
   // rank 越小越靠前:同一架构下 rank 最小的文件作为主下载按钮。
   const KINDS = {
-    setup: { label: '安装程序', rank: 0 },
-    zip: { label: '免安装包', rank: 1 },
-    portable: { label: '便携包', rank: 2 },
-    pkg: { label: '安装包', rank: 0 },
-    appzip: { label: '应用压缩包', rank: 1 },
-    dmg: { label: '磁盘映像', rank: 2 },
-    mactar: { label: '压缩包', rank: 3 },
-    tar: { label: '压缩包', rank: 0 },
-    update: { label: '升级包', rank: 2 },
-    oldtar: { label: '旧系统兼容包', rank: 3 },
-    extension: { label: '扩展包', rank: 0 },
-    other: { label: '升级包', rank: 9 },
+    setup: { label: t("安装程序"), rank: 0 },
+    zip: { label: t("免安装包"), rank: 1 },
+    portable: { label: t("便携包"), rank: 2 },
+    pkg: { label: t("安装包"), rank: 0 },
+    appzip: { label: t("应用压缩包"), rank: 1 },
+    dmg: { label: t("磁盘映像"), rank: 2 },
+    mactar: { label: t("压缩包"), rank: 3 },
+    tar: { label: t("压缩包"), rank: 0 },
+    update: { label: t("升级包"), rank: 2 },
+    oldtar: { label: t("旧系统兼容包"), rank: 3 },
+    extension: { label: t("扩展包"), rank: 0 },
+    other: { label: t("升级包"), rank: 9 },
   };
 
   // aceupdate.json 的 target → [平台, 架构, 类型]
@@ -203,7 +206,7 @@
       'data-copy': text,
       'data-copy-label': toastText,
       'aria-label': ariaLabel || null,
-    }, label || '复制');
+    }, label || t("复制"));
   }
 
   // ---------- 版本与说明解析 ----------
@@ -283,7 +286,7 @@
 
   function archName(meta, arch) {
     if (meta.archNames[arch]) return meta.archNames[arch];
-    return arch === 'any' ? '通用' : String(arch || '').toUpperCase();
+    return arch === 'any' ? t("通用") : String(arch || '').toUpperCase();
   }
 
   function kindLabel(file) {
@@ -294,7 +297,7 @@
     const lower = name.toLowerCase();
     if (lower.endsWith('.tar.gz')) return 'TAR.GZ';
     const match = /\.([a-z0-9]+)$/.exec(lower);
-    return match ? match[1].toUpperCase() : '文件';
+    return match ? match[1].toUpperCase() : t("文件");
   }
 
   function classifyTarget(target, fileName) {
@@ -411,17 +414,17 @@
   const pad2 = (n) => String(n).padStart(2, '0');
 
   function formatDate(date) {
-    if (!date) return '日期未知';
+    if (!date) return t("日期未知");
     return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
   }
 
   function formatDateTime(date) {
-    if (!date) return '日期未知';
+    if (!date) return t("日期未知");
     return `${formatDate(date)} ${pad2(date.getHours())}:${pad2(date.getMinutes())}`;
   }
 
   const relativeFormatter = typeof Intl !== 'undefined' && Intl.RelativeTimeFormat
-    ? new Intl.RelativeTimeFormat('zh-CN', { numeric: 'auto' })
+    ? new Intl.RelativeTimeFormat(getSiteLanguage() === 'zh' ? 'zh-CN' : getSiteLanguage(), { numeric: 'auto' })
     : null;
 
   function formatRelative(date) {
@@ -431,11 +434,11 @@
     for (const [unit, size] of units) {
       if (Math.abs(seconds) >= size) return relativeFormatter.format(Math.round(seconds / size), unit);
     }
-    return '刚刚';
+    return t("刚刚");
   }
 
   function formatBytes(bytes) {
-    if (!Number.isFinite(bytes) || bytes <= 0) return '大小未知';
+    if (!Number.isFinite(bytes) || bytes <= 0) return t("大小未知");
     const units = ['B', 'KB', 'MB', 'GB'];
     let value = bytes;
     let unit = 0;
@@ -505,16 +508,16 @@
     try {
       response = await fetchWithTimeout(MANIFEST_URL.href, { cache: 'no-cache', headers: { Accept: 'application/json' } }, 15000);
     } catch (_) {
-      throw userError('网络请求失败或超时，请检查网络后重试。');
+      throw userError(t("网络请求失败或超时，请检查网络后重试。"));
     }
-    if (!response.ok) throw userError(`服务器返回了 HTTP ${response.status}。`);
+    if (!response.ok) throw userError(t("服务器返回了 HTTP {0}。", [response.status]));
     let data;
     try {
       data = JSON.parse(await response.text());
     } catch (_) {
-      throw userError('返回的内容不是有效的 JSON。');
+      throw userError(t("返回的内容不是有效的 JSON。"));
     }
-    if (!data || !Array.isArray(data.releases)) throw userError('清单里没有 releases 列表。');
+    if (!data || !Array.isArray(data.releases)) throw userError(t("清单里没有 releases 列表。"));
     return data;
   }
 
@@ -628,7 +631,7 @@
   // ---------- 渲染:通用片段 ----------
 
   function renderNotes(notes) {
-    if (!notes.items.length) return h('p', { class: 'notes-empty' }, '这个版本没有填写更新说明。');
+    if (!notes.items.length) return h('p', { class: 'notes-empty' }, t("这个版本没有填写更新说明。"));
     return h(notes.ordered ? 'ol' : 'ul', { class: notes.ordered ? 'notes' : 'notes is-plain' },
       notes.items.map((item) => h('li', null, h('span', null, inlineCode(item)))));
   }
@@ -639,16 +642,16 @@
       href: file.url,
       download: file.name,
     },
-    h('span', { class: 'button-label' }, `下载 ${formatOf(file.name)}`),
+    h('span', { class: 'button-label' }, t("下载 {0}", [formatOf(file.name)])),
     h('span', { class: 'button-meta' }, `${kindLabel(file)} · ${formatBytes(file.size)}`));
   }
 
   function hashLine(file) {
-    if (!file.sha256) return h('span', { class: 'hash-line hash-label' }, 'SHA-256 未提供');
+    if (!file.sha256) return h('span', { class: 'hash-line hash-label' }, t("SHA-256 未提供"));
     return h('span', { class: 'hash-line' },
       h('span', { class: 'hash-label' }, 'SHA-256'),
       h('code', { class: 'hash-short', title: file.sha256 }, shortHash(file.sha256)),
-      copyButton(file.sha256, '已复制 SHA-256', '复制', `复制 ${file.name} 的 SHA-256`));
+      copyButton(file.sha256, t("已复制 SHA-256"), t("复制"), t("复制 {0} 的 SHA-256", [file.name])));
   }
 
   function altFormatItem(file) {
@@ -656,7 +659,7 @@
       h('a', { href: file.url, download: file.name, title: file.name }, `${kindLabel(file)} ${formatOf(file.name)}`),
       h('span', { class: 'alt-size' }, formatBytes(file.size)),
       file.sha256
-        ? copyButton(file.sha256, '已复制 SHA-256', 'SHA', `复制 ${file.name} 的 SHA-256`)
+        ? copyButton(file.sha256, t("已复制 SHA-256"), 'SHA', t("复制 {0} 的 SHA-256", [file.name]))
         : h('span', { class: 'alt-size' }, '—'));
   }
 
@@ -667,11 +670,11 @@
     return h('div', { class: 'arch-block' },
       h('div', { class: 'arch-title' },
         h('span', null, title),
-        options.recommended ? h('span', { class: 'arch-flag' }, '推荐') : null),
+        options.recommended ? h('span', { class: 'arch-flag' }, t("推荐")) : null),
       downloadButton(primary, options.emphasize),
       h('div', { class: 'file-meta' }, h('span', { class: 'file-name' }, primary.name), hashLine(primary)),
       others.length
-        ? h('ul', { class: 'alt-formats', 'aria-label': `${meta.name} ${archName(meta, group.arch)} 的其它格式` }, others.map(altFormatItem))
+        ? h('ul', { class: 'alt-formats', 'aria-label': t("{0} {1} 的其它格式", [meta.name, archName(meta, group.arch)]) }, others.map(altFormatItem))
         : null);
   }
 
@@ -688,7 +691,7 @@
       const card = h('article', { class: isMatch ? 'platform-card is-match' : 'platform-card' },
         h('div', { class: 'platform-head' },
           h('span', { class: 'index-chip' }, pad2(index + 1)),
-          isMatch ? h('span', { class: 'tag tag-stable' }, '适合你的系统') : null),
+          isMatch ? h('span', { class: 'tag tag-stable' }, t("适合你的系统")) : null),
         h('h3', { class: 'platform-name' }, meta.name),
         meta.subtitle ? h('p', { class: 'platform-sub' }, meta.subtitle) : null);
       const archList = h('div', { class: 'arch-list' });
@@ -697,7 +700,7 @@
         archList.append(renderArchBlock(meta, group, { emphasize, recommended: isMatch && group.arch === bestArch }));
       });
       card.append(archList);
-      if (opts.partial) card.append(h('p', { class: 'inline-loading platform-pending' }, pixelLoader(), '正在查找其它格式…'));
+      if (opts.partial) card.append(h('p', { class: 'inline-loading platform-pending' }, pixelLoader(), t("正在查找其它格式…")));
       if (opts.hints && meta.hints.length) card.append(h('div', { class: 'hint' }, meta.hints.map((hint) => h('p', null, richText(hint)))));
       grid.append(card);
     });
@@ -709,30 +712,30 @@
   function renderStage(release, result) {
     const platforms = uniquePlatforms(result.files).map((id) => platformMeta(id).name).join(' · ') || '—';
     const rows = [
-      ['版本', release.version],
-      ['发布时间', formatDateTime(release.date)],
-      ['渠道', release.prerelease ? '预览版' : '正式版'],
-      ['平台', platforms],
-      ['文件', `${result.files.length} 个`],
+      [t("版本"), release.version],
+      [t("发布时间"), formatDateTime(release.date)],
+      [t("渠道"), release.prerelease ? t("预览版") : t("正式版")],
+      [t("平台"), platforms],
+      [t("文件"), t("{0} 个", [result.files.length])],
     ];
     const spec = h('dl', { class: 'spec-list' },
       rows.map(([label, value]) => h('div', { class: 'spec-row' }, h('dt', null, label), h('dd', null, value))));
     if (result.sums) {
       spec.append(h('div', { class: 'spec-row' },
-        h('dt', null, '校验清单'),
+        h('dt', null, t("校验清单")),
         h('dd', null, h('a', { href: result.sums.url, download: result.sums.name }, result.sums.name))));
     }
     return h('div', { class: 'stage' },
       h('div', { class: 'stage-main' },
-        h('p', { class: 'kicker' }, "What's new · 更新内容"),
+        h('p', { class: 'kicker' }, t("What's new · 更新内容")),
         renderNotes(release.notes),
         h('div', { class: 'upgrade-tip' },
-          h('p', { class: 'kicker' }, 'Already installed · 已安装'),
-          h('p', null, '可以直接在终端运行下面的命令升级，客户端读取的是同一份版本清单。'),
+          h('p', { class: 'kicker' }, t("Already installed · 已安装")),
+          h('p', null, t("可以直接在终端运行下面的命令升级，客户端读取的是同一份版本清单。")),
           h('div', { class: 'command-line' },
             h('code', null, h('span', { class: 'terminal-prompt' }, '$ '), 'acecode upgrade'),
-            copyButton('acecode upgrade', '已复制升级命令', '复制', '复制升级命令')))),
-      h('aside', { class: 'stage-side', 'aria-label': '版本信息' },
+            copyButton('acecode upgrade', t("已复制升级命令"), t("复制"), t("复制升级命令"))))),
+      h('aside', { class: 'stage-side', 'aria-label': t("版本信息") },
         h('div', null, h('p', { class: 'kicker' }, 'Release info'), spec)));
   }
 
@@ -741,9 +744,9 @@
     const tag = $('latest-tag');
     tag.hidden = false;
     tag.className = release.prerelease ? 'tag tag-pre' : 'tag tag-stable';
-    tag.textContent = release.prerelease ? '预览版' : '正式版';
+    tag.textContent = release.prerelease ? t("预览版") : t("正式版");
     const relative = formatRelative(release.date);
-    $('latest-meta').textContent = `发布于 ${formatDateTime(release.date)}${relative ? ` · ${relative}` : ''}`;
+    $('latest-meta').textContent = t("发布于 {0}{1}", [formatDateTime(release.date), relative ? ` · ${relative}` : '']);
   }
 
   function paintLatest(release, result, partial) {
@@ -781,41 +784,41 @@
       const platform = platformMeta(os);
       button.href = choice.url;
       button.setAttribute('download', choice.name);
-      label.textContent = `下载 ${platform.name} 版`;
+      label.textContent = t("下载 {0} 版", [platform.name]);
       meta.textContent = [release.version, archName(platform, choice.arch), formatOf(choice.name), formatBytes(choice.size)].join(' · ');
       const others = archGroups(result.files, os).filter((g) => g.arch !== choice.arch).map((g) => g.files[0]);
-      alt.append(others.length ? '其它架构：' : '');
+      alt.append(others.length ? t("其它架构：") : '');
       for (const file of others) {
         alt.append(h('a', { href: file.url, download: file.name }, `${archName(platform, file.arch)} ${formatOf(file.name)}`));
       }
-      alt.append(h('a', { href: '#latest' }, '全部平台与格式'));
+      alt.append(h('a', { href: '#latest' }, t("全部平台与格式")));
       alt.hidden = false;
     } else {
       button.href = '#latest';
       button.removeAttribute('download');
-      label.textContent = '选择平台下载';
+      label.textContent = t("选择平台下载");
       meta.textContent = os === 'mobile'
-        ? '请在电脑上下载 ACECode'
+        ? t("请在电脑上下载 ACECode")
         : `${release.version} · ${uniquePlatforms(result.files).map((id) => platformMeta(id).name).join(' / ')}`;
     }
     const note = $('hero-note');
-    note.replaceChildren(`最新正式版 ${release.version} · ${formatDate(release.date)} 发布 · 版本信息读取自 aceupdate.json`);
+    note.replaceChildren(t("最新正式版 {0} · {1} 发布 · 版本信息读取自 aceupdate.json", [release.version, formatDate(release.date)]));
     if (state.latestPreview) {
-      note.append(' · ', h('a', { href: '#preview' }, `预览版 ${state.latestPreview.version}`));
+      note.append(' · ', h('a', { href: '#preview' }, t("预览版 {0}", [state.latestPreview.version])));
     }
   }
 
   function updateVerify(release, result) {
     const commands = {
       windows: (file) => (file.sha256
-        ? [`(Get-FileHash .\\${file.name} -Algorithm SHA256).Hash -eq '${file.sha256}'`, '输出 True 即校验通过；输出 False 说明文件不完整或被改动，请重新下载。']
-        : [`Get-FileHash .\\${file.name} -Algorithm SHA256`, '把输出的哈希值与本页列出的 SHA-256 比对（不区分大小写）。']),
+        ? [`(Get-FileHash .\\${file.name} -Algorithm SHA256).Hash -eq '${file.sha256}'`, t("输出 True 即校验通过；输出 False 说明文件不完整或被改动，请重新下载。")]
+        : [`Get-FileHash .\\${file.name} -Algorithm SHA256`, t("把输出的哈希值与本页列出的 SHA-256 比对（不区分大小写）。")]),
       macos: (file) => (file.sha256
-        ? [`echo "${file.sha256}  ${file.name}" | shasum -a 256 -c`, `输出 ${file.name}: OK 即校验通过。`]
-        : [`shasum -a 256 ${file.name}`, '把输出的哈希值与本页列出的 SHA-256 比对。']),
+        ? [`echo "${file.sha256}  ${file.name}" | shasum -a 256 -c`, t("输出 {0}: OK 即校验通过。", [file.name])]
+        : [`shasum -a 256 ${file.name}`, t("把输出的哈希值与本页列出的 SHA-256 比对。")]),
       linux: (file) => (file.sha256
-        ? [`echo "${file.sha256}  ${file.name}" | sha256sum -c`, `输出 ${file.name}: OK 即校验通过。`]
-        : [`sha256sum ${file.name}`, '把输出的哈希值与本页列出的 SHA-256 比对。']),
+        ? [`echo "${file.sha256}  ${file.name}" | sha256sum -c`, t("输出 {0}: OK 即校验通过。", [file.name])]
+        : [`sha256sum ${file.name}`, t("把输出的哈希值与本页列出的 SHA-256 比对。")]),
     };
     for (const os of Object.keys(commands)) {
       const card = doc.querySelector(`.code-card[data-platform="${os}"]`);
@@ -828,9 +831,9 @@
     }
     const foot = $('verify-foot');
     if (result.sums) {
-      foot.replaceChildren(`${release.version} 的完整校验清单：`,
+      foot.replaceChildren(t("{0} 的完整校验清单：", [release.version]),
         h('a', { href: result.sums.url, download: result.sums.name }, result.sums.name),
-        '。其它版本的校验值在历史版本中展开查看。');
+        t("。其它版本的校验值在历史版本中展开查看。"));
     }
   }
 
@@ -838,13 +841,13 @@
     $('preview').hidden = false;
     $('preview-title').textContent = `ACECode ${release.version}`;
     const relative = formatRelative(release.date);
-    $('preview-meta').textContent = `发布于 ${formatDateTime(release.date)}${relative ? ` · ${relative}` : ''} · 预览版用于提前体验新功能，可能不如正式版稳定。`;
-    const downloads = h('aside', { class: 'stage-side', 'aria-label': '预览版下载' },
-      h('p', { class: 'kicker' }, 'Downloads · 下载'),
-      h('p', { class: 'inline-loading' }, pixelLoader(), '正在查找安装包…'));
+    $('preview-meta').textContent = t("发布于 {0}{1} · 预览版用于提前体验新功能，可能不如正式版稳定。", [formatDateTime(release.date), relative ? ` · ${relative}` : '']);
+    const downloads = h('aside', { class: 'stage-side', 'aria-label': t("预览版下载") },
+      h('p', { class: 'kicker' }, t("Downloads · 下载")),
+      h('p', { class: 'inline-loading' }, pixelLoader(), t("正在查找安装包…")));
     $('preview-body').replaceChildren(h('div', { class: 'stage' },
       h('div', { class: 'stage-main' },
-        h('p', { class: 'kicker' }, "What's new · 更新内容"),
+        h('p', { class: 'kicker' }, t("What's new · 更新内容")),
         renderNotes(release.notes)),
       downloads));
     const result = await resolveRelease(release);
@@ -855,8 +858,8 @@
       }
     }
     downloads.replaceChildren(
-      h('p', { class: 'kicker' }, 'Downloads · 下载'),
-      result.files.length ? list : h('p', { class: 'notes-empty' }, '没有找到这个版本的下载文件。'));
+      h('p', { class: 'kicker' }, t("Downloads · 下载")),
+      result.files.length ? list : h('p', { class: 'notes-empty' }, t("没有找到这个版本的下载文件。")));
   }
 
   // ---------- 渲染:历史版本 ----------
@@ -881,12 +884,12 @@
   }
 
   function renderFileTable(files) {
-    if (!files.length) return h('p', { class: 'notes-empty' }, '没有找到这个版本的下载文件。');
+    if (!files.length) return h('p', { class: 'notes-empty' }, t("没有找到这个版本的下载文件。"));
     return h('table', { class: 'file-table' },
       h('thead', null, h('tr', null,
-        h('th', { scope: 'col' }, '文件'),
-        h('th', { scope: 'col' }, '类型'),
-        h('th', { scope: 'col', class: 'col-size' }, '大小'),
+        h('th', { scope: 'col' }, t("文件")),
+        h('th', { scope: 'col' }, t("类型")),
+        h('th', { scope: 'col', class: 'col-size' }, t("大小")),
         h('th', { scope: 'col' }, 'SHA-256'))),
       h('tbody', null, files.map((file) => h('tr', null,
         h('td', null, h('a', { class: 'file-link', href: file.url, download: file.name }, file.name)),
@@ -895,17 +898,17 @@
         h('td', null, file.sha256
           ? h('span', { class: 'hash-line' },
             h('code', { class: 'hash-short', title: file.sha256 }, shortHash(file.sha256)),
-            copyButton(file.sha256, '已复制 SHA-256', '复制', `复制 ${file.name} 的 SHA-256`))
-          : h('span', { class: 'hash-label' }, '未提供'))))));
+            copyButton(file.sha256, t("已复制 SHA-256"), t("复制"), t("复制 {0} 的 SHA-256", [file.name])))
+          : h('span', { class: 'hash-label' }, t("未提供")))))));
   }
 
   function fillReleaseDetail(release, body, row) {
-    const kicker = () => h('p', { class: 'kicker' }, 'Downloads · 下载文件');
+    const kicker = () => h('p', { class: 'kicker' }, t("Downloads · 下载文件"));
     const filesBox = h('div', { class: 'detail-files' },
       kicker(),
-      h('p', { class: 'inline-loading' }, pixelLoader(), '正在查找安装包…'));
+      h('p', { class: 'inline-loading' }, pixelLoader(), t("正在查找安装包…")));
     body.replaceChildren(
-      h('div', { class: 'detail-notes' }, h('p', { class: 'kicker' }, "What's new · 更新内容"), renderNotes(release.notes)),
+      h('div', { class: 'detail-notes' }, h('p', { class: 'kicker' }, t("What's new · 更新内容")), renderNotes(release.notes)),
       filesBox);
     resolveRelease(release).then((result) => {
       const permalink = `${location.href.split('#')[0]}#${rowId(release.version)}`;
@@ -914,7 +917,7 @@
         renderFileTable(result.files),
         h('p', { class: 'detail-foot' },
           result.sums ? h('a', { href: result.sums.url, download: result.sums.name }, result.sums.name) : null,
-          copyButton(permalink, '已复制版本链接', '复制本版本链接')));
+          copyButton(permalink, t("已复制版本链接"), t("复制本版本链接"))));
       // 探测到清单之外的平台(例如只有 tar.gz 的 Linux)时,同步刷新摘要里的平台标记。
       for (const old of row.querySelectorAll('summary .row-platforms')) old.replaceWith(platformChips(result.files));
     });
@@ -923,8 +926,8 @@
   function renderReleaseRow(release) {
     const row = h('details', { class: 'release-row', id: rowId(release.version) });
     const tags = [];
-    if (release === state.latestStable) tags.push(h('span', { class: 'tag tag-stable' }, '最新'));
-    if (release.prerelease) tags.push(h('span', { class: 'tag tag-pre' }, '预览'));
+    if (release === state.latestStable) tags.push(h('span', { class: 'tag tag-stable' }, t("最新")));
+    if (release.prerelease) tags.push(h('span', { class: 'tag tag-pre' }, t("预览")));
     const cached = state.resolved.get(release.version);
     const summary = h('summary', null,
       h('span', { class: 'row-version' }, release.version),
@@ -979,21 +982,21 @@
         currentLine = release.line;
         fragment.append(h('h3', { class: 'history-group' },
           `${release.line}.x`,
-          h('small', null, `${counts.get(release.line)} 个版本`)));
+          h('small', null, t("{0} 个版本", [counts.get(release.line)]))));
       }
       fragment.append(renderReleaseRow(release));
     }
     if (!list.length) {
       fragment.append(h('div', { class: 'history-empty' },
-        state.query ? `没有找到与「${state.query}」匹配的版本。` : '没有可显示的版本。',
-        state.query ? h('button', { type: 'button', class: 'mini-button', 'data-action': 'clear-search' }, '清除搜索') : null));
+        state.query ? t("没有找到与「{0}」匹配的版本。", [state.query]) : t("没有可显示的版本。"),
+        state.query ? h('button', { type: 'button', class: 'mini-button', 'data-action': 'clear-search' }, t("清除搜索")) : null));
     }
     $('history-list').replaceChildren(fragment);
 
     const more = $('history-more');
     const remaining = list.length - shown.length;
     more.hidden = remaining <= 0;
-    more.textContent = `显示更多（还有 ${remaining} 个版本）`;
+    more.textContent = t("显示更多（还有 {0} 个版本）", [remaining]);
   }
 
   function setChannel(channel, rerender) {
@@ -1076,7 +1079,7 @@
         const source = copyEl.getAttribute('data-copy-target');
         const text = source ? ($(source) || {}).textContent || '' : copyEl.getAttribute('data-copy') || '';
         const ok = await copyText(text);
-        showToast(ok ? copyEl.getAttribute('data-copy-label') || '已复制' : '复制失败，请手动选择文本复制');
+        showToast(ok ? copyEl.getAttribute('data-copy-label') || t("已复制") : t("复制失败，请手动选择文本复制"));
         return;
       }
 
@@ -1133,25 +1136,25 @@
 
   function renderError(error) {
     $('latest-body').replaceChildren(h('div', { class: 'notice', role: 'alert' },
-      h('h3', null, '读取版本清单失败'),
-      h('p', null, (error && error.userMessage) || '发生了未知错误。'),
-      h('p', null, '清单地址：', h('a', { href: MANIFEST_URL.href }, MANIFEST_URL.href)),
+      h('h3', null, t("读取版本清单失败")),
+      h('p', null, (error && error.userMessage) || t("发生了未知错误。")),
+      h('p', null, t("清单地址："), h('a', { href: MANIFEST_URL.href }, MANIFEST_URL.href)),
       h('div', { class: 'actions' },
-        h('button', { type: 'button', class: 'button button-primary', 'data-action': 'retry' }, '重试'),
-        h('a', { class: 'button', href: RELEASES_URL, target: '_blank', rel: 'noopener noreferrer' }, '前往 GitHub Releases'))));
+        h('button', { type: 'button', class: 'button button-primary', 'data-action': 'retry' }, t("重试")),
+        h('a', { class: 'button', href: RELEASES_URL, target: '_blank', rel: 'noopener noreferrer' }, t("前往 GitHub Releases")))));
     $('hero-download').href = '#latest';
     $('hero-download').removeAttribute('download');
-    $('hero-download-label').textContent = '无法读取版本清单';
-    $('hero-download-meta').textContent = '查看下方的错误信息';
-    $('hero-note').textContent = '版本信息读取自 aceupdate.json。';
+    $('hero-download-label').textContent = t("无法读取版本清单");
+    $('hero-download-meta').textContent = t("查看下方的错误信息");
+    $('hero-note').textContent = t("版本信息读取自 aceupdate.json。");
     $('history-tools').hidden = true;
     $('history-more').hidden = true;
-    $('history-list').replaceChildren(h('p', { class: 'history-empty' }, '版本清单读取成功后会在这里列出全部历史版本。'));
+    $('history-list').replaceChildren(h('p', { class: 'history-empty' }, t("版本清单读取成功后会在这里列出全部历史版本。")));
   }
 
   function renderLoading() {
-    $('latest-body').replaceChildren(h('div', { class: 'loading-block' }, pixelLoader(), h('span', null, '正在读取 aceupdate.json…')));
-    $('hero-download-meta').textContent = '正在读取版本清单…';
+    $('latest-body').replaceChildren(h('div', { class: 'loading-block' }, pixelLoader(), h('span', null, t("正在读取 aceupdate.json…"))));
+    $('hero-download-meta').textContent = t("正在读取版本清单…");
   }
 
   let initRun = 0;
@@ -1174,7 +1177,7 @@
       .sort((a, b) => compareVersions(b.parsed, a.parsed) ||
         ((b.date ? b.date.getTime() : 0) - (a.date ? a.date.getTime() : 0)));
     if (!releases.length) {
-      renderError(userError('清单里没有可识别的版本号。'));
+      renderError(userError(t("清单里没有可识别的版本号。")));
       return;
     }
 
@@ -1184,7 +1187,7 @@
     state.latestPreview = newestPreview && compareVersions(newestPreview.parsed, state.latestStable.parsed) > 0
       ? newestPreview
       : null;
-    doc.title = `下载 ACECode ${state.latestStable.version}`;
+    doc.title = t("下载 ACECode {0}", [state.latestStable.version]);
 
     $('count-stable').textContent = String(releases.filter((release) => !release.prerelease).length);
     $('count-all').textContent = String(releases.length);
@@ -1197,6 +1200,8 @@
     openFromHash();
   }
 
+  localizeTree(document.body);
+  subscribeSiteLanguage(() => location.reload());
   bindEvents();
   init();
 })();
