@@ -528,7 +528,7 @@ export function ClientIntegrationGuide({ embedded = false }: { embedded?: boolea
     );
   return (
     <div className="min-h-dvh bg-white text-black dark:bg-black dark:text-white">
-      <div className="ace-page-tools"><Button asChild variant="outline"><a href="https://customers.acecode.cc/customerv2/usage">{i18n.language === 'zh-TW' ? '返回用量查詢' : i18n.language.startsWith('zh') ? '返回用量查询' : 'Back to usage'}</a></Button></div>
+      <div className="ace-page-tools"><Button asChild variant="outline"><a href="https://customers.acecode.cc/customerv2/usage">{i18n.language === 'zh-TW' ? '用量查詢' : i18n.language.startsWith('zh') ? '用量查询' : 'Usage'}</a></Button></div>
       <main className="mx-auto max-w-[1180px] px-5 py-12 sm:py-16">
         <section className="grid gap-10 border-b border-black/15 pb-12 dark:border-white/20 lg:grid-cols-[1.45fr_0.75fr] lg:items-end">
           <div>
