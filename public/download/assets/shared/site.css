@@ -431,3 +431,5 @@ kbd {
 .notice .actions {
   margin-top: 20px;
 }
+
+img.brand-mark{display:block;flex:none;border:0;object-fit:contain}

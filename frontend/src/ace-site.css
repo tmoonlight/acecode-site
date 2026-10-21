@@ -78,3 +78,5 @@
 .ace-public [data-slot=card]{box-shadow:none}
 .ace-public [data-slot=input]{min-height:44px}
 @media(max-width:760px){.ace-content-shell{width:calc(100% - 32px);padding-top:28px}.ace-page-tools{padding-left:16px;padding-right:16px}}
+
+img.ace-brand-mark{display:block;flex:none;border:0;object-fit:contain}
