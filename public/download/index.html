@@ -18,11 +18,11 @@
   <link rel="preload" href="assets/fonts/chill-16-cjk-1.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/fonts.css">
   <link rel="stylesheet" href="assets/shared/site.css">
-  <link rel="stylesheet" href="assets/release.css?v=20261020-cdn">
+  <link rel="stylesheet" href="assets/release.css?v=20261021-inline">
   <link rel="stylesheet" href="assets/shared/navigation.css">
-  <link rel="stylesheet" href="assets/promo.css?v=20261020-cdn">
+  <link rel="stylesheet" href="assets/promo.css?v=20261021-inline">
   <script src="assets/release.js?v=20261020-cdn" defer></script>
-  <script src="assets/promo.js?v=20261020-cdn" defer></script>
+  <script src="assets/promo.js?v=20261021-inline" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">跳到主要内容</a>
@@ -32,7 +32,6 @@
   <main id="main">
     <section class="hero shell" id="top">
       <div class="hero-copy">
-        <p class="eyebrow">Releases · 下载</p>
         <h1 class="display">Download<strong>ACECode.</strong></h1>
         <p class="lead">面向真实工程工作的智能开发环境。下载最新正式版，或在下方找回任意历史版本。</p>
         <div class="actions">
@@ -46,10 +45,21 @@
         <p class="hero-note" id="hero-note" aria-live="polite">版本信息同步自 GitHub Releases。</p>
       </div>
 
-      <a class="promo-preview" id="promo-open" href="assets/media/acecode-promo-terminal-v2.mp4" aria-label="播放 ACECode 宣传片" aria-haspopup="dialog" aria-controls="promo-player">
-        <img src="assets/media/acecode-promo-terminal-v2-poster-44s.jpg" width="1920" height="1080" alt="ACECode 宣传片封面" fetchpriority="high">
-        <span class="promo-caption"><span class="promo-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8 4v16l12-8z"/></svg></span><span>观看宣传片</span><span class="promo-duration">00:45</span></span>
-      </a>
+      <section class="promo-preview" aria-label="ACECode 宣传片">
+        <video id="promo-video" src="assets/media/acecode-promo-terminal-v2.mp4" controls autoplay muted playsinline preload="metadata" poster="assets/media/acecode-promo-terminal-v2-poster-44s.jpg" aria-label="ACECode 宣传片视频"></video>
+        <div class="promo-caption">
+          <span>ACECode 宣传片</span>
+          <button class="promo-sound" id="promo-sound" type="button" aria-label="打开声音" aria-pressed="false" title="打开声音">
+            <svg data-sound="off" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4zM16 9l6 6M22 9l-6 6"/></svg>
+            <svg data-sound="on" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" hidden><path d="M11 5 6 9H3v6h3l5 4zM15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/></svg>
+          </button>
+        </div>
+        <div class="promo-error" id="promo-error" role="status" hidden>
+          <span id="promo-error-message">视频暂时无法播放。</span>
+          <button class="mini-button" id="promo-retry" type="button">重试</button>
+          <a href="assets/media/acecode-promo-terminal-v2.mp4" target="_blank" rel="noopener">直接打开视频</a>
+        </div>
+      </section>
     </section>
 
     <section class="section" id="latest" aria-labelledby="latest-title">
@@ -160,17 +170,5 @@
   </noscript>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <dialog class="promo-player" id="promo-player" aria-labelledby="promo-title" closedby="closerequest">
-    <div class="promo-player-bar">
-      <h2 id="promo-title">ACECode 宣传片</h2>
-      <button class="promo-close" id="promo-close" type="button" aria-label="关闭播放器" autofocus><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
-    </div>
-    <video id="promo-video" controls playsinline preload="none" poster="assets/media/acecode-promo-terminal-v2-poster-44s.jpg" aria-label="ACECode 宣传片视频"></video>
-    <div class="promo-error" id="promo-error" role="status" hidden>
-      <span id="promo-error-message">视频暂时无法播放。</span>
-      <button class="mini-button" id="promo-retry" type="button">重试</button>
-      <a href="assets/media/acecode-promo-terminal-v2.mp4" target="_blank" rel="noopener">直接打开视频</a>
-    </div>
-  </dialog>
 </body>
 </html>

@@ -2,16 +2,17 @@
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 400px);
-  gap: 48px;
-  align-items: end;
-  padding-top: calc(var(--ace-header-h) + clamp(64px, 10vw, 128px));
-  padding-bottom: clamp(64px, 8vw, 104px);
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.35fr);
+  gap: 40px;
+  align-items: center;
+  width: min(100% - 64px, 1400px);
+  padding-top: calc(var(--ace-header-h) + 64px);
+  padding-bottom: 64px;
 }
 
 .display {
-  margin-top: 32px;
-  font-size: 80px;
+  margin-top: 0;
+  font-size: clamp(48px, 5.4vw, 72px);
   line-height: 1.05;
   letter-spacing: 0;
 }
