@@ -7,7 +7,7 @@
       "tag": "v1.0.14",
       "published_at": "2026-10-22T17:05:27Z",
       "prerelease": false,
-      "notes": "## What's Changed\n* Automatically refresh the public download catalog after releases by @tmoonlight in https://github.com/tmoonlight/acecode/pull/152\n* Record public download synchronization verification by @tmoonlight in https://github.com/tmoonlight/acecode/pull/153\n* Improve browser sessions, sidebar operations and tool details by @tmoonlight in https://github.com/tmoonlight/acecode/pull/154\n* Prepare ACECode v1.0.14 release by @tmoonlight in https://github.com/tmoonlight/acecode/pull/155\n\n\n**Full Changelog**: https://github.com/tmoonlight/acecode/compare/v1.0.13...v1.0.14",
+      "notes": "1. 浏览器支持共享登录、按会话隔离或退出清除，并新增常用网站和最近文件。\n2. 会话支持多选、批量置顶、归档和未读标记，可拖入输入框引用。\n3. 优化工具调用详情与中英文显示，支持快捷定位预览文件并高亮。\n4. 改进窄屏侧栏、内网 HTTP 语音配置和数据目录迁移的兼容性。\n",
       "packages": [
         {
           "file": "acecode-1.0.14-linux-arm64-update.zip",
