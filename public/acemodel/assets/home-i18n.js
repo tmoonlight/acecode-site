@@ -3,7 +3,7 @@ import { getSiteLanguage, subscribeSiteLanguage } from './site-language.js';
 
 export const homeCopy = {
   zh: {
-    title: "ACECode · 桌面与终端的 AI 编程助手",
+    title: "ACECode · 桌面与终端的万能助手",
     description: "ACECode 支持在桌面和终端中阅读代码、修改文件、运行命令和测试，并可接入 ACEModel 模型服务。",
     skip: '跳到主要内容',
     home: 'ACECode 官网',
@@ -15,7 +15,7 @@ export const homeCopy = {
     account: '用户中心',
     github: 'GitHub 开源仓库',
     heroTitle: "桌面与终端的",
-    heroEmphasis: "AI 编程助手。",
+    heroEmphasis: "万能助手。",
     heroDescription: "用自然语言描述需求，让 ACECode 帮你阅读代码、修改文件、运行命令和测试。支持桌面端和终端版。",
     downloadAction: '下载 ACECode',
     historyAction: '历史版本',
@@ -48,7 +48,7 @@ export const homeCopy = {
     accountFooter: "ACEModel 用户中心",
   },
   'zh-TW': {
-    title: "ACECode · 桌面與終端的 AI 編程助手",
+    title: "ACECode · 桌面與終端的萬能助手",
     description: "ACECode 支持在桌面和終端中閱讀代碼、修改文件、運行命令和測試，並可接入 ACEModel 模型服務。",
     skip: '跳到主要內容',
     home: 'ACECode 官網',
@@ -60,7 +60,7 @@ export const homeCopy = {
     account: '用戶中心',
     github: 'GitHub 開源儲存庫',
     heroTitle: "桌面與終端的",
-    heroEmphasis: "AI 編程助手。",
+    heroEmphasis: "萬能助手。",
     heroDescription: "用自然語言描述需求，讓 ACECode 幫你閱讀代碼、修改文件、運行命令和測試。支持桌面端和終端版。",
     downloadAction: '下載 ACECode',
     historyAction: '歷史版本',
@@ -93,7 +93,7 @@ export const homeCopy = {
     accountFooter: "ACEModel 用戶中心",
   },
   en: {
-    title: "ACECode · AI coding for desktop and terminal",
+    title: "ACECode · An all-purpose assistant for desktop and terminal",
     description: "Read code, edit files, run commands and tests with ACECode on your desktop or terminal. Connect to ACEModel for model access.",
     skip: 'Skip to main content',
     home: 'ACECode home',
@@ -104,8 +104,8 @@ export const homeCopy = {
     help: 'Help',
     account: 'Account',
     github: 'GitHub repository',
-    heroTitle: "AI coding for",
-    heroEmphasis: "desktop and terminal.",
+    heroTitle: "An all-purpose assistant",
+    heroEmphasis: "for desktop and terminal.",
     heroDescription: "Describe what you need. ACECode helps you read code, edit files, and run commands and tests. Available as a desktop app and a terminal interface.",
     downloadAction: 'Download ACECode',
     historyAction: 'Release history',
