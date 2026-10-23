@@ -4,7 +4,7 @@
  * 点阵字体在 16px 的整数倍下最清晰,所以正文统一 16px,标题取 32 / 48 / 64 / 80px。
  */
 
-@import "./tokens.css";
+@import "./tokens.css?v=20261023-global";
 
 *,
 *::before,
@@ -118,12 +118,12 @@ kbd {
   padding: 8px 12px;
   border: var(--ace-pixel);
   background: var(--ace-navy);
-  color: #fff;
+  color: var(--ace-on-navy);
 }
 
 .skip-link:focus {
   top: 8px;
-  color: #fff;
+  color: var(--ace-on-navy);
 }
 
 /* ---------- 顶栏 ---------- */
@@ -185,13 +185,13 @@ kbd {
   border: var(--ace-pixel);
   background: var(--ace-navy);
   box-shadow: var(--ace-shadow-sm);
-  color: #fff;
+  color: var(--ace-on-navy);
 }
 
 .site-nav .nav-cta:hover {
   background: var(--ace-navy-strong);
   box-shadow: 1px 1px 0 var(--ace-ink);
-  color: #fff;
+  color: var(--ace-on-navy);
   transform: translate(1px, 1px);
 }
 
@@ -275,12 +275,12 @@ kbd {
 
 .button-primary {
   background: var(--ace-navy);
-  color: #fff;
+  color: var(--ace-on-navy);
 }
 
 .button-primary:hover {
   background: var(--ace-navy-strong);
-  color: #fff;
+  color: var(--ace-on-navy);
 }
 
 .button-download {
@@ -336,7 +336,7 @@ kbd {
 
 .tag-stable {
   background: var(--ace-navy);
-  color: #fff;
+  color: var(--ace-on-navy);
 }
 
 .tag-pre {
@@ -345,7 +345,7 @@ kbd {
 
 .tag-latest {
   background: var(--ace-ink);
-  color: #fff;
+  color: var(--ace-on-navy);
 }
 
 .index-chip {
@@ -356,7 +356,7 @@ kbd {
   height: 24px;
   padding: 0 4px;
   background: var(--ace-navy);
-  color: #fff;
+  color: var(--ace-on-navy);
   line-height: 1;
 }
 

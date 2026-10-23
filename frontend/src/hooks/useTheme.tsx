@@ -1,3 +1,4 @@
+import { siteTheme } from '../lib/site-theme'
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import type { MouseEvent, ReactNode } from 'react'
 
@@ -791,38 +792,12 @@ export function getThemePreviewSwatch(item: ColorThemeDef, mode: Theme): ThemePr
   return mode === 'dark' ? item.previewDark : item.previewLight
 }
 
-const STORAGE_KEY = 'theme'
 const COLOR_THEME_STORAGE_KEY = 'color-theme'
 const DEFAULT_COLOR_THEME: ColorTheme = 'default'
 const DEFAULT_THEME_MODE: ThemeMode = 'system'
 
 function isColorTheme(value: string | null): value is ColorTheme {
   return COLOR_THEMES.some((theme) => theme.id === value)
-}
-
-function isThemeMode(value: string | null): value is ThemeMode {
-  return value === 'light' || value === 'dark' || value === 'system'
-}
-
-function getSystemTheme(): Theme {
-  if (typeof window === 'undefined') return 'light'
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-}
-
-function resolveTheme(mode: ThemeMode): Theme {
-  return mode === 'system' ? getSystemTheme() : mode
-}
-
-function getInitialThemeMode(): ThemeMode {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    if (isThemeMode(stored)) return stored
-    // Legacy: only light/dark was stored — treat as explicit choice.
-    if (stored === 'light' || stored === 'dark') return stored
-  } catch {
-    /* localStorage unavailable (private mode / blocked) */
-  }
-  return DEFAULT_THEME_MODE
 }
 
 function getInitialColorTheme(): ColorTheme {
@@ -833,24 +808,6 @@ function getInitialColorTheme(): ColorTheme {
     /* localStorage unavailable (private mode / blocked) */
   }
   return DEFAULT_COLOR_THEME
-}
-
-function applyResolvedTheme(nextTheme: Theme) {
-  const root = document.documentElement
-  if (nextTheme === 'dark') {
-    root.classList.add('dark')
-  } else {
-    root.classList.remove('dark')
-  }
-}
-
-function persistThemeMode(mode: ThemeMode) {
-  try {
-    localStorage.setItem(STORAGE_KEY, mode)
-  } catch {
-    /* localStorage unavailable (private mode / blocked) */
-  }
-  applyResolvedTheme(resolveTheme(mode))
 }
 
 function persistColorTheme(nextColorTheme: ColorTheme) {
@@ -921,62 +878,27 @@ function runThemeTransition(e: MouseEvent | undefined, apply: () => void) {
 
 // Provider：把主题状态提升到全局，避免 Layout 与 ThemeSettings 各持一份导致 UI 不同步。
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [themeMode, setThemeModeState] = useState<ThemeMode>(getInitialThemeMode)
-  const [theme, setThemeState] = useState<Theme>(() => resolveTheme(getInitialThemeMode()))
+  const [themeMode, setThemeModeState] = useState<ThemeMode>(siteTheme.getMode)
+  const [theme, setThemeState] = useState<Theme>(siteTheme.get)
   const [colorTheme, setColorThemeState] = useState<ColorTheme>(getInitialColorTheme)
 
   useEffect(() => {
-    persistThemeMode(themeMode)
-    setThemeState(resolveTheme(themeMode))
-  }, [themeMode])
+    const sync = () => {
+      setThemeModeState(siteTheme.getMode())
+      setThemeState(siteTheme.get())
+    }
+    const unsubscribe = siteTheme.subscribe(sync)
+    sync()
+    return unsubscribe
+  }, [])
 
   useEffect(() => {
     persistColorTheme(colorTheme)
   }, [colorTheme])
 
-  // Follow OS when themeMode === 'system'
-  useEffect(() => {
-    if (themeMode !== 'system') return
-    const mq = window.matchMedia('(prefers-color-scheme: dark)')
-    const onChange = () => {
-      const next = getSystemTheme()
-      applyResolvedTheme(next)
-      setThemeState(next)
-    }
-    mq.addEventListener('change', onChange)
-    return () => mq.removeEventListener('change', onChange)
-  }, [themeMode])
-
   const setThemeMode = useCallback((nextMode: ThemeMode, e?: MouseEvent) => {
-    if (nextMode === themeMode) {
-      // Still re-resolve system in case OS flipped while we thought we matched.
-      if (nextMode === 'system') {
-        const resolved = resolveTheme('system')
-        if (resolved !== theme) {
-          runThemeTransition(e, () => {
-            applyResolvedTheme(resolved)
-            setThemeState(resolved)
-          })
-        }
-      }
-      return
-    }
-
-    const nextResolved = resolveTheme(nextMode)
-    const currentResolved = theme
-    if (nextResolved === currentResolved) {
-      localStorage.setItem(STORAGE_KEY, nextMode)
-      setThemeModeState(nextMode)
-      return
-    }
-
-    runThemeTransition(e, () => {
-      localStorage.setItem(STORAGE_KEY, nextMode)
-      applyResolvedTheme(nextResolved)
-      setThemeModeState(nextMode)
-      setThemeState(nextResolved)
-    })
-  }, [theme, themeMode])
+    runThemeTransition(e, () => { siteTheme.set(nextMode) })
+  }, [])
 
   const setTheme = useCallback((nextTheme: Theme, e?: MouseEvent) => {
     setThemeMode(nextTheme, e)

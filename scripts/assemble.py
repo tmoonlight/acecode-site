@@ -15,14 +15,14 @@ for route, title in [
 ]:
     path = DIST / route / "index.html"
     path.parent.mkdir(parents=True, exist_ok=True)
-    html = template.replace("./assets/", "../../_app/assets/")
+    html = template.replace("./assets/", "../../_app/assets/").replace("./site-theme.js", "../../_app/site-theme.js")
     html = html.replace("<title>ACECode</title>", f"<title>{title}</title>")
     path.write_text(html, encoding="utf-8", newline="\n")
 (DIST / "index.html").write_text("""<!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="0;url=acemodel/"><title>ACECode</title></head><body><a href="acemodel/">进入 ACECode 官网</a></body></html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><script src="acemodel/assets/site-theme.js?v=20261023-global"></script><link rel="stylesheet" href="acemodel/assets/shared/site.css"><meta http-equiv="refresh" content="0;url=acemodel/"><title>ACECode</title></head><body><a href="acemodel/">进入 ACECode 官网</a></body></html>
 """, encoding="utf-8")
 (DIST / "404.html").write_text("""<!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>页面不存在 · ACECode</title></head><body><h1>页面不存在</h1><a href="https://acecodedownload.b-cdn.net/">返回 ACECode 官网</a></body></html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><script src="https://acecode.cc/acemodel/assets/site-theme.js?v=20261023-global"></script><link rel="stylesheet" href="https://acecode.cc/acemodel/assets/shared/site.css"><title>页面不存在 · ACECode</title></head><body><main class="shell section"><h1>页面不存在</h1><a href="https://acecodedownload.b-cdn.net/">返回 ACECode 官网</a></main></body></html>
 """, encoding="utf-8")
 (DIST / ".nojekyll").write_text("", encoding="utf-8")
 print(json.dumps({

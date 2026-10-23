@@ -1,10 +1,10 @@
+import '../../acemodel/assets/theme-button.js';
 import '../../acemodel/assets/language-menu.js';
 import {t, localizeTree} from '../../acemodel/assets/interface-i18n.js';
 import {getSiteLanguage, subscribeSiteLanguage} from '../../acemodel/assets/site-language.js';
 (function () {
   'use strict';
   var root = document.documentElement;
-  var themeButton = document.querySelector('.theme-toggle');
   var toast = document.querySelector('.toast');
   var toastTimer;
   function announce(message) {
@@ -13,18 +13,6 @@ import {getSiteLanguage, subscribeSiteLanguage} from '../../acemodel/assets/site
     toast.hidden = false;
     toastTimer = window.setTimeout(function () { toast.hidden = true; }, 3600);
   }
-  function syncThemeLabel() {
-    var nextTheme = root.dataset.theme === 'dark' ? t("浅色") : t("深色");
-    themeButton.setAttribute('aria-label', t("切换到") + nextTheme + t("主题"));
-    themeButton.title = t("切换到") + nextTheme + t("主题");
-  }
-  syncThemeLabel();
-  themeButton.addEventListener('click', function () {
-    root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-    try { localStorage.setItem('acecode-help-theme', root.dataset.theme); } catch (_) {}
-    syncThemeLabel();
-  });
-
   var sidebar = document.querySelector('.sidebar');
   var menuButton = document.querySelector('.menu-toggle');
   var menuClose = document.querySelector('.drawer-close');

@@ -122,7 +122,7 @@
   height: 24px;
   margin-top: 2px;
   background: var(--ace-navy);
-  color: #fff;
+  color: var(--ace-on-navy);
   line-height: 1;
 }
 
@@ -394,7 +394,7 @@
 
 .segmented button[aria-pressed="true"] {
   background: var(--ace-navy);
-  color: #fff;
+  color: var(--ace-on-navy);
 }
 
 .segmented .count {
@@ -546,7 +546,7 @@
 
 .release-row[open] .row-toggle {
   background: var(--ace-navy);
-  color: #fff;
+  color: var(--ace-on-navy);
 }
 
 .release-row[open] .row-toggle::before {
@@ -746,7 +746,7 @@
   border: var(--ace-pixel);
   background: var(--ace-ink);
   box-shadow: var(--ace-shadow-navy);
-  color: #fff;
+  color: var(--ace-on-navy);
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, 16px);

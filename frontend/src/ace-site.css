@@ -1,7 +1,7 @@
 @import "../../website/shared/tokens.css";
 @import "../../website/shared/browser-fonts.css";
 
-:root.theme-default{--color-background:var(--ace-paper);--color-card:var(--ace-paper);--color-popover:var(--ace-paper);--color-foreground:var(--ace-ink);--color-card-foreground:var(--ace-ink);--color-primary:var(--ace-navy);--color-primary-foreground:#fff;--color-secondary:var(--ace-wash);--color-muted:var(--ace-wash);--color-muted-foreground:var(--ace-graphite);--color-border:var(--ace-line-strong);--color-input:var(--ace-line-strong);--radius-sm:0;--radius-md:0;--radius-lg:0;--radius-xl:0}
+:root.theme-default{--color-background:var(--ace-paper);--color-card:var(--ace-paper);--color-popover:var(--ace-paper);--color-foreground:var(--ace-ink);--color-card-foreground:var(--ace-ink);--color-primary:var(--ace-navy);--color-primary-foreground:var(--ace-on-navy);--color-secondary:var(--ace-wash);--color-muted:var(--ace-wash);--color-muted-foreground:var(--ace-graphite);--color-border:var(--ace-line-strong);--color-input:var(--ace-line-strong);--radius-sm:0;--radius-md:0;--radius-lg:0;--radius-xl:0}
 :root.dark{color-scheme:dark}
 :root.dark.theme-default{--ace-paper:#111a23;--ace-wash:#23313e;--ace-ink:#edf2f5;--ace-graphite:#bac5cf;--ace-line-strong:#687887;--ace-navy:#a8c9e2;--color-primary-foreground:#102a43;--color-popover-foreground:#edf2f5}
 .theme-default :is([data-slot=button],[data-slot=input],[data-slot=card],[data-slot=select-trigger]){border-radius:0;border-width:2px}

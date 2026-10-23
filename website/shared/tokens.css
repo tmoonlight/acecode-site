@@ -9,6 +9,7 @@
   --ace-line-strong: #aeb5bc;
   --ace-paper: #ffffff;
   --ace-wash: #f4f5f6;
+  --ace-on-navy:#fff;
   --ace-on-navy-muted: #c8d3dc;
   --ace-terminal: #111315;
   --ace-terminal-text: #f3f3f3;
@@ -21,4 +22,21 @@
   --ace-font: "ACE Pixel", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono",
     "Microsoft YaHei UI", "PingFang SC", "Noto Sans Mono CJK SC", monospace;
   color-scheme: light;
+}
+
+/* One palette for every public surface, including React and documentation. */
+:root.dark, :root[data-theme="dark"] {
+  --ace-paper:#111a23;
+  --ace-wash:#23313e;
+  --ace-ink:#edf2f5;
+  --ace-graphite:#bac5cf;
+  --ace-muted:#a9b8c5;
+  --ace-line:#374857;
+  --ace-line-strong:#687887;
+  --ace-navy:#a8c9e2;
+  --ace-navy-strong:#cee4f5;
+  --ace-navy-light:#90b5d2;
+  --ace-on-navy:#102a43;
+  --ace-on-navy-muted:#29445b;
+  color-scheme:dark;
 }

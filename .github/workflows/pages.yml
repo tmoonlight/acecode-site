@@ -37,6 +37,7 @@ jobs:
       - run: node --test scripts/browser-language.test.mjs
       - run: node --test scripts/public-download.test.mjs
       - run: node --test scripts/site-language.test.mjs
+      - run: node --test scripts/site-theme.test.mjs
       - run: npm run build --prefix frontend
       - run: python scripts/assemble.py
       - run: python scripts/check_site.py

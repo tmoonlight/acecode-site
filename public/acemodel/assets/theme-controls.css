@@ -1,0 +1,5 @@
+[data-site-theme]{display:inline-flex;flex:none}
+.site-theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;flex:none;padding:8px;border:2px solid var(--ace-line-strong);background:var(--ace-paper);color:var(--ace-ink);cursor:pointer}
+.site-theme-toggle:hover{background:var(--ace-wash)}
+.site-theme-toggle:focus-visible{outline:2px dashed var(--ace-navy);outline-offset:4px}
+.site-theme-toggle svg{display:block;flex:none}
