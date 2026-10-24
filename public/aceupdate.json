@@ -7,7 +7,7 @@
       "tag": "v1.0.16",
       "published_at": "2026-10-24T11:48:12Z",
       "prerelease": false,
-      "notes": "## What's Changed\n* Stabilize release checks and prepare v1.0.16 by @tmoonlight in https://github.com/tmoonlight/acecode/pull/159\n\n\n**Full Changelog**: https://github.com/tmoonlight/acecode/compare/v1.0.15...v1.0.16",
+      "notes": "1. 新增静默定时检查更新，可选择后台自动安装，完成后重启生效。\n2. 精简设置、模型、工具、宠物和更新界面的重复说明，操作更清晰。\n3. 首页根据最近会话推荐下一步任务，支持带入工作区、编辑草稿和撤销替换。\n4. 完善主题工坊动态安装、主题音效与静音控制，改进 HUD 显示和模型配置刷新。\n",
       "packages": [
         {
           "file": "acecode-1.0.16-linux-arm64-update.zip",
