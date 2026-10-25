@@ -100,7 +100,7 @@ export default function PublicModelPricing() {
             <div className="flex items-start gap-3">
               <div>
                 <h1 className="text-3xl font-semibold tracking-tight">{t('keyUsage.pricingTitle')}</h1>
-                <p className="mt-1 max-w-3xl text-sm text-muted-foreground">{t('keyUsage.pricingDescription')}</p>
+
               </div>
             </div>
             <Button variant="outline" size="sm" disabled={loading} onClick={() => void load()}>
@@ -128,7 +128,7 @@ export default function PublicModelPricing() {
           <div>
             <h2 className="font-semibold">{(i18n.language === 'zh-TW' ? '體驗包' : isChinese ? '体验包' : 'Trial pack')}</h2>
             <p className="mt-1 text-xl sm:text-2xl"><strong>¥{TRIAL_AMOUNT_CENTS / 100}</strong><span className="mx-2">→</span><strong>${TRIAL_CREDIT_USD}</strong> {(i18n.language === 'zh-TW' ? '模型額度' : isChinese ? '模型额度' : 'model credits')}</p>
-            <p className="mt-1 text-sm">{(i18n.language === 'zh-TW' ? '每個賬戶和瀏覽器限購一次' : isChinese ? '每个账户和浏览器限购一次' : 'Once per account and browser')}</p>
+            <p className="mt-1 text-sm">{(i18n.language === 'zh-TW' ? '每人限購一次' : isChinese ? '每人限购一次' : 'One purchase per person')}</p>
           </div>
           <Button asChild variant="secondary"><a href="https://customers.acecode.cc/customerv2/wallet?plan=trial">{(i18n.language === 'zh-TW' ? '購買體驗包' : isChinese ? '购买体验包' : 'Get trial pack')}</a></Button>
 
