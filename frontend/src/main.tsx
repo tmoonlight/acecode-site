@@ -10,6 +10,7 @@ import ClientIntegrationGuide from './components/ClientIntegrationGuide'
 import './i18n'
 import './index.css'
 import '../../public/acemodel/assets/language-menu.css'
+import '../../public/acemodel/assets/site-header.css'
 import { setSiteLanguage, languageOptions } from '../../public/acemodel/assets/site-language.js'
 
 const SITE = 'https://acecode.cc'
@@ -52,7 +53,7 @@ function PublicApp() {
   }, [pathname, copy])
   return <div className="ace-public">
     <a className="ace-skip" href="#ace-content">{copy.skip}</a>
-    <header className="ace-site-header"><div className="ace-header-inner">
+    <header className="ace-site-header ace-unified-header"><div className="ace-header-inner">
       <a className="ace-brand" href={SITE + '/acemodel/'} aria-label="ACECode"><img className="ace-brand-mark" src="https://acecode.cc/acemodel/assets/acecode-logo.png?v=20261021-logo" width="30" height="30" alt="" /><span>ACECode</span></a>
       <nav className="ace-site-nav" aria-label={copy.navigation}>
         {links.map((href, index) => <a key={href} href={href} className={index === 4 ? 'ace-nav-cta' : undefined} aria-current={href.endsWith(pathname) ? 'page' : undefined}>{copy.links[index]}</a>)}
