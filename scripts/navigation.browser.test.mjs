@@ -14,11 +14,11 @@ const types={'.html':'text/html','.css':'text/css','.js':'application/javascript
 
 export async function inspectHeader(page) {
  await page.locator('.ace-unified-header').waitFor();
- await page.locator('.ace-unified-header select,.ace-unified-header [data-slot=select-trigger]').waitFor();
+ await page.locator('.ace-unified-header .site-language button').first().waitFor();
  await page.locator('.ace-unified-header button').last().waitFor();
  return page.locator('.ace-unified-header').evaluate(header=>{
   const shape=e=>{const b=e.getBoundingClientRect(),s=getComputedStyle(e);return {x:b.x,y:b.y,width:b.width,height:b.height,font:s.fontFamily,fontSize:s.fontSize,lineHeight:s.lineHeight,fontWeight:s.fontWeight};};
-  const controls=[...header.querySelectorAll('a,select,button')];
+  const controls=[...header.querySelectorAll('a,button')];
   return {header:shape(header),controls:controls.map(shape),overflow:document.documentElement.scrollWidth>innerWidth,labels:controls.map(e=>e.textContent.trim())};
  });
 }
@@ -59,9 +59,12 @@ test('public navigation keeps its geometry across pages, themes, languages and h
    const routes=['/acemodel/','/key-usage/pricing/','/download/','/key-usage/guide/'];if(customerRoot)routes.push('/customerv2');
    for(const route of routes) {
     await page.goto(origin+route,{waitUntil:'load'});
-    await page.waitForFunction(language=>{const s=document.querySelector('.ace-unified-header select');return s?s.value===language:!!document.querySelector('.ace-unified-header [data-slot=select-trigger]')},language);
+    await page.waitForFunction(language=>!!document.querySelector(`.ace-unified-header .site-language [data-language="${language}"][aria-pressed=true]`),language);
     const current=await inspectHeader(page);const label=[width,language,theme,route].join(' ');
-    assert.equal(current.controls.length,9,label);
+    assert.equal(current.controls.length,11,label);
+    // GitHub is the last control and the current page is the only highlighted link.
+    assert.equal(await page.locator('.ace-unified-header .header-tools > :last-child').evaluate(e=>e.matches('.nav-github,.ace-nav-github')),true,label+' github last');
+    assert.equal(await page.locator('.ace-unified-header nav a[aria-current=page]').count(),1,label+' current link');
     baseline??=current;sameGeometry(current,baseline,label);
     if(process.env.NAV_SCREENSHOT_DIR&&language==='zh'&&theme==='light'&&width!==820)await page.locator('.ace-unified-header').screenshot({path:path.join(process.env.NAV_SCREENSHOT_DIR,`preview-${route.replaceAll('/','-')}-${width}.png`)});
     await page.locator('.ace-unified-header .nav-cta,.ace-unified-header .ace-nav-cta').hover();

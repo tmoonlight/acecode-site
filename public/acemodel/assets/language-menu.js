@@ -1,20 +1,30 @@
 import {getSiteLanguage, setSiteLanguage, subscribeSiteLanguage, languageOptions} from './site-language.js';
 
+// Segmented switch: short visible labels, full language names for assistive technology.
+const SHORT_LABELS = {zh: '简', 'zh-TW': '繁', en: 'EN'};
+const GROUP_LABELS = {zh: '语言', 'zh-TW': '語言', en: 'Language'};
+
 for (const host of document.querySelectorAll('[data-site-language]')) {
-  const select = document.createElement('select');
-  select.className = 'site-language';
-  for (const [value, label] of languageOptions) {
-    const option = document.createElement('option');
-    option.value = value;
-    option.textContent = label;
-    select.append(option);
-  }
+  const group = document.createElement('div');
+  group.className = 'site-language';
+  group.setAttribute('role', 'group');
+  const buttons = languageOptions.map(([value, label]) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.dataset.language = value;
+    button.title = label;
+    button.setAttribute('aria-label', label);
+    button.textContent = SHORT_LABELS[value] || value;
+    button.addEventListener('click', () => setSiteLanguage(value));
+    group.append(button);
+    return button;
+  });
   const sync = () => {
-    select.value = getSiteLanguage();
-    select.setAttribute('aria-label', select.value === 'en' ? 'Language' : select.value === 'zh-TW' ? '語言' : '语言');
+    const current = getSiteLanguage();
+    group.setAttribute('aria-label', GROUP_LABELS[current] || GROUP_LABELS.zh);
+    for (const button of buttons) button.setAttribute('aria-pressed', String(button.dataset.language === current));
   };
   sync();
-  select.addEventListener('change', () => setSiteLanguage(select.value));
   subscribeSiteLanguage(sync);
-  host.replaceChildren(select);
+  host.replaceChildren(group);
 }

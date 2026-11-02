@@ -1,4 +1,6 @@
-/* Public navigation contract. Keep the ACEProxy copy byte-identical. */
+/* Public navigation contract. Keep the ACEProxy copy byte-identical.
+ * Brand on the left, page links centred, language / theme / GitHub on the right.
+ * The current page is the only highlighted link. Text uses the page's browser default font. */
 html:has(.ace-unified-header) { scrollbar-gutter: stable; }
 
 :is(.site-header,.ace-site-header).ace-unified-header {
@@ -8,15 +10,19 @@ html:has(.ace-unified-header) { scrollbar-gutter: stable; }
   border-bottom: 2px solid var(--ace-ink);
   background: var(--ace-paper);
   color: var(--ace-ink);
-  font: 400 16px/24px serif;
+  font-family: initial;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
   font-synthesis: none;
   letter-spacing: normal;
 }
 :is(.site-header,.ace-site-header).ace-unified-header > :is(.header-inner,.ace-header-inner) {
   display: grid;
-  grid-template-columns: minmax(112px,1fr) auto 128px 44px;
+  grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   width: min(1088px,calc(100% - 48px));
   max-width: 1088px;
   height: 56px;
@@ -24,13 +30,15 @@ html:has(.ace-unified-header) { scrollbar-gutter: stable; }
   margin: 0 auto;
   padding: 0;
 }
-:is(.site-header,.ace-site-header).ace-unified-header :is(a,button,select) {
+:is(.site-header,.ace-site-header).ace-unified-header :is(a,button) {
   box-sizing: border-box;
+  margin: 0;
   font: inherit;
   letter-spacing: normal;
   border-radius: 0;
+  box-shadow: none;
   transform: none;
-  transition: color .15s, background-color .15s;
+  transition: color .15s, background-color .15s, border-color .15s;
 }
 :is(.site-header,.ace-site-header).ace-unified-header :is(.brand,.ace-brand) {
   display: inline-flex;
@@ -39,20 +47,24 @@ html:has(.ace-unified-header) { scrollbar-gutter: stable; }
   gap: 10px;
   white-space: nowrap;
   color: var(--ace-navy);
+  font-size: 17px;
+  font-weight: 600;
   text-decoration: none;
 }
 :is(.site-header,.ace-site-header).ace-unified-header :is(.brand-mark,.ace-brand-mark) {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   flex: none;
   border: 0;
   object-fit: contain;
 }
+
+/* Page links: equal padding and gap, so the spacing between labels is uniform. */
 :is(.site-header,.ace-site-header).ace-unified-header :is(.site-nav,.ace-site-nav) {
-  display: grid;
-  grid-template-columns: 76px 128px 104px 64px 104px 44px;
+  display: flex;
   align-items: center;
-  gap: 2px;
+  justify-self: center;
+  gap: 4px;
   min-width: 0;
   width: auto;
   margin: 0;
@@ -61,77 +73,121 @@ html:has(.ace-unified-header) { scrollbar-gutter: stable; }
 }
 :is(.site-header,.ace-site-header).ace-unified-header :is(.site-nav,.ace-site-nav) a {
   display: inline-flex;
+  flex: none;
   align-items: center;
   justify-content: center;
-  height: 44px;
-  min-height: 44px;
-  width: 100%;
+  width: auto;
+  height: 36px;
+  min-height: 36px;
   margin: 0;
-  padding: 0 8px;
-  border: 2px solid transparent;
+  padding: 0 14px;
+  border: 1px solid transparent;
   box-shadow: none;
+  background: transparent;
   color: var(--ace-ink);
   text-decoration: none;
+  transform: none;
 }
 :is(.site-header,.ace-site-header).ace-unified-header :is(.site-nav,.ace-site-nav) a:hover {
+  box-shadow: none;
   background: var(--ace-wash);
+  color: var(--ace-ink);
   transform: none;
 }
-:is(.site-header,.ace-site-header).ace-unified-header :is(.site-nav,.ace-site-nav) :is(.nav-cta,.ace-nav-cta) {
-  border-color: var(--ace-ink);
+:is(.site-header,.ace-site-header).ace-unified-header :is(.site-nav,.ace-site-nav) a[aria-current=page],
+:is(.site-header,.ace-site-header).ace-unified-header :is(.site-nav,.ace-site-nav) a[aria-current=page]:hover {
+  border-color: var(--ace-navy);
+  box-shadow: none;
   background: var(--ace-navy);
   color: var(--ace-on-navy);
-  box-shadow: 2px 2px 0 var(--ace-ink);
-}
-:is(.site-header,.ace-site-header).ace-unified-header :is(.site-nav,.ace-site-nav) :is(.nav-cta,.ace-nav-cta):hover {
-  background: var(--ace-navy-strong);
-  color: var(--ace-on-navy);
-  box-shadow: 2px 2px 0 var(--ace-ink);
   transform: none;
 }
-:is(.site-header,.ace-site-header).ace-unified-header :is([data-site-language],.customer-site-language) {
-  width: 128px;
-  max-width: none;
-  height: 44px;
+
+/* Right-hand tools: language switch, theme toggle, GitHub (always last). */
+:is(.site-header,.ace-site-header).ace-unified-header .header-tools {
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  gap: 8px;
+  min-width: 0;
+}
+:is(.site-header,.ace-site-header).ace-unified-header :is([data-site-language],[data-site-theme]) {
+  display: inline-flex;
+  flex: none;
   margin: 0;
   padding: 0;
   border: 0;
 }
-:is(.site-header,.ace-site-header).ace-unified-header :is(.site-language,[data-slot=select-trigger]) {
-  width: 100%;
+:is(.site-header,.ace-site-header).ace-unified-header .site-language {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 2px;
+  width: auto;
   max-width: none;
-  height: 44px;
-  min-height: 44px;
-  padding: 0 10px;
-  border: 1px solid var(--ace-ink);
-  box-shadow: none;
-  background: var(--ace-paper);
-  color: var(--ace-ink);
-}
-:is(.site-header,.ace-site-header).ace-unified-header :is([data-site-theme],.ace-header-inner > [data-slot=button]) {
-  width: 44px;
-  height: 44px;
+  height: 36px;
+  min-height: 36px;
   margin: 0;
+  padding: 2px;
+  box-shadow: none;
+  font-size: 14px;
+  border: 1px solid var(--ace-line-strong);
+  background: var(--ace-wash);
 }
-:is(.site-header,.ace-site-header).ace-unified-header :is(.site-theme-toggle,.ace-header-inner > [data-slot=button]) {
+:is(.site-header,.ace-site-header).ace-unified-header .site-language button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  padding: 8px;
-  border: 2px solid var(--ace-line-strong);
+  min-width: 36px;
+  height: 30px;
+  min-height: 30px;
+  padding: 0 8px;
+  border: 1px solid transparent;
+  box-shadow: none;
+  background: transparent;
+  color: var(--ace-graphite);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+:is(.site-header,.ace-site-header).ace-unified-header .site-language button:hover {
+  color: var(--ace-ink);
+}
+:is(.site-header,.ace-site-header).ace-unified-header .site-language button[aria-pressed=true] {
+  border-color: var(--ace-line-strong);
+  background: var(--ace-paper);
+  color: var(--ace-ink);
+  font-weight: 600;
+}
+:is(.site-header,.ace-site-header).ace-unified-header :is(.site-theme-toggle,.header-tools > [data-slot=button],.nav-github,.ace-nav-github) {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  min-height: 36px;
+  padding: 0;
+  border: 1px solid var(--ace-line-strong);
   box-shadow: none;
   background: var(--ace-paper);
   color: var(--ace-ink);
+  text-decoration: none;
+  cursor: pointer;
+  transform: none;
 }
-:is(.site-header,.ace-site-header).ace-unified-header svg { width: 24px; height: 24px; flex: none; }
-:is(.site-header,.ace-site-header).ace-unified-header [data-slot=select-trigger] svg { width: 16px; height: 16px; }
-:is(.site-header,.ace-site-header).ace-unified-header :focus-visible { outline: 2px dashed var(--ace-navy); outline-offset: 3px; }
+:is(.site-header,.ace-site-header).ace-unified-header :is(.site-theme-toggle,.header-tools > [data-slot=button],.nav-github,.ace-nav-github):hover {
+  background: var(--ace-wash);
+  color: var(--ace-ink);
+}
+:is(.site-header,.ace-site-header).ace-unified-header svg { width: 20px; height: 20px; flex: none; }
+:is(.site-header,.ace-site-header).ace-unified-header :focus-visible { outline: 2px dashed var(--ace-navy); outline-offset: 2px; }
 
 @media(max-width:1000px) {
   :is(.site-header,.ace-site-header).ace-unified-header > :is(.header-inner,.ace-header-inner) {
-    grid-template-columns: minmax(0,1fr) 112px 44px;
+    grid-template-columns: minmax(0,1fr) auto;
     grid-template-rows: 44px 44px;
     gap: 8px;
     width: calc(100% - 32px);
@@ -139,27 +195,22 @@ html:has(.ace-unified-header) { scrollbar-gutter: stable; }
     min-height: 116px;
     padding: 10px 0;
   }
+  :is(.site-header,.ace-site-header).ace-unified-header :is(.brand,.ace-brand) { grid-column: 1; grid-row: 1; }
+  :is(.site-header,.ace-site-header).ace-unified-header .header-tools { grid-column: 2; grid-row: 1; }
   :is(.site-header,.ace-site-header).ace-unified-header :is(.site-nav,.ace-site-nav) {
     grid-column: 1 / -1;
     grid-row: 2;
-    grid-template-columns: 64px 112px 88px 56px 96px 44px;
+    justify-self: stretch;
     order: initial;
     overflow-x: auto;
+    scrollbar-width: none;
     font-size: 14px;
   }
-  :is(.site-header,.ace-site-header).ace-unified-header :is([data-site-language],.customer-site-language) {
-    grid-column: 2;
-    grid-row: 1;
-    width: 112px;
-    margin: 0;
-  }
-  :is(.site-header,.ace-site-header).ace-unified-header :is([data-site-theme],.ace-header-inner > [data-slot=button]) {
-    grid-column: 3;
-    grid-row: 1;
-  }
+  :is(.site-header,.ace-site-header).ace-unified-header :is(.site-nav,.ace-site-nav)::-webkit-scrollbar { display: none; }
+  :is(.site-header,.ace-site-header).ace-unified-header :is(.site-nav,.ace-site-nav) a { padding: 0 12px; }
 }
-@media(max-width:760px) {
-  html:not([lang=en]) :is(.site-header,.ace-site-header).ace-unified-header :is(.site-nav,.ace-site-nav) {
-    grid-template-columns: 46px 76px 46px 46px 86px 44px;
-  }
+@media(max-width:420px) {
+  :is(.site-header,.ace-site-header).ace-unified-header :is(.site-nav,.ace-site-nav) a { padding: 0 9px; }
+  :is(.site-header,.ace-site-header).ace-unified-header .header-tools { gap: 4px; }
+  :is(.site-header,.ace-site-header).ace-unified-header .site-language button { min-width: 32px; padding: 0 6px; }
 }

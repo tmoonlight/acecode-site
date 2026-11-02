@@ -1,11 +1,12 @@
-.site-language{font:inherit;font-size:16px;line-height:1.5;min-height:44px;max-width:148px;padding:6px 8px;border:1px solid currentColor;border-radius:0;color:var(--ace-ink,#102a43);background:var(--ace-paper,#fff);cursor:pointer}
-.site-language:focus-visible{outline:2px dashed currentColor;outline-offset:4px}
+.site-language{display:inline-flex;align-items:stretch;gap:2px;height:36px;padding:2px;border:1px solid var(--ace-line-strong,#aeb5bc);border-radius:0;background:var(--ace-wash,#f4f5f6);font:inherit;font-size:14px;line-height:1}
+.site-language button{display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:30px;padding:0 8px;border:1px solid transparent;border-radius:0;background:transparent;color:var(--ace-graphite,#4f565d);font:inherit;cursor:pointer}
+.site-language button:hover{color:var(--ace-ink,#111315)}
+.site-language button[aria-pressed=true]{border-color:var(--ace-line-strong,#aeb5bc);background:var(--ace-paper,#fff);color:var(--ace-ink,#111315);font-weight:600}
+.site-language button:focus-visible{outline:2px dashed var(--ace-navy,#102a43);outline-offset:2px}
 [data-site-language]{flex:none;display:inline-flex;align-items:center}
-.site-header .header-inner{gap:12px}
-.ace-header-inner>[data-site-language]{margin-left:0}
-@media(max-width:1000px){.site-header .header-inner,.ace-header-inner{flex-wrap:wrap;height:auto;min-height:60px;padding-top:10px;padding-bottom:10px;gap:8px}.site-header .site-nav,.ace-site-nav{order:3;flex-basis:100%;margin:0;overflow-x:auto;white-space:nowrap}.header-inner>[data-site-language],.ace-header-inner>[data-site-language]{margin-left:auto}.site-header~main{padding-top:32px}}
+@media(max-width:1000px){.site-header~main{padding-top:32px}}
 .header-actions [data-site-language]{margin-left:8px}
-@media(max-width:760px){.header-actions [data-site-language]{margin-left:0}.header-actions .site-language{max-width:112px;font-size:14px}.header-actions{gap:6px}}
+@media(max-width:760px){.header-actions [data-site-language]{margin-left:0}.header-actions .site-language button{min-width:32px;padding:0 6px}.header-actions{gap:6px}}
 @media(max-width:760px){
   :root.ace-docs{--header-height:128px}
   :root.ace-docs .site-header{height:auto;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
@@ -14,7 +15,7 @@
   :root.ace-docs .brand::before{width:24px;height:24px;margin-right:8px;font-size:14px}
   :root.ace-docs .brand-label,:root.ace-docs .brand-divider{display:none}
   :root.ace-docs .header-actions{grid-column:2;grid-row:1;margin:0;gap:4px}
-  :root.ace-docs .header-actions .site-language{max-width:104px}
+  :root.ace-docs .header-actions .site-language button{min-width:30px;padding:0 5px}
   :root.ace-docs .search-trigger{grid-column:2;grid-row:2;justify-self:end}
   :root.ace-docs .ace-doc-links{grid-column:1/-1;grid-row:2;min-width:0;margin-right:44px;max-width:calc(100% - 44px);min-height:40px}
 }
