@@ -28,7 +28,20 @@ for (const raw of manifest.releases) {
   if (raw.sums) assert.equal(release.sums.url, raw.sums.url);
 }
 const latest = context.check.normalizeRelease(manifest.releases.find(r => r.version === manifest.latest));
-assert.equal(context.check.archGroups(latest.packages, 'windows')[0].files[0].kind, 'zip');
+const windowsGroups = context.check.archGroups(latest.packages, 'windows');
+assert.ok(windowsGroups.length > 0, 'Latest release must offer Windows downloads');
+for (const group of windowsGroups) {
+  const hasInstaller = group.files.some(file => file.kind === 'setup');
+  assert.equal(group.files[0].kind, hasInstaller ? 'setup' : 'zip', group.arch);
+}
+for (const arch of ['x64', 'arm64']) {
+  const zip = { platform: 'windows', arch, kind: 'zip', name: `acecode-windows-${arch}.zip` };
+  const setup = { platform: 'windows', arch, kind: 'setup', name: `ACECode-windows-${arch}-setup.exe` };
+  assert.equal(context.check.archGroups([zip, setup], 'windows')[0].files[0].kind, 'setup',
+    `${arch}: prefer the installer when both downloads exist`);
+  assert.equal(context.check.archGroups([zip], 'windows')[0].files[0].kind, 'zip',
+    `${arch}: retain the ZIP fallback for older releases`);
+}
 assert.equal(context.check.archGroups(latest.packages, 'macos')[0].files[0].kind, 'pkg');
 assert.equal(context.check.archGroups(latest.packages, 'linux')[0].files[0].kind, 'tar');
 assert.equal(context.check.manifestFile({...manifest.releases[0].packages[0], url: 'https://example.com/private.zip'}), null);

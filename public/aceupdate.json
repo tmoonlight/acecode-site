@@ -1,13 +1,197 @@
 {
   "schema_version": 1,
-  "latest": "1.0.20",
+  "latest": "1.0.21",
   "releases": [
+    {
+      "version": "1.0.21",
+      "tag": "v1.0.21",
+      "published_at": "2026-11-04T18:29:44Z",
+      "prerelease": false,
+      "notes": "ACECode 1.0.21\n\n- 新增 Windows 原生安装器，沿用启动动画，支持图形和静默安装、卸载、快捷方式与 PATH 设置。\n- 对话内支持交互式可视化，内置 Chart.js 4 与 d3 7，支持离线图表。\n- 修复跨项目会话在恢复前显示错误权限模式的问题。\n- 上下文超限时优先压缩会话，压缩仍无法解决时才调整学习阈值。\n- 首次升级时按需启用 `file_write → write_file` 工具重写，执行一次后保留用户选择。\n\nWindows x64 / ARM64 原生 setup、便携 ZIP、Linux、Deepin 与 macOS 下载均附 SHA256 校验。Agent Browser 集成于 Desktop。\n\n安装完成后请重启 ACECode，使新版本与内置技能升级生效。Windows 安装器尚未配置代码签名。\n",
+      "packages": [
+        {
+          "file": "acecode-1.0.21-linux-arm64-update.zip",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.21/acecode-1.0.21-linux-arm64-update.zip",
+          "size": 20780656,
+          "sha256": "e24b34cb640155547eb87d02b34dad58f2804d1c20666475ae6ff535ec04c6ac",
+          "platform": "linux",
+          "arch": "arm64",
+          "kind": "update"
+        },
+        {
+          "file": "acecode-1.0.21-linux-x64-update.zip",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.21/acecode-1.0.21-linux-x64-update.zip",
+          "size": 20325392,
+          "sha256": "ef98ee69aefd4d770d1bec90fbec3063b653bd018cbe6ee6b601cac5d2660a59",
+          "platform": "linux",
+          "arch": "x64",
+          "kind": "update"
+        },
+        {
+          "file": "ACECode-1.0.21-macos-arm64-update.zip",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.21/ACECode-1.0.21-macos-arm64-update.zip",
+          "size": 28001354,
+          "sha256": "74c9892803405e2203c455764a02d8e37156b1a196f9aeefafe9f004c5761d3e",
+          "platform": "macos",
+          "arch": "arm64",
+          "kind": "appzip"
+        },
+        {
+          "file": "ACECode-1.0.21-macos-arm64.dmg",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.21/ACECode-1.0.21-macos-arm64.dmg",
+          "size": 31130346,
+          "sha256": "8f85891e339ae785bbd99b6a3b4b9fadd8686c4826f0c90cccb08a38645d4e89",
+          "platform": "macos",
+          "arch": "arm64",
+          "kind": "dmg"
+        },
+        {
+          "file": "ACECode-1.0.21-macos-arm64.pkg",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.21/ACECode-1.0.21-macos-arm64.pkg",
+          "size": 27926139,
+          "sha256": "302c41b205eadc610c9c0f5268ed0d0fe8a7bec95155f34e66c9fc374ee4426a",
+          "platform": "macos",
+          "arch": "arm64",
+          "kind": "pkg"
+        },
+        {
+          "file": "ACECode-1.0.21-macos-x64-update.zip",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.21/ACECode-1.0.21-macos-x64-update.zip",
+          "size": 28350644,
+          "sha256": "be81d5b8b0df6c26d97b8df133516fa683b584747440044c856c1c984743858a",
+          "platform": "macos",
+          "arch": "x64",
+          "kind": "appzip"
+        },
+        {
+          "file": "ACECode-1.0.21-macos-x64.dmg",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.21/ACECode-1.0.21-macos-x64.dmg",
+          "size": 31771699,
+          "sha256": "2be5613ed995e714b3557cf65242841e78bc68ebd61faff616e477876bf1dfa4",
+          "platform": "macos",
+          "arch": "x64",
+          "kind": "dmg"
+        },
+        {
+          "file": "ACECode-1.0.21-macos-x64.pkg",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.21/ACECode-1.0.21-macos-x64.pkg",
+          "size": 28274756,
+          "sha256": "7c097fbf0131e21203ae48a42fd643685138a7bce0c65a514af4581309e959f7",
+          "platform": "macos",
+          "arch": "x64",
+          "kind": "pkg"
+        },
+        {
+          "file": "ACECode-1.0.21-windows-arm64-setup.exe",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.21/ACECode-1.0.21-windows-arm64-setup.exe",
+          "size": 26417152,
+          "sha256": "48bdb711ee8d27b3d40193e3f32441561e51cdac66ed1c5ed301ea6f4b76ec07",
+          "platform": "windows",
+          "arch": "arm64",
+          "kind": "setup"
+        },
+        {
+          "file": "ACECode-1.0.21-windows-x64-setup.exe",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.21/ACECode-1.0.21-windows-x64-setup.exe",
+          "size": 26528768,
+          "sha256": "0d94c37065c5df894877eb904521c3e597fbde8ae9bd28667fa903ef0110904a",
+          "platform": "windows",
+          "arch": "x64",
+          "kind": "setup"
+        },
+        {
+          "file": "acecode-linux-arm64.tar.gz",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.21/acecode-linux-arm64.tar.gz",
+          "size": 20701882,
+          "sha256": "3dac3642b552659320ba671eee5bf906e77c9d65def8ac25c6927f83feb16657",
+          "platform": "linux",
+          "arch": "arm64",
+          "kind": "tar"
+        },
+        {
+          "file": "acecode-linux-armv7.tar.gz",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.21/acecode-linux-armv7.tar.gz",
+          "size": 14705395,
+          "sha256": "625f16f5e4763e144f9f9de1953ad4112d04860a42070c49480423c6617b2be9",
+          "platform": "linux",
+          "arch": "armv7",
+          "kind": "tar"
+        },
+        {
+          "file": "acecode-linux-deepin-arm64.tar.gz",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.21/acecode-linux-deepin-arm64.tar.gz",
+          "size": 19610197,
+          "sha256": "79adbf6c73832ad0d0c7c84049949c44d0bbd8034f19836a720638f8c4dd4483",
+          "platform": "linux",
+          "arch": "arm64",
+          "kind": "oldtar"
+        },
+        {
+          "file": "acecode-linux-deepin-x64.tar.gz",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.21/acecode-linux-deepin-x64.tar.gz",
+          "size": 19222062,
+          "sha256": "54c7b04f1f5d2d79545ccffafc440e745397f33d2b35e31bef11f84943908d78",
+          "platform": "linux",
+          "arch": "x64",
+          "kind": "oldtar"
+        },
+        {
+          "file": "acecode-linux-x64.tar.gz",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.21/acecode-linux-x64.tar.gz",
+          "size": 20243418,
+          "sha256": "1e94f14671f155829eb85621c7486016d279989b125c0f0371ac526d2450a7d0",
+          "platform": "linux",
+          "arch": "x64",
+          "kind": "tar"
+        },
+        {
+          "file": "acecode-macos-arm64.tar.gz",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.21/acecode-macos-arm64.tar.gz",
+          "size": 44312431,
+          "sha256": "a0f367d6a227249198dfebf233663235ba4db87045562f9bd78d852674b4ae1b",
+          "platform": "macos",
+          "arch": "arm64",
+          "kind": "mactar"
+        },
+        {
+          "file": "acecode-macos-x64.tar.gz",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.21/acecode-macos-x64.tar.gz",
+          "size": 45167723,
+          "sha256": "345a70a16f5d17c5eadec3478c1eec954f6252bc873b362afe5258ca47a70e36",
+          "platform": "macos",
+          "arch": "x64",
+          "kind": "mactar"
+        },
+        {
+          "file": "acecode-windows-arm64.zip",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.21/acecode-windows-arm64.zip",
+          "size": 24471233,
+          "sha256": "c55bfec87d69f207af5f2631e6bfc2a66d69b4c47bfbaa5c2939aa44af7cb26c",
+          "platform": "windows",
+          "arch": "arm64",
+          "kind": "zip"
+        },
+        {
+          "file": "acecode-windows-x64.zip",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.21/acecode-windows-x64.zip",
+          "size": 24583645,
+          "sha256": "219f6f3fcd28924b880cf3f9afc17cf5f06184c1b0170c85d66a4cd6f12b7b27",
+          "platform": "windows",
+          "arch": "x64",
+          "kind": "zip"
+        }
+      ],
+      "sums": {
+        "name": "SHA256SUMS.txt",
+        "url": "https://acecodedownload.b-cdn.net/v1.0.21/SHA256SUMS.txt"
+      }
+    },
     {
       "version": "1.0.20",
       "tag": "v1.0.20",
       "published_at": "2026-11-04T03:36:53Z",
       "prerelease": false,
-      "notes": "## What's Changed\n* Fix scheduler wait captures for v1.0.20 by @shaohaozhi286 in https://github.com/tmoonlight/acecode/pull/168\n* Release v1.0.20 by @shaohaozhi286 in https://github.com/tmoonlight/acecode/pull/169\n\n\n**Full Changelog**: https://github.com/tmoonlight/acecode/compare/v1.0.19...v1.0.20",
+      "notes": "## 更新内容\r\n\r\n1. 桌面记住窗口位置和缩放比例，缩放时可快速恢复 100%。\n2. 消息通道支持切换会话并让原任务在后台继续执行，新增 /history 回看近期对话。\n3. 定时任务支持立即运行，撤销与重做快捷键可自定义。\n4. 推荐问题支持 Ctrl+回车确认，并优化滚动按钮和界面文字显示。\r\n\r\n## What's Changed\n* Fix scheduler wait captures for v1.0.20 by @shaohaozhi286 in https://github.com/tmoonlight/acecode/pull/168\n* Release v1.0.20 by @shaohaozhi286 in https://github.com/tmoonlight/acecode/pull/169\n\n\n**Full Changelog**: https://github.com/tmoonlight/acecode/compare/v1.0.19...v1.0.20\r\n",
       "packages": [
         {
           "file": "acecode-1.0.20-linux-arm64-update.zip",
