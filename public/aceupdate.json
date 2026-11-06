@@ -7,7 +7,7 @@
       "tag": "v1.0.22",
       "published_at": "2026-11-06T04:50:31Z",
       "prerelease": false,
-      "notes": "## What's Changed\n* Integrate scheduled session retention and narrow chat controls for v1.0.22 by @tmoonlight in https://github.com/tmoonlight/acecode/pull/172\n* Release v1.0.22 by @tmoonlight in https://github.com/tmoonlight/acecode/pull/173\n* Protect active sessions during scheduled retention by @tmoonlight in https://github.com/tmoonlight/acecode/pull/174\n* Preserve empty sessions and writer locks during retention by @tmoonlight in https://github.com/tmoonlight/acecode/pull/175\n\n\n**Full Changelog**: https://github.com/tmoonlight/acecode/compare/v1.0.21...v1.0.22",
+      "notes": "ACECode 1.0.22\r\n\r\n1. 定时任务可自动归档或删除旧会话，并指定保留数量。两个选项默认关闭。\r\n2. 缩窄聊天窗口时，标题、输入框工具栏和底部状态会按可用空间收起，主要操作仍然可用。\r\n3. 修复从 OneNote、Word 和 Excel 粘贴文字时被当作图片的问题。\r\n4. Windows「在资源管理器中显示」会定位并选中文件，打开文件夹时桌面界面保持响应。\r\n5. 桌面宠物新增水晶球，可在虚拟办公室设置中选择。\r\n\r\n## What's Changed\r\n* Integrate scheduled session retention and narrow chat controls for v1.0.22 by @tmoonlight in https://github.com/tmoonlight/acecode/pull/172\r\n* Release v1.0.22 by @tmoonlight in https://github.com/tmoonlight/acecode/pull/173\r\n* Protect active sessions during scheduled retention by @tmoonlight in https://github.com/tmoonlight/acecode/pull/174\r\n* Preserve empty sessions and writer locks during retention by @tmoonlight in https://github.com/tmoonlight/acecode/pull/175\r\n\r\n\r\n**Full Changelog**: https://github.com/tmoonlight/acecode/compare/v1.0.21...v1.0.22\r\n",
       "packages": [
         {
           "file": "acecode-1.0.22-linux-arm64-update.zip",
