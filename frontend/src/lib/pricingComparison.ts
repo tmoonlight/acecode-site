@@ -2,6 +2,15 @@ import type { PublicModelPricingRow } from '../types'
 
 export const INPUT_PRICE_BASELINE = 'gpt-6-sol'
 
+export function imageUnitMultiplier(row: PublicModelPricingRow, rows: PublicModelPricingRow[]): number | null {
+  if (row.channel !== 'codex' || row.pricing.user_billing_mode !== 'per_image') return null
+  const base = rows.find(item => item.channel === 'codex' && item.model === 'gpt-image-2.6-flare')
+  const price = Number(row.pricing.image_unit_price)
+  const unit = Number(base?.pricing.image_unit_price)
+  if (base?.pricing.user_billing_mode !== 'per_image' || !Number.isFinite(price) || price <= 0 || !Number.isFinite(unit) || unit <= 0) return null
+  return price / unit
+}
+
 export function textInputMultiplier(row: PublicModelPricingRow, rows: PublicModelPricingRow[]): number | null {
   if (row.media_unit || /^gpt-image-|^acemodel-image/.test(row.model)) return null
   const baseline = rows.find(item => item.channel === 'codex' && item.model === INPUT_PRICE_BASELINE)

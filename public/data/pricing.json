@@ -278,11 +278,213 @@
       }
     },
     {
+      "model": "acemodel-image",
+      "channel": "codex",
+      "source": "custom",
+      "pricing": {
+        "user_billing_mode": "per_image",
+        "image_unit_price": 0.1,
+        "image_input": 8,
+        "cached_image_input": 2,
+        "source": "custom",
+        "input": 5,
+        "cached_input": 1.25,
+        "output": 30
+      },
+      "canonical_model": "gpt-image-2.6-flare",
+      "is_alias": true
+    },
+    {
+      "model": "acemodel-image-2k",
+      "channel": "codex",
+      "source": "custom",
+      "pricing": {
+        "user_billing_mode": "per_image",
+        "image_unit_price": 0.2,
+        "image_input": 8,
+        "cached_image_input": 2,
+        "source": "custom",
+        "input": 5,
+        "cached_input": 1.25,
+        "output": 30
+      },
+      "canonical_model": "gpt-image-2.6-flare-2k",
+      "is_alias": true
+    },
+    {
+      "model": "acemodel-image-4k",
+      "channel": "codex",
+      "source": "custom",
+      "pricing": {
+        "user_billing_mode": "per_image",
+        "image_unit_price": 0.4,
+        "image_input": 8,
+        "cached_image_input": 2,
+        "source": "custom",
+        "input": 5,
+        "cached_input": 1.25,
+        "output": 30
+      },
+      "canonical_model": "gpt-image-2.6-flare-4k",
+      "is_alias": true
+    },
+    {
+      "model": "acemodel-image-edit",
+      "channel": "codex",
+      "source": "custom",
+      "pricing": {
+        "user_billing_mode": "per_image",
+        "image_unit_price": 0.15,
+        "image_input": 8,
+        "cached_image_input": 2,
+        "source": "custom",
+        "input": 5,
+        "cached_input": 1.25,
+        "output": 30
+      },
+      "canonical_model": "gpt-image-2.6-sunburst",
+      "is_alias": true
+    },
+    {
+      "model": "acemodel-image-edit-2k",
+      "channel": "codex",
+      "source": "custom",
+      "pricing": {
+        "user_billing_mode": "per_image",
+        "image_unit_price": 0.3,
+        "image_input": 8,
+        "cached_image_input": 2,
+        "source": "custom",
+        "input": 5,
+        "cached_input": 1.25,
+        "output": 30
+      },
+      "canonical_model": "gpt-image-2.6-sunburst-2k",
+      "is_alias": true
+    },
+    {
+      "model": "acemodel-image-edit-4k",
+      "channel": "codex",
+      "source": "custom",
+      "pricing": {
+        "user_billing_mode": "per_image",
+        "image_unit_price": 0.6,
+        "image_input": 8,
+        "cached_image_input": 2,
+        "source": "custom",
+        "input": 5,
+        "cached_input": 1.25,
+        "output": 30
+      },
+      "canonical_model": "gpt-image-2.6-sunburst-4k",
+      "is_alias": true
+    },
+    {
+      "model": "gpt-image-2.6-flare-4k",
+      "channel": "codex",
+      "source": "custom",
+      "pricing": {
+        "user_billing_mode": "per_image",
+        "image_unit_price": 0.4,
+        "image_input": 8,
+        "cached_image_input": 2,
+        "source": "custom",
+        "input": 5,
+        "cached_input": 1.25,
+        "output": 30
+      },
+      "canonical_model": "gpt-image-2.6-flare",
+      "is_alias": true
+    },
+    {
+      "model": "gpt-image-2.6-sunburst-4k",
+      "channel": "codex",
+      "source": "custom",
+      "pricing": {
+        "user_billing_mode": "per_image",
+        "image_unit_price": 0.6,
+        "image_input": 8,
+        "cached_image_input": 2,
+        "source": "custom",
+        "input": 5,
+        "cached_input": 1.25,
+        "output": 30
+      },
+      "canonical_model": "gpt-image-2.6-sunburst",
+      "is_alias": true
+    },
+    {
+      "model": "gpt-image-2.6-flare-2k",
+      "channel": "codex",
+      "source": "custom",
+      "pricing": {
+        "user_billing_mode": "per_image",
+        "image_unit_price": 0.2,
+        "image_input": 8,
+        "cached_image_input": 2,
+        "source": "custom",
+        "input": 5,
+        "cached_input": 1.25,
+        "output": 30
+      },
+      "canonical_model": "gpt-image-2.6-flare",
+      "is_alias": true
+    },
+    {
+      "model": "gpt-image-2.6-sunburst-2k",
+      "channel": "codex",
+      "source": "custom",
+      "pricing": {
+        "user_billing_mode": "per_image",
+        "image_unit_price": 0.3,
+        "image_input": 8,
+        "cached_image_input": 2,
+        "source": "custom",
+        "input": 5,
+        "cached_input": 1.25,
+        "output": 30
+      },
+      "canonical_model": "gpt-image-2.6-sunburst",
+      "is_alias": true
+    },
+    {
+      "model": "gpt-image-2.6-flare",
+      "channel": "codex",
+      "source": "custom",
+      "pricing": {
+        "user_billing_mode": "per_image",
+        "image_unit_price": 0.1,
+        "image_input": 8,
+        "cached_image_input": 2,
+        "source": "custom",
+        "input": 5,
+        "cached_input": 1.25,
+        "output": 30
+      }
+    },
+    {
+      "model": "gpt-image-2.6-sunburst",
+      "channel": "codex",
+      "source": "custom",
+      "pricing": {
+        "user_billing_mode": "per_image",
+        "image_unit_price": 0.15,
+        "image_input": 8,
+        "cached_image_input": 2,
+        "source": "custom",
+        "input": 5,
+        "cached_input": 1.25,
+        "output": 30
+      }
+    },
+    {
       "model": "gpt-image-2-4k",
       "channel": "codex",
-      "source": "default",
+      "source": "custom",
       "pricing": {
-        "source": "default",
+        "user_billing_mode": "per_image",
+        "image_unit_price": 0.4,
+        "source": "custom",
         "input": 1,
         "output": 2
       }
@@ -290,9 +492,11 @@
     {
       "model": "gpt-image-2-2k",
       "channel": "codex",
-      "source": "default",
+      "source": "custom",
       "pricing": {
-        "source": "default",
+        "user_billing_mode": "per_image",
+        "image_unit_price": 0.2,
+        "source": "custom",
         "input": 1,
         "output": 2
       }
@@ -300,9 +504,11 @@
     {
       "model": "gpt-image-2",
       "channel": "codex",
-      "source": "default",
+      "source": "custom",
       "pricing": {
-        "source": "default",
+        "user_billing_mode": "per_image",
+        "image_unit_price": 0.1,
+        "source": "custom",
         "input": 1,
         "output": 2
       }

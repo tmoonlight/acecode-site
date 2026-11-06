@@ -14,7 +14,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { INPUT_PRICE_BASELINE, textInputMultiplier, formatInputMultiplier, imagePriceEstimate, formatImageEstimate } from '../lib/pricingComparison'
+import { INPUT_PRICE_BASELINE, textInputMultiplier, formatInputMultiplier, imageUnitMultiplier, imagePriceEstimate, formatImageEstimate } from '../lib/pricingComparison'
 const TRIAL_AMOUNT_CENTS = 99
 const TRIAL_CREDIT_USD = 6
 
@@ -150,11 +150,11 @@ export default function PublicModelPricing() {
         ) : (
           <div className="space-y-3">
             <p className="text-sm text-muted-foreground">
-              {(i18n.language === 'zh-TW' ? `輸入倍率以 ${INPUT_PRICE_BASELINE} = 1×；實際費用按輸入、快取和輸出分別計算。` : isChinese ? `输入倍率以 ${INPUT_PRICE_BASELINE} = 1×；实际费用按输入、缓存和输出分别计算。` : `Input multiplier: ${INPUT_PRICE_BASELINE} = 1×. Input, cache and output are billed separately.`)}
+              {(i18n.language === 'zh-TW' ? `文字輸入以 ${INPUT_PRICE_BASELINE} 為 1×，圖片以 Flare 標準檔為 1×。` : isChinese ? `文本输入以 ${INPUT_PRICE_BASELINE} 为 1×，图片以 Flare 标准档为 1×。` : `Text input is relative to ${INPUT_PRICE_BASELINE}. Image prices are relative to standard Flare (1×).`)}
             </p>
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
             {filtered.map((row) => (
-              <PricingCard key={`${row.channel}:${row.model}`} row={row} multiplier={textInputMultiplier(row, rows)} />
+              <PricingCard key={`${row.channel}:${row.model}`} row={row} multiplier={row.pricing.user_billing_mode === 'per_image' ? imageUnitMultiplier(row, rows) : textInputMultiplier(row, rows)} />
             ))}
           </div>
           </div>
@@ -193,9 +193,10 @@ function PricingCard({ row, multiplier }: { row: PublicModelPricingRow; multipli
             </div>
           </div>
           {imageEstimate ? (
-            <div className="shrink-0 rounded-md bg-primary px-3 py-2 text-right text-primary-foreground" aria-label={(i18n.language === 'zh-TW' ? '單張估價' : isChinese ? '单张估价' : 'Per-image estimate')}>
+            <div className="shrink-0 rounded-md bg-primary px-3 py-2 text-right text-primary-foreground">
               <div className="text-xs">{imageEstimate.exact ? ((i18n.language === 'zh-TW' ? '每張' : isChinese ? '每张' : 'Per image')) : ((i18n.language === 'zh-TW' ? '約 / 張' : isChinese ? '约 / 张' : 'Est. / image'))}</div>
-              <div className="font-mono text-lg font-semibold tabular-nums">{formatImageEstimate(imageEstimate.usd)}</div>
+              <div className="font-mono text-lg font-semibold tabular-nums">{imageEstimate.exact ? '$' + imageEstimate.usd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 }) : formatImageEstimate(imageEstimate.usd)}</div>
+              {imageEstimate.exact && multiplier !== null && <div className="text-xs">{isChinese ? '倍率' : 'Multiplier'} {formatInputMultiplier(multiplier)}</div>}
             </div>
           ) : !row.media_unit && !/^gpt-image-|^acemodel-image/.test(row.model) ? (
             <div className="shrink-0 rounded-md bg-primary px-3 py-2 text-right text-primary-foreground" aria-label={(i18n.language === 'zh-TW' ? '輸入倍率' : isChinese ? '输入倍率' : 'Input multiplier')}>
@@ -205,15 +206,15 @@ function PricingCard({ row, multiplier }: { row: PublicModelPricingRow; multipli
           ) : null}
         </div>
 
-        <div className={`mt-4 grid gap-2 ${row.media_unit ? 'grid-cols-1' : 'grid-cols-3'}`}>
+        {!imageEstimate?.exact && <div className={`mt-4 grid gap-2 ${row.media_unit ? 'grid-cols-1' : 'grid-cols-3'}`}>
           {values.map(([label, value]) => (
             <div key={label} className="rounded-xl border border-border/70 bg-muted/25 px-2.5 py-2.5">
               <div className="truncate text-xs font-semibold uppercase tracking-wide text-muted-foreground" title={label}>{label}</div>
               <div className="mt-1 font-mono text-sm font-bold tabular-nums">{price(value)}</div>
             </div>
           ))}
-        </div>
-        {!row.media_unit && <div className="mt-2 text-right text-xs text-muted-foreground">{t('keyUsage.pricingUnit')}</div>}
+        </div>}
+        {!row.media_unit && !imageEstimate?.exact && <div className="mt-2 text-right text-xs text-muted-foreground">{t('keyUsage.pricingUnit')}</div>}
         {imageEstimate && !imageEstimate.exact && <p className="mt-2 text-xs text-muted-foreground">{(i18n.language === 'zh-TW' ? `${imageEstimate.size} 中畫質輸出估價；提示詞和參考圖另計。` : isChinese ? `${imageEstimate.size} 中画质输出估价；提示词和参考图另计。` : `${imageEstimate.size}, medium-quality output estimate; text and reference images cost extra.`)}</p>}
       </CardContent>
     </Card>
