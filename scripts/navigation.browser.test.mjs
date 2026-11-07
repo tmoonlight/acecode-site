@@ -75,6 +75,18 @@ test('public navigation keeps its geometry across pages, themes, languages and h
     await page.mouse.move(0,200);
     if(route==='/download/')assert.match(await page.locator('body').evaluate(e=>getComputedStyle(e).fontFamily),/ACE Pixel/);
    }
+   if(width===1440 && language==='zh' && theme==='light'){
+    await page.goto(origin+'/acemodel/');
+    const section=page.locator('[data-gemini-prices]');
+    await section.getByRole('rowheader',{name:'gemini-3.1-flash-lite'}).waitFor();
+    const target=new URL(await section.getByRole('link').getAttribute('href'));
+    await page.goto(origin+target.pathname+target.search);
+    assert.equal(await page.getByRole('button',{name:'Gemini',exact:true}).getAttribute('aria-pressed'),'true');
+    await page.getByRole('heading',{name:'gemini-3.1-flash-lite',exact:true}).waitFor();
+    assert.ok((await page.locator('h3').allTextContents()).every(name=>name.startsWith('gemini-')));
+    await page.reload();
+    await page.getByRole('heading',{name:'gemini-3.1-flash-lite',exact:true}).waitFor();
+   }
    await context.close();
   }
  }finally{await browser.close();await new Promise(resolve=>server.close(resolve))}

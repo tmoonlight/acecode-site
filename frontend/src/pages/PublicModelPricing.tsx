@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSearchParams } from 'react-router-dom'
 import {
   Loader2,
     RefreshCw,
@@ -18,29 +19,29 @@ import { INPUT_PRICE_BASELINE, textInputMultiplier, formatInputMultiplier, image
 const TRIAL_AMOUNT_CENTS = 99
 const TRIAL_CREDIT_USD = 6
 
-const CHANNELS = ['all', 'codex', 'grok', 'antigravity', 'claude'] as const
+const CHANNELS = ['all', 'codex', 'gemini', 'grok', 'claude'] as const
 type Channel = typeof CHANNELS[number]
 
-// Customer-facing visibility only. Remove a channel here when it is ready to launch.
-const HIDDEN_PUBLIC_PRICING_CHANNELS: ReadonlySet<string> = new Set(['antigravity'])
 const HIDDEN_PUBLIC_PRICING_MODELS: ReadonlySet<string> = new Set(['gpt-5.3-codex-spark', 'codex-auto-review'])
 const ACE_MODEL_NAMES: Record<string, string> = { aurora: 'Aurora', moonlight: 'Moonlight', starrylight: 'Starrylight' }
 
 const CHANNEL_LABELS: Record<Exclude<Channel, 'all'>, string> = {
   codex: 'Codex',
   grok: 'Grok',
-  antigravity: 'Antigravity',
+  gemini: 'Gemini',
   claude: 'Claude',
 }
 
-function normalizeChannel(value?: string): Exclude<Channel, 'all'> {
-  const channel = value?.toLowerCase()
-  return channel === 'grok' || channel === 'antigravity' || channel === 'claude' ? channel : 'codex'
+function publicChannel(row: PublicModelPricingRow): Exclude<Channel, 'all'> | null {
+  const channel = row.channel?.toLowerCase()
+  if (channel === 'antigravity') return /^gemini-/i.test(row.model) ? 'gemini' : null
+  return channel === 'grok' || channel === 'claude' || channel === 'gemini' ? channel : 'codex'
 }
 
 function price(value: unknown): string {
+  if (value == null) return '—'
   const number = Number(value)
-  if (!Number.isFinite(number)) return '$0'
+  if (!Number.isFinite(number)) return '—'
   return `$${number.toLocaleString(undefined, { maximumFractionDigits: 4 })}`
 }
 
@@ -58,7 +59,14 @@ export default function PublicModelPricing() {
   const { t, i18n } = useTranslation()
   const [rows, setRows] = useState<PublicModelPricingRow[]>([])
   const [query, setQuery] = useState('')
-  const [channel, setChannel] = useState<Channel>('all')
+  const [searchParams, setSearchParams] = useSearchParams()
+  const channel = CHANNELS.find(item => item === searchParams.get('channel')) ?? 'all'
+  function setChannel(item: Channel) {
+    const params = new URLSearchParams(searchParams)
+    if (item === 'all') params.delete('channel')
+    else params.set('channel', item)
+    setSearchParams(params)
+  }
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const isChinese = i18n.resolvedLanguage?.toLowerCase().startsWith('zh') ?? false
@@ -84,9 +92,10 @@ export default function PublicModelPricing() {
   const filtered = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase()
     return rows.filter((row) => {
-      if (HIDDEN_PUBLIC_PRICING_CHANNELS.has(normalizeChannel(row.channel))) return false
+      const visibleChannel = publicChannel(row)
+      if (!visibleChannel) return false
       if (HIDDEN_PUBLIC_PRICING_MODELS.has(row.model.toLowerCase())) return false
-      if (channel !== 'all' && normalizeChannel(row.channel) !== channel) return false
+      if (channel !== 'all' && visibleChannel !== channel) return false
       return !normalizedQuery || row.model.toLowerCase().includes(normalizedQuery)
     })
   }, [channel, query, rows])
@@ -115,7 +124,7 @@ export default function PublicModelPricing() {
               <Input value={query} onChange={(event) => setQuery(event.target.value)} aria-label={t('keyUsage.pricingSearch')} placeholder={t('keyUsage.pricingSearch')} className="pl-9" />
             </div>
             <div className="flex flex-wrap gap-1.5">
-              {CHANNELS.filter((item) => !HIDDEN_PUBLIC_PRICING_CHANNELS.has(item)).map((item) => (
+              {CHANNELS.map((item) => (
                 <Button key={item} type="button" aria-pressed={channel === item} variant={channel === item ? 'default' : 'outline'} size="sm" onClick={() => setChannel(item)}>
                   {item === 'all' ? t('common.all') : CHANNEL_LABELS[item]}
                 </Button>
@@ -167,7 +176,7 @@ export default function PublicModelPricing() {
 function PricingCard({ row, multiplier }: { row: PublicModelPricingRow; multiplier: number | null }) {
   const { t, i18n } = useTranslation()
   const isChinese = i18n.resolvedLanguage?.toLowerCase().startsWith('zh') ?? false
-  const channel = normalizeChannel(row.channel)
+  const channel = publicChannel(row)
   const pricing = row.pricing
   const imageEstimate = imagePriceEstimate(row)
   const values = row.media_unit ? [[row.media_unit === 'image' ? ((i18n.language === 'zh-TW' ? '每張圖片' : isChinese ? '每张图片' : 'Per image')) : ((i18n.language === 'zh-TW' ? '每秒影片' : isChinese ? '每秒视频' : 'Per second')), pricing.image_unit_price || pricing.media_unit_cost]] as const : [
@@ -185,7 +194,7 @@ function PricingCard({ row, multiplier }: { row: PublicModelPricingRow; multipli
             <div className="min-w-0">
               <h3 className="break-words text-base font-semibold" title={row.model}>{ACE_MODEL_NAMES[row.model] || row.model}</h3>
               <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                <Badge variant="secondary" className="text-xs">{ACE_MODEL_NAMES[row.model] ? 'ACEModel' : CHANNEL_LABELS[channel]}</Badge>
+                <Badge variant="secondary" className="text-xs">{ACE_MODEL_NAMES[row.model] ? 'ACEModel' : channel && CHANNEL_LABELS[channel]}</Badge>
                 {row.is_alias && !ACE_MODEL_NAMES[row.model] ? <Badge variant="outline" className="text-xs">{isChinese ? (i18n.language === 'zh-TW' ? '別名' : '别名') : 'Alias'}</Badge> : null}
                 {hasLongContext(pricing) ? <Badge variant="outline" className="text-xs">{isChinese ? (i18n.language === 'zh-TW' ? '長上下文' : '长上下文') : 'Long context'}</Badge> : null}
                 {hasPriority(pricing) ? <Badge variant="outline" className="text-xs">{isChinese ? (i18n.language === 'zh-TW' ? '優先處理' : '优先处理') : 'Priority'}</Badge> : null}

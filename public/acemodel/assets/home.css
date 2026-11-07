@@ -12,3 +12,12 @@
 
 /* Keep the shared header aligned when the language selector is present. */
 @media(min-width:1001px){.site-header .site-nav{margin-left:auto}.site-header .header-inner{justify-content:flex-start}}
+
+.home-gemini { margin-bottom: 48px; }
+.gemini-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px 20px; }
+.gemini-heading h2 { margin: 0; }
+.home-gemini table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.home-gemini caption { text-align: right; padding: 12px 0 6px; }
+.home-gemini th, .home-gemini td { padding: 8px 0; text-align: right; border-bottom: 1px solid var(--ace-line, currentColor); }
+.home-gemini th:first-child { text-align: left; }
+.home-gemini tbody th { font-weight: normal; }

@@ -698,14 +698,78 @@
       }
     },
     {
+      "model": "gemini-4-argon",
+      "channel": "antigravity",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 1.25,
+        "cached_input": 0.125,
+        "output": 10
+      }
+    },
+    {
+      "model": "gemini-4-argon-high",
+      "channel": "antigravity",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 1.25,
+        "cached_input": 0.125,
+        "output": 10
+      },
+      "canonical_model": "gemini-4-argon",
+      "is_alias": true
+    },
+    {
+      "model": "gemini-4-argon-low",
+      "channel": "antigravity",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 1.25,
+        "cached_input": 0.125,
+        "output": 10
+      },
+      "canonical_model": "gemini-4-argon",
+      "is_alias": true
+    },
+    {
+      "model": "gemini-4-argon-medium",
+      "channel": "antigravity",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 1.25,
+        "cached_input": 0.125,
+        "output": 10
+      },
+      "canonical_model": "gemini-4-argon",
+      "is_alias": true
+    },
+    {
+      "model": "gemini-3.8-flash",
+      "channel": "antigravity",
+      "source": "default",
+      "pricing": {
+        "source": "default",
+        "input": 0.75,
+        "cached_input": 0.075,
+        "output": 3.75
+      }
+    },
+    {
       "model": "gemini-3.8-flash-high",
       "channel": "antigravity",
       "source": "default",
       "pricing": {
         "source": "default",
-        "input": 1,
-        "output": 2
-      }
+        "input": 0.75,
+        "cached_input": 0.075,
+        "output": 3.75
+      },
+      "canonical_model": "gemini-3.8-flash",
+      "is_alias": true
     },
     {
       "model": "gemini-3.8-flash-low",
@@ -713,9 +777,12 @@
       "source": "default",
       "pricing": {
         "source": "default",
-        "input": 1,
-        "output": 2
-      }
+        "input": 0.75,
+        "cached_input": 0.075,
+        "output": 3.75
+      },
+      "canonical_model": "gemini-3.8-flash",
+      "is_alias": true
     },
     {
       "model": "gemini-3.8-flash-medium",
@@ -723,72 +790,59 @@
       "source": "default",
       "pricing": {
         "source": "default",
-        "input": 1,
-        "output": 2
-      }
+        "input": 0.75,
+        "cached_input": 0.075,
+        "output": 3.75
+      },
+      "canonical_model": "gemini-3.8-flash",
+      "is_alias": true
     },
     {
-      "model": "gemini-3.7-flash-high",
+      "model": "gemini-3.7-flash",
       "channel": "antigravity",
       "source": "default",
       "pricing": {
         "source": "default",
-        "input": 1,
-        "output": 2
+        "input": 0.75,
+        "cached_input": 0.075,
+        "output": 3.75
       }
     },
     {
-      "model": "gemini-3.7-flash-low",
+      "model": "gemini-3.6-flash",
       "channel": "antigravity",
       "source": "default",
       "pricing": {
         "source": "default",
-        "input": 1,
-        "output": 2
+        "input": 0.75,
+        "cached_input": 0.075,
+        "output": 3.75
       }
     },
     {
-      "model": "gemini-3.7-flash-medium",
+      "model": "gemini-3.5-flash-lite",
       "channel": "antigravity",
       "source": "default",
       "pricing": {
         "source": "default",
-        "input": 1,
-        "output": 2
+        "input": 0.25,
+        "cached_input": 0.025,
+        "output": 1.5
       }
     },
     {
-      "model": "gemini-3.6-flash-high",
+      "model": "gemini-3.1-flash-lite",
       "channel": "antigravity",
       "source": "default",
       "pricing": {
         "source": "default",
-        "input": 1,
-        "output": 2
+        "input": 0.25,
+        "cached_input": 0.025,
+        "output": 1.5
       }
     },
     {
-      "model": "gemini-3.6-flash-low",
-      "channel": "antigravity",
-      "source": "default",
-      "pricing": {
-        "source": "default",
-        "input": 1,
-        "output": 2
-      }
-    },
-    {
-      "model": "gemini-3.6-flash-medium",
-      "channel": "antigravity",
-      "source": "default",
-      "pricing": {
-        "source": "default",
-        "input": 1,
-        "output": 2
-      }
-    },
-    {
-      "model": "gemini-3.1-pro-high",
+      "model": "gemini-3.1-pro",
       "channel": "antigravity",
       "source": "default",
       "pricing": {
@@ -798,13 +852,14 @@
       }
     },
     {
-      "model": "gemini-3.1-pro-low",
+      "model": "gemini-3-flash",
       "channel": "antigravity",
       "source": "default",
       "pricing": {
         "source": "default",
-        "input": 2,
-        "output": 12
+        "input": 0.5,
+        "cached_input": 0.05,
+        "output": 3
       }
     }
   ]
