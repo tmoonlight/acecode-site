@@ -76,12 +76,16 @@ test('public navigation keeps its geometry across pages, themes, languages and h
     if(route==='/download/')assert.match(await page.locator('body').evaluate(e=>getComputedStyle(e).fontFamily),/ACE Pixel/);
    }
    if(width===1440 && language==='zh' && theme==='light'){
-    await page.goto(origin+'/acemodel/');
-    const section=page.locator('[data-gemini-prices]');
-    await section.getByRole('rowheader',{name:'gemini-3.1-flash-lite'}).waitFor();
-    const target=new URL(await section.getByRole('link').getAttribute('href'));
-    await page.goto(origin+target.pathname+target.search);
-    assert.equal(await page.getByRole('button',{name:'Gemini',exact:true}).getAttribute('aria-pressed'),'true');
+    for(const home of ['/', '/acemodel/']){
+     await page.goto(origin+home);
+     assert.equal(await page.locator('[data-gemini-prices]').count(),0,home+' contains pricing');
+     assert.equal(await page.getByRole('heading',{name:'Gemini 模型价格'}).count(),0);
+    }
+    const pricingLink=page.locator('.ace-unified-header').getByRole('link',{name:'模型价格',exact:true});
+    const target=new URL(await pricingLink.getAttribute('href'));
+    await page.goto(origin+target.pathname);
+    await page.getByRole('button',{name:'Gemini',exact:true}).click();
+    await page.getByRole('button',{name:'Gemini',exact:true,pressed:true}).waitFor();
     await page.getByRole('heading',{name:'gemini-3.1-flash-lite',exact:true}).waitFor();
     assert.ok((await page.locator('h3').allTextContents()).every(name=>name.startsWith('gemini-')));
     await page.reload();
