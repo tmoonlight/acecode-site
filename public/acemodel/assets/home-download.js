@@ -45,7 +45,7 @@ async function initDownload() {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 8000);
   try {
-    const manifestRequest = fetch(new URL('../aceupdate.json', location.href), {
+    const manifestRequest = fetch(new URL('../../aceupdate.json', import.meta.url), {
       signal: controller.signal, cache: 'no-cache',
     }).then(response => {
       if (!response.ok) throw new Error('Release manifest unavailable');

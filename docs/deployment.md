@@ -9,6 +9,9 @@
 
 网页、脚本、样式、字体、截图和宣传片由 Bunny 提供。
 `acecode.cc` 的公开路径由现有 Caddy 代理到 Bunny，地址栏保留官网域名。
+根路径的 GET/HEAD 在 Caddy 内部取 Bunny 的 `/index.html`；不要取 Bunny 的
+`/`（该路径有重定向规则）。构建从 `acemodel/index.html` 生成根首页，
+将相对资源指向 `acemodel/assets/`，因此两个入口会随同一次发布更新。
 安装包链接直接使用 Bunny。API 路径仍直达原服务器，未加入 CDN。
 GitHub Pages 项目继承账号已有博客域名，源地址为
 `https://blog.bigjuan.xyz/acecode-site`，不改变博客根目录。
