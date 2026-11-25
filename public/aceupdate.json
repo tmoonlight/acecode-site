@@ -1,7 +1,191 @@
 {
   "schema_version": 1,
-  "latest": "1.0.35",
+  "latest": "1.0.36",
   "releases": [
+    {
+      "version": "1.0.36",
+      "tag": "v1.0.36",
+      "published_at": "2026-11-25T19:17:39Z",
+      "prerelease": false,
+      "notes": "## What's Changed\n* Release v1.0.36 by @tmoonlight in https://github.com/tmoonlight/acecode/pull/224\n\n\n**Full Changelog**: https://github.com/tmoonlight/acecode/compare/v1.0.35...v1.0.36",
+      "packages": [
+        {
+          "file": "acecode-1.0.36-linux-arm64-update.zip",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.36/acecode-1.0.36-linux-arm64-update.zip",
+          "size": 21285297,
+          "sha256": "46f55928d5e6bbd7652a66764573962d352e219bf03b5e2fd07fbff12aedac53",
+          "platform": "linux",
+          "arch": "arm64",
+          "kind": "update"
+        },
+        {
+          "file": "acecode-1.0.36-linux-x64-update.zip",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.36/acecode-1.0.36-linux-x64-update.zip",
+          "size": 20840735,
+          "sha256": "5f8611d5c4f1c5ed284fa72c8793362b86da53bfe0bd6217d50bcf84b849a380",
+          "platform": "linux",
+          "arch": "x64",
+          "kind": "update"
+        },
+        {
+          "file": "ACECode-1.0.36-macos-arm64-update.zip",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.36/ACECode-1.0.36-macos-arm64-update.zip",
+          "size": 28533767,
+          "sha256": "eb334a8bd48999792856243302b9d348196e2d918a675fdf125f1541366ff5e1",
+          "platform": "macos",
+          "arch": "arm64",
+          "kind": "appzip"
+        },
+        {
+          "file": "ACECode-1.0.36-macos-arm64.dmg",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.36/ACECode-1.0.36-macos-arm64.dmg",
+          "size": 31671454,
+          "sha256": "6692c88129603d120d926ec8ee5267e3ec5243c34e9eddc6635ad450a14356e0",
+          "platform": "macos",
+          "arch": "arm64",
+          "kind": "dmg"
+        },
+        {
+          "file": "ACECode-1.0.36-macos-arm64.pkg",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.36/ACECode-1.0.36-macos-arm64.pkg",
+          "size": 28462240,
+          "sha256": "94ac82ba6e1796fae799b2d06fce0406b7f94e465d5ed7151922d3e7b2f4eb10",
+          "platform": "macos",
+          "arch": "arm64",
+          "kind": "pkg"
+        },
+        {
+          "file": "ACECode-1.0.36-macos-x64-update.zip",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.36/ACECode-1.0.36-macos-x64-update.zip",
+          "size": 28913109,
+          "sha256": "d06fe4d72d9564269a834cb29a797f0fb5babf861d156cd8fd98c5b3a5314cc3",
+          "platform": "macos",
+          "arch": "x64",
+          "kind": "appzip"
+        },
+        {
+          "file": "ACECode-1.0.36-macos-x64.dmg",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.36/ACECode-1.0.36-macos-x64.dmg",
+          "size": 32424721,
+          "sha256": "a302169b07e64a62afc8f731f8b493771b689b8f3459bbac9630bf5ab04f942e",
+          "platform": "macos",
+          "arch": "x64",
+          "kind": "dmg"
+        },
+        {
+          "file": "ACECode-1.0.36-macos-x64.pkg",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.36/ACECode-1.0.36-macos-x64.pkg",
+          "size": 28839499,
+          "sha256": "0a003b8c59b9a0d4259a283718f59222b7af09ec438c688682d0554bed233f1b",
+          "platform": "macos",
+          "arch": "x64",
+          "kind": "pkg"
+        },
+        {
+          "file": "ACECode-1.0.36-windows-arm64-setup.exe",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.36/ACECode-1.0.36-windows-arm64-setup.exe",
+          "size": 26877440,
+          "sha256": "02ee66a87507bd89b189a041e973979a541240656de2d5def9874fb7019f03da",
+          "platform": "windows",
+          "arch": "arm64",
+          "kind": "setup"
+        },
+        {
+          "file": "ACECode-1.0.36-windows-x64-setup.exe",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.36/ACECode-1.0.36-windows-x64-setup.exe",
+          "size": 26990080,
+          "sha256": "e7317ad964988df7177668d43e8cbcf36372a5c5e0539649d9624ee88d713034",
+          "platform": "windows",
+          "arch": "x64",
+          "kind": "setup"
+        },
+        {
+          "file": "acecode-linux-arm64.tar.gz",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.36/acecode-linux-arm64.tar.gz",
+          "size": 21210042,
+          "sha256": "4f10165225f65b0ef55afc6fc4a8a385f35956f98a2dba391e266ad31ae234ff",
+          "platform": "linux",
+          "arch": "arm64",
+          "kind": "tar"
+        },
+        {
+          "file": "acecode-linux-armv7.tar.gz",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.36/acecode-linux-armv7.tar.gz",
+          "size": 15142621,
+          "sha256": "bc587443e9a6dbdcf2897a3dcaa1cd4ffda74cd9afe6ce1338ab70cb4c5c78d8",
+          "platform": "linux",
+          "arch": "armv7",
+          "kind": "tar"
+        },
+        {
+          "file": "acecode-linux-deepin-arm64.tar.gz",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.36/acecode-linux-deepin-arm64.tar.gz",
+          "size": 20080697,
+          "sha256": "001e1767ae2f3c2f690627fbd7a32db3e657d3b977d8bd19fcb1a108c74e3404",
+          "platform": "linux",
+          "arch": "arm64",
+          "kind": "oldtar"
+        },
+        {
+          "file": "acecode-linux-deepin-x64.tar.gz",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.36/acecode-linux-deepin-x64.tar.gz",
+          "size": 19707006,
+          "sha256": "3ceea86af39e8628d7ae8576f40a937480b0f6a1cecac0b3dd80def219efb0c7",
+          "platform": "linux",
+          "arch": "x64",
+          "kind": "oldtar"
+        },
+        {
+          "file": "acecode-linux-x64.tar.gz",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.36/acecode-linux-x64.tar.gz",
+          "size": 20759339,
+          "sha256": "82f537c985deb175c9d40a6678f33e14de01d0d146db5ccedcbb9aac351b27a8",
+          "platform": "linux",
+          "arch": "x64",
+          "kind": "tar"
+        },
+        {
+          "file": "acecode-macos-arm64.tar.gz",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.36/acecode-macos-arm64.tar.gz",
+          "size": 45337086,
+          "sha256": "7a54b1d4718a623718f28779eb81e5cc1071eec410d564ac44d59a92cf70009b",
+          "platform": "macos",
+          "arch": "arm64",
+          "kind": "mactar"
+        },
+        {
+          "file": "acecode-macos-x64.tar.gz",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.36/acecode-macos-x64.tar.gz",
+          "size": 46248955,
+          "sha256": "a887460c44b712276d1f94480e56a4bbf338dbbebbe10a7bcc8f134cf2cb8f81",
+          "platform": "macos",
+          "arch": "x64",
+          "kind": "mactar"
+        },
+        {
+          "file": "acecode-windows-arm64.zip",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.36/acecode-windows-arm64.zip",
+          "size": 25045978,
+          "sha256": "7ab8b5d60050ba1cdccf518ebbbfb0dde1337b5b67ebd9eed26a3b1bcd426c23",
+          "platform": "windows",
+          "arch": "arm64",
+          "kind": "zip"
+        },
+        {
+          "file": "acecode-windows-x64.zip",
+          "url": "https://acecodedownload.b-cdn.net/v1.0.36/acecode-windows-x64.zip",
+          "size": 25139485,
+          "sha256": "969cf5813d287fd49c9f21df88ed058b53dc848460c8263680e8c302de4b908b",
+          "platform": "windows",
+          "arch": "x64",
+          "kind": "zip"
+        }
+      ],
+      "sums": {
+        "name": "SHA256SUMS.txt",
+        "url": "https://acecodedownload.b-cdn.net/v1.0.36/SHA256SUMS.txt"
+      }
+    },
     {
       "version": "1.0.35",
       "tag": "v1.0.35",
