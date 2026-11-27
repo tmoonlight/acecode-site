@@ -7,7 +7,7 @@
       "tag": "v1.0.37",
       "published_at": "2026-11-27T17:02:55Z",
       "prerelease": false,
-      "notes": "## What's Changed\n* feat: Add desktop HTML page annotations by @LIUXIN557 in https://github.com/tmoonlight/acecode/pull/202\n* Add domestic search, sidebar persistence and custom Anthropic endpoints by @tmoonlight in https://github.com/tmoonlight/acecode/pull/225\n* Release v1.0.37 by @tmoonlight in https://github.com/tmoonlight/acecode/pull/226\n\n\n**Full Changelog**: https://github.com/tmoonlight/acecode/compare/v1.0.36...v1.0.37",
+      "notes": "## 更新内容\n\n1. Windows 和 macOS 桌面端支持在内嵌网页上标注元素或区域，批注可附截图随消息发送，关闭页签后仍可编辑待发批注。\n2. 国内网页搜索优先使用 AnySearch，结果不足时用 360 搜索补齐，可在会话中用 /websearch use domestic 选择。\n3. 桌面端会记住侧栏扩展的固定状态和排序，重启后仍保留。\n4. 自定义模型可切换 OpenAI Chat Completions、Responses 或 Anthropic Messages 协议，支持从 Anthropic 兼容端点探测模型。\n\n## What's Changed\n* feat: Add desktop HTML page annotations by @LIUXIN557 in https://github.com/tmoonlight/acecode/pull/202\n* Add domestic search, sidebar persistence and custom Anthropic endpoints by @tmoonlight in https://github.com/tmoonlight/acecode/pull/225\n* Release v1.0.37 by @tmoonlight in https://github.com/tmoonlight/acecode/pull/226\n\n\n**Full Changelog**: https://github.com/tmoonlight/acecode/compare/v1.0.36...v1.0.37\n",
       "packages": [
         {
           "file": "acecode-1.0.37-linux-arm64-update.zip",
